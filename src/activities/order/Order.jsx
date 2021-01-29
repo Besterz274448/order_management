@@ -142,7 +142,7 @@ class OrderContainer extends Component {
 
   render() {
     return (
-      <Container maxWidth="xl">
+      <>
         <div style={{padding:"1% 0%"}}>
           <BreadCrumbs before={[{ href: "/dashboard", name: "หน้าแรก" }]} presentpage="รายการสั่งซื้อ" />
         </div>
@@ -162,6 +162,7 @@ class OrderContainer extends Component {
         <Typography
           style={{
             color: "rgb(150,150,150)",
+            paddingTop:"0.7%"
           }}>
           จำนวนสั่งซื้อ 25 รายการ
         </Typography>
@@ -266,7 +267,7 @@ class OrderContainer extends Component {
             Item five
           </TabPanel>
         </div>
-      </Container>
+      </>
     );
   }
 }

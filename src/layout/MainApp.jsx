@@ -21,6 +21,8 @@ const useStyles = makeStyles((theme) => ({
   content: {
     flexGrow: 1,
     marginTop: theme.spacing(8),
+    marginLeft: theme.spacing(2),
+    marginRight: theme.spacing(2),
     paddingBottom: theme.spacing(3),
     backgroundColor: "rgb(250,250,250)",
   },
@@ -53,9 +55,9 @@ export default function MainApp({ selected }) {
       <div className={classes.root}>
         <Navbar open={open} handleDrawerOpen={handleDrawerOpen} />
         <Sidebar open={open} handleDrawerClose={handleDrawerClose} sideBarIcon={sideBarIcon} />
-        <main className={classes.content}>
+        <div className={classes.content}>
           <Routes />
-        </main>
+        </div>
       </div>
     </Router>
   );
