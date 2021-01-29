@@ -28,23 +28,6 @@ const useHeaderStyles = makeStyles((theme) => ({
   },
 }));
 
-const numeric_record = ["Price", "Stock", "Sold"];
-
-const filterLabel = [
-  { id: "id", label: "รหัสสินค้า" },
-  { id: "Name", label: "ชื่อสินค้า" },
-  { id: "Price", label: "ราคา" },
-  { id: "Stock", label: "คงเหลือ" },
-  { id: "Sold", label: "ขายแล้ว" },
-  { id: "Category", label: "ประเภท" },
-];
-
-const mathLabel = [
-  { id: ">", label: ">" },
-  { id: "<", label: "<" },
-  { id: "=", label: "=" },
-  { id: "[]", label: "ระหว่าง" },
-];
 
 export default function ProductListHeader(props) {
   const classes = useHeaderStyles();
