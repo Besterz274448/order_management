@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import ProductHeader from "./ProductHeader";
 import MenuTabs from "./MenuTabs";
+import {getAllProduct} from '../../config/product';
 import MainProduct from "./MainProduct";
 import SubProduct from "./SubProduct";
 
@@ -8,8 +9,8 @@ class Product extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      product: [],
-      data: [],
+      product_data: [],
+      subproduct_data:[],
       filter_data: [],
       filter_selected: "id",
       operator_selected: ">",
@@ -18,31 +19,21 @@ class Product extends Component {
     };
   }
 
-  fetchProductData = () => {
-    var xhr = new XMLHttpRequest();
-    xhr.onreadystatechange = () => {
-      if (xhr.readyState === 4) {
-        console.log(xhr.responseText);
-        // const data = JSON.parse(xhr.responseText);
-        // this.setState({
-        //   product: [...data],
-        // });
-      }
-    };
-    xhr.open("GET", "https://asia-south1-ru-test-5ee10.cloudfunctions.net/products/");
-    xhr.send();
-  };
-
   componentDidMount() {
-    this.fetchProductData();
+    getAllProduct((result)=>{
+      this.setState({
+        product_data: result[0],
+        subproduct_data: result[1]
+      })
+    });
   }
   render() {
     return (
       <div>
         <ProductHeader />
         <MenuTabs
-          MainProductTable={<MainProduct rows={this.state.data} />}
-          SubProductTable={<SubProduct rows={this.state.data} />}
+          MainProductTable={<MainProduct rows={this.state.product_data} />}
+          SubProductTable={<SubProduct rows={this.state.subproduct_data} />}
         />
       </div>
     );

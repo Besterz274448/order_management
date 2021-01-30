@@ -2,9 +2,7 @@ import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import ListItem from "@material-ui/core/ListItem";
-import TextField from "@material-ui/core/TextField";
 import BreadCrumbs from "../../components/BreadCrumbs";
-import Autocomplete from "@material-ui/lab/Autocomplete";
 // import FilterBox from "./FilterBox";
 
 const useHeaderStyles = makeStyles((theme) => ({

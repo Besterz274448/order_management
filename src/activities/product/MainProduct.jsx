@@ -48,48 +48,50 @@ function stableSort(array, comparator) {
   return stabilizedThis.map((el) => el[0]);
 }
 
+
+
 const headCells = [
   {
-    id: "id",
-    numeric: false,
-    disablePadding: true,
-    label: "รหัสสินค้า",
-    width: "20%",
-  },
-  {
-    id: "Name",
-    numeric: false,
-    disablePadding: false,
-    label: "ชื่อสินค้า",
-    width: "30%",
-  },
-  {
-    id: "Price",
+    id: "image",
+    label: "รูปภาพ",
+    align: "left",
     width: "5%",
-    numeric: true,
-    disablePadding: false,
-    label: "ราคา",
   },
   {
-    id: "Stock",
+    id: "sku",
+    label: "รหัส SKU",
+    align: "left",
     width: "10%",
-    numeric: true,
-    disablePadding: false,
-    label: "คงเหลือ",
   },
   {
-    id: "Category",
-    width: "10%",
-    numeric: false,
-    disablePadding: false,
-    label: "ประเภท",
+    id: "name",
+    label: "ชื่อสินค้า",
+    width: "25%",
+    align: "left",
   },
   {
-    id: "Sold",
-    width: "10",
-    numeric: true,
-    disablePadding: false,
-    label: "ขายแล้ว",
+    id: "weight",
+    label: "น้ำหนัก",
+    width: "9%",
+    align: "left",
+  },
+  {
+    id: "delivery_price",
+    label: "ค่าจัดส่งสินค้า",
+    width: "13%",
+    align: "left",
+  },
+  {
+    id: "createon",
+    label: "วันที่สร้าง",
+    width: "13%",
+    align: "left",
+  },
+  {
+    id: "modifiedon",
+    label: "แก้ไขล่าสุด",
+    width: "13%",
+    align: "left",
   },
 ];
 
@@ -106,8 +108,7 @@ function EnhancedTableHead(props) {
         {headCells.map((headCell) => (
           <TableCell
             key={headCell.id}
-            align={headCell.numeric ? "right" : "left"}
-            padding={headCell.disablePadding ? "none" : "default"}
+            align={headCell.align}
             sortDirection={orderBy === headCell.id ? order : false}
             width={headCell.width}
             className={classes.tableHeader}>
@@ -209,11 +210,9 @@ EnhancedTableToolbar.propTypes = {
 const useStyles = makeStyles((theme) => ({
   root: {
     width: "100%",
-
   },
   paper: {
     width: "100%",
-
   },
   table: {
     minWidth: 750,
@@ -309,25 +308,25 @@ export default function EnhancedTable(props) {
                       aria-checked={isItemSelected}
                       tabIndex={-1}
                       key={row.id}
-                      selected={isItemSelected}
-                      onDoubleClick={() => {
-                        window.location.href = "/product/productdetail/" + row.id;
-                      }}>
+                      selected={isItemSelected}>
                       <TableCell padding="checkbox" onClick={(event) => handleClick(event, row.id)}>
                         <Checkbox checked={isItemSelected} inputProps={{ "aria-labelledby": labelId }} />
                       </TableCell>
-                      <TableCell component="th" id={labelId} scope="row" padding="none">
-                        {row.id}
+                      <TableCell align="left">
+                        <img src={row.image} width="30" height="30" alt={row.name} />
+                      </TableCell>
+                      <TableCell component="th" id={labelId} scope="row">
+                        {row.sku}
                       </TableCell>
                       <TableCell align="left">
-                        <Tooltip title={row.Name}>
-                          <Typography>{row.Name.length > 30 ? row.Name.slice(0, 30) + "..." : row.Name}</Typography>
+                        <Tooltip title={row.name}>
+                          <Typography>{row.name.length > 30 ? row.name.slice(0, 30) + "..." : row.name}</Typography>
                         </Tooltip>
                       </TableCell>
-                      <TableCell align="right">{row.Price}</TableCell>
-                      <TableCell align="right">{row.Stock}</TableCell>
-                      <TableCell align="left">{row.Category}</TableCell>
-                      <TableCell align="right">{row.Sold}</TableCell>
+                      <TableCell align="left">{row.weight}</TableCell>
+                      <TableCell align="left">{row.delivery_price}</TableCell>
+                      <TableCell align="left">{row.createon}</TableCell>
+                      <TableCell align="left">{row.modifiedon}</TableCell>
                       <TableCell
                         onClick={() => {
                           window.location.href = "/product/productdetail/" + row.id;
