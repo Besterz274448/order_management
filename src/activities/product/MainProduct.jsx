@@ -48,8 +48,6 @@ function stableSort(array, comparator) {
   return stabilizedThis.map((el) => el[0]);
 }
 
-
-
 const headCells = [
   {
     id: "image",
@@ -58,15 +56,9 @@ const headCells = [
     width: "5%",
   },
   {
-    id: "sku",
-    label: "รหัส SKU",
-    align: "left",
-    width: "10%",
-  },
-  {
     id: "name",
     label: "ชื่อสินค้า",
-    width: "25%",
+    width: "35%",
     align: "left",
   },
   {
@@ -185,18 +177,7 @@ const EnhancedTableToolbar = (props) => {
             </IconButton>
           </Tooltip>
         ) : (
-          <Tooltip title="เพิ่มสินค้าใหม่">
-            <Button
-              color="primary"
-              variant="contained"
-              style={{ marginRight: "0%" }}
-              onClick={() => {
-                window.location.href = "/product/addproduct";
-              }}>
-              <AddCircleIcon />
-              เพิ่มสินค้า
-            </Button>
-          </Tooltip>
+          false
         )}
       </ListItem>
     </Toolbar>
@@ -240,7 +221,7 @@ const useStyles = makeStyles((theme) => ({
 export default function EnhancedTable(props) {
   const classes = useStyles();
   const [order, setOrder] = React.useState("asc");
-  const [orderBy, setOrderBy] = React.useState("Name");
+  const [orderBy, setOrderBy] = React.useState("name");
   const [selected, setSelected] = React.useState([]);
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
@@ -309,18 +290,21 @@ export default function EnhancedTable(props) {
                       tabIndex={-1}
                       key={row.id}
                       selected={isItemSelected}>
-                      <TableCell padding="checkbox" onClick={(event) => handleClick(event, row.id)}>
+                      <TableCell
+                        component="th"
+                        id={labelId}
+                        scope="row"
+                        padding="checkbox"
+                        onClick={(event) => handleClick(event, row.id)}>
                         <Checkbox checked={isItemSelected} inputProps={{ "aria-labelledby": labelId }} />
                       </TableCell>
                       <TableCell align="left">
                         <img src={row.image} width="30" height="30" alt={row.name} />
                       </TableCell>
-                      <TableCell component="th" id={labelId} scope="row">
-                        {row.sku}
-                      </TableCell>
+
                       <TableCell align="left">
                         <Tooltip title={row.name}>
-                          <Typography>{row.name.length > 30 ? row.name.slice(0, 30) + "..." : row.name}</Typography>
+                          <Typography>{row.name.length > 50 ? row.name.slice(0, 50) + "..." : row.name}</Typography>
                         </Tooltip>
                       </TableCell>
                       <TableCell align="left">{row.weight}</TableCell>

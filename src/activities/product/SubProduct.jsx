@@ -69,7 +69,7 @@ const headCells = [
   },
   {
     id: "order",
-    label: "จำนวนออเดอร์",
+    label: "ออเดอร์",
     width: "13%",
     align: "left",
   },
@@ -81,7 +81,7 @@ const headCells = [
   },
   {
     id: "stock",
-    label: "จำนวนคงเหลือ",
+    label: "คงเหลือ",
     width: "13%",
     align: "left",
   },
@@ -183,18 +183,7 @@ const EnhancedTableToolbar = (props) => {
             </IconButton>
           </Tooltip>
         ) : (
-          <Tooltip title="เพิ่มสินค้าใหม่">
-            <Button
-              color="primary"
-              variant="contained"
-              style={{ marginRight: "0%" }}
-              onClick={() => {
-                window.location.href = "/product/addproduct";
-              }}>
-              <AddCircleIcon />
-              เพิ่มสินค้า
-            </Button>
-          </Tooltip>
+          false
         )}
       </ListItem>
     </Toolbar>
