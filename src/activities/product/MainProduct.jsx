@@ -269,15 +269,17 @@ export default function EnhancedTable(props) {
   return (
     <div className={classes.root}>
       <Paper className={classes.paper}>
-        <Backdrop className={classes.backdrop} open={props.open}>
-          <CircularProgress />
-        </Backdrop>
         <EnhancedTableToolbar numSelected={selected.length} />
         <TableContainer>
           <Table className={classes.table} aria-labelledby="tableTitle" size={"medium"} aria-label="enhanced table">
             <EnhancedTableHead classes={classes} order={order} orderBy={orderBy} onRequestSort={handleRequestSort} />
             <TableBody>
               {stableSort(props.rows, getComparator(order, orderBy))
+                .filter((data) => {
+                  return (
+                    data.name.toUpperCase().includes(props.search_key.toUpperCase())
+                  );
+                })
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row, index) => {
                   const isItemSelected = isSelected(row.id);

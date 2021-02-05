@@ -3,45 +3,39 @@ import Autocomplete from "@material-ui/lab/Autocomplete";
 import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 
-const useStyles = makeStyles((theme) => ({
-    myChip:{
-        backgroundColor:"rgba(144,202,249,1)",
-        color:"rgb(50,50,50)",
-        padding:"10px",
-        fontSize:"16px",
-        fontWeight:"bold"
-    }
-  }));
+const useStyles = makeStyles((theme) => ({}));
 
 export default function AutoCompleteChip(props) {
-  const classes = useStyles();
-  const [autoCompleteValue, setAutoCompleteValue] = React.useState(["foo", "bar"]);
-
+  // const [autoCompleteValue, setAutoCompleteValue] = React.useState(["foo", "bar"]);
   return (
     <Autocomplete
       multiple
-      classes={{
-        tag: classes.myChip
+      ChipProps={{
+        color: props.color,
+        size: "medium",
       }}
+      options={[]}
+      freeSolo
+      getOptionDisabled={(option) => true}
       value={props.item}
       onChange={(e, newval, reason) => {
-        props.handleChangeAttribute(newval)
+        props.handleChangeAttribute(newval, props.name);
       }}
       renderInput={(params) => (
         <TextField
+          required={props.item.length === 0}
           {...params}
           variant="outlined"
-          style={{ margin: 8,width:"99.5%" }}
-          placeholder="ชนิดข้อมูลของสินค้า"
-          label="ชนิดข้อมูลของสินค้า"
-          helperText={"ตัวอย่างเช่น สี ขนาด ความกว้าง ความยาว เป็นต้น"}
+          style={{ margin: 8, width: "100%" }}
+          placeholder={props.label}
+          label={props.label}
+          helperText={props.helperText}
           InputLabelProps={{
             shrink: true,
           }}
-          
           onKeyDown={(e) => {
             if (e.keyCode === 13 && e.target.value) {
-              props.handleChangeAttribute(e.target.value);
+              props.handleChangeAttribute(props.item.concat(e.target.value), props.name);
             }
           }}
         />

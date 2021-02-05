@@ -6,6 +6,7 @@ import Button from "@material-ui/core/Button";
 import AddCircleIcon from "@material-ui/icons/AddCircle";
 import BreadCrumbs from "../../components/BreadCrumbs";
 import Tooltip from "@material-ui/core/Tooltip";
+import TextField from "@material-ui/core/TextField";
 // import FilterBox from "./FilterBox";
 
 const useHeaderStyles = makeStyles((theme) => ({
@@ -20,13 +21,21 @@ const useHeaderStyles = makeStyles((theme) => ({
     display: "flex",
     justifyContent: "space-between",
     padding: 0,
-    paddingBottom:"1%",
+    paddingBottom: "1%",
   },
   searchIcon: {
     color: "rgb(150,150,150)",
   },
   marginBox: {
     marginRight: "0.5%",
+  },
+  textInput: {
+    [`& fieldset`]: {
+      borderRadius: "10px",
+    },
+    [`& input`]: {
+      textAlign: "center",
+    },
   },
 }));
 
@@ -50,8 +59,20 @@ export default function ProductListHeader(props) {
           </Tooltip>
         </Typography>
       </ListItem>
-      <ListItem  className={classes.flexBox}>
+      <ListItem className={classes.flexBox}>
         <Typography className={classes.textSub}>รายการสินค้าทั้งหมด {props.dataLength} รายการ</Typography>
+        <div>
+          <TextField
+            className={classes.textInput}
+            variant="outlined"
+            value={props.search_key}
+            onChange={(event) => {
+              props.handleSearchData(event.target.value);
+            }}
+            size="small"
+            placeholder="ค้นหาสินค้าจากชื่อสินค้า . . ."
+          />
+        </div>
       </ListItem>
     </div>
   );

@@ -275,9 +275,6 @@ export default function EnhancedTable(props) {
   return (
     <div className={classes.root}>
       <Paper className={classes.paper}>
-        <Backdrop className={classes.backdrop} open={props.open}>
-          <CircularProgress />
-        </Backdrop>
         <EnhancedTableToolbar numSelected={selected.length} />
         <TableContainer>
           <Table className={classes.table} aria-labelledby="tableTitle" size={"medium"} aria-label="enhanced table">

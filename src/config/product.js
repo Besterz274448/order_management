@@ -4,7 +4,9 @@ function getAllProduct(callback) {
       )).then(result => callback(result));
 }
 
-function createProduct() {}
+function createProduct(data) {
+  console.log(data);
+}
 
 function getSubProduct() {}
 
