@@ -228,7 +228,7 @@ export default function EnhancedTable(props) {
 
   React.useEffect(() => {
     setPage(0);
-  }, [props.rows]);
+  }, [props.rows,props.search_key]);
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";

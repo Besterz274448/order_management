@@ -224,17 +224,50 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+const isNumeric = ["price", "order", "sold", "stock"];
+
 export default function EnhancedTable(props) {
   const classes = useStyles();
   const [order, setOrder] = React.useState("asc");
   const [orderBy, setOrderBy] = React.useState("Name");
+  const [rows, setRows] = React.useState([]);
   const [selected, setSelected] = React.useState([]);
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
   React.useEffect(() => {
     setPage(0);
-  }, [props.rows]);
+    var data = props.rows;
+    if (props.search_key !== "") {
+      if (isNumeric.indexOf(props.filter) !== -1) {
+        switch (props.operation) {
+          case ">":
+            data = data.filter((word) => word[props.filter] >= parseFloat(props.search_key));
+            break;
+          case "<":
+            data = data.filter((word) => word[props.filter] <= parseFloat(props.search_key));
+            break;
+          case "=":
+            data = data.filter((word) => word[props.filter] === parseFloat(props.search_key));
+            break;
+          case "[]":
+            if (props.search_key2 !== "") {
+              data = data.filter(
+                (word) =>
+                  word[props.filter] >= parseFloat(props.search_key) && word[props.filter] <= parseFloat(props.search_key2)
+              );
+            }
+            break;
+          default:
+            break;
+        }
+      } else {
+        data = data.filter((word) => word[props.filter].toUpperCase().includes(props.search_key.toUpperCase()));
+      }
+    }
+    setRows(data);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [props.rows, props.search_key,props.search_key2]);
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";
@@ -270,7 +303,7 @@ export default function EnhancedTable(props) {
 
   const isSelected = (name) => selected.indexOf(name) !== -1;
 
-  const emptyRows = rowsPerPage - Math.min(rowsPerPage, props.rows.length - page * rowsPerPage);
+  const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
 
   return (
     <div className={classes.root}>
@@ -280,7 +313,7 @@ export default function EnhancedTable(props) {
           <Table className={classes.table} aria-labelledby="tableTitle" size={"medium"} aria-label="enhanced table">
             <EnhancedTableHead classes={classes} order={order} orderBy={orderBy} onRequestSort={handleRequestSort} />
             <TableBody>
-              {stableSort(props.rows, getComparator(order, orderBy))
+              {stableSort(rows, getComparator(order, orderBy))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row, index) => {
                   const isItemSelected = isSelected(row.id);
@@ -329,7 +362,7 @@ export default function EnhancedTable(props) {
         <TablePagination
           rowsPerPageOptions={[5, 10, 25]}
           component="div"
-          count={props.rows.length}
+          count={rows.length}
           rowsPerPage={rowsPerPage}
           page={page}
           onChangePage={handleChangePage}

@@ -24,7 +24,10 @@ class Product extends Component {
       tabSelected: 0,
       open: true,
       addModal: false,
+      filter: "sku",
+      operation: "<",
       search_key: "",
+      search_key2: "",
     };
   }
 
@@ -58,6 +61,7 @@ class Product extends Component {
   handleChangeTabs = (event, newValue) => {
     this.setState({
       search_key: "",
+      search_key2: "",
       tabSelected: newValue,
     });
   };
@@ -101,9 +105,9 @@ class Product extends Component {
     return [];
   };
 
-  handleSearchData = (value) => {
+  handleSearchData = (index, value) => {
     this.setState({
-      search_key: value,
+      [index]: value,
     });
   };
 
@@ -155,6 +159,24 @@ class Product extends Component {
       });
     });
   }
+
+  handleChangeFilter = (value) => {
+    this.setState({
+      filter: value,
+      search_key: "",
+      search_key2: "",
+      operation: ">",
+    });
+  };
+
+  handleChangeOperation = (value) => {
+    this.setState({
+      operation: value,
+      search_key: "",
+      search_key2: "",
+    });
+  };
+
   render() {
     return (
       <div>
@@ -162,8 +184,13 @@ class Product extends Component {
           handleClickOpen={this.handleClickOpen}
           dataLength={this.state.product_data.length}
           search_key={this.state.search_key}
+          search_key2={this.state.search_key2}
           tabSelected={this.state.tabSelected}
           handleSearchData={this.handleSearchData}
+          filter={this.state.filter}
+          operation={this.state.operation}
+          handleChangeFilter={this.handleChangeFilter}
+          handleChangeOperation={this.handleChangeOperation}
         />
         <ProductDialog
           handleChangeAttributeValue={this.handleChangeAttributeValue}
@@ -189,6 +216,9 @@ class Product extends Component {
             <SubProduct
               rows={this.state.subproduct_data}
               search_key={this.state.tabSelected === 1 ? this.state.search_key : ""}
+              search_key2={this.state.search_key2}
+              filter={this.state.filter}
+              operation={this.state.operation}
             />
           }
         />
