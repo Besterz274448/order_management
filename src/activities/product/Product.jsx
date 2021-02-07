@@ -204,7 +204,7 @@ class Product extends Component {
           newProduct={this.state.new_product}
           handleNewProduct={this.handleNewProduct}
           handleNewSubProduct={this.handleNewSubProduct}
-          handleCreateProduct={this.handleCreateProduct}
+          handleProduct={this.handleCreateProduct}
         />
         <MenuTabs
           handleChange={this.handleChangeTabs}
@@ -219,6 +219,15 @@ class Product extends Component {
               search_key2={this.state.search_key2}
               filter={this.state.filter}
               operation={this.state.operation}
+            />
+          }
+          LowStockTable={
+            <SubProduct
+              rows={this.state.subproduct_data}
+              search_key={"10"}
+              search_key2={""}
+              filter={"stock"}
+              operation={"<"}
             />
           }
         />

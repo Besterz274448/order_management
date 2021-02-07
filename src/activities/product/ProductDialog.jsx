@@ -128,7 +128,7 @@ export default function ProductDialog(props) {
         <DialogTitle id="alert-dialog-title">เพิ่มสินค้า</DialogTitle>
         <Divider />
         <DialogContent style={{ padding: 0 }}>
-          <form id="add_product_form" onSubmit={props.handleCreateProduct}>
+          <form id="add_product_form" onSubmit={props.handleProduct}>
             <div style={{ padding: "1% 3%" }}>
               <h4 style={{ marginLeft: "1%", paddingBottom: "1%" }}>ข้อมูลทั่วไป</h4>
               <Grid container>

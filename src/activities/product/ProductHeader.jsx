@@ -36,8 +36,7 @@ const useHeaderStyles = makeStyles((theme) => ({
     [`& input`]: {
       textAlign: "center",
     },
-    marginLeft:"5px"
-
+    marginLeft: "5px",
   },
 }));
 
@@ -104,18 +103,25 @@ export default function ProductListHeader(props) {
           ) : (
             false
           )}
-          <TextField
-            className={classes.textInput}
-            variant="outlined"
-            value={props.search_key}
-            type={isNumeric.indexOf(props.filter) !== -1 ? "number" : "text"}
-            onChange={(event) => {
-              props.handleSearchData("search_key", event.target.value);
-            }}
-            style={{ width: "210px" }}
-            size="small"
-            placeholder={props.tabSelected === 0 ? "ค้นหาสินค้าจากชื่อสินค้า . . ." : "ค้นหาสินค้าจาก" + filterLabel[index].label}
-          />
+          {props.tabSelected === 1 || props.tabSelected === 0 ? (
+            <TextField
+              className={classes.textInput}
+              variant="outlined"
+              value={props.search_key}
+              type={isNumeric.indexOf(props.filter) !== -1 ? "number" : "text"}
+              onChange={(event) => {
+                props.handleSearchData("search_key", event.target.value);
+              }}
+              style={{ width: "210px" }}
+              size="small"
+              placeholder={
+                props.tabSelected === 0 ? "ค้นหาสินค้าจากชื่อสินค้า . . ." : "ค้นหาสินค้าจาก" + filterLabel[index].label
+              }
+            />
+          ) : (
+            <div style={{padding:"20px"}}></div>
+          )}
+
           {props.tabSelected === 1 && props.operation === "[]" ? (
             <TextField
               className={classes.textInput}

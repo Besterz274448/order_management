@@ -15,14 +15,11 @@ import TableSortLabel from "@material-ui/core/TableSortLabel";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import Paper from "@material-ui/core/Paper";
-import Checkbox from "@material-ui/core/Checkbox";
-import IconButton from "@material-ui/core/IconButton";
 import Tooltip from "@material-ui/core/Tooltip";
-import DeleteIcon from "@material-ui/icons/Delete";
-import Button from "@material-ui/core/Button";
-import AddCircleIcon from "@material-ui/icons/AddCircle";
 import ListItem from "@material-ui/core/ListItem";
-import VisibilityIcon from "@material-ui/icons/Visibility";
+import Textfield from "@material-ui/core/Textfield";
+import Button from "@material-ui/core/Button";
+import MoreMenu from "./IconMenu";
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -58,37 +55,37 @@ const headCells = [
   {
     id: "name",
     label: "ชื่อสินค้า",
-    width: "25%",
+    width: "24%",
     align: "left",
   },
   {
     id: "price",
     label: "ราคาสินค้า",
-    width: "13%",
+    width: "10%",
     align: "left",
   },
   {
     id: "order",
     label: "ออเดอร์",
-    width: "13%",
-    align: "left",
+    width: "10%",
+    align: "center",
   },
   {
     id: "sold",
     label: "ขายแล้ว",
-    width: "13%",
-    align: "left",
+    width: "10%",
+    align: "center",
   },
   {
     id: "stock",
     label: "คงเหลือ",
-    width: "13%",
-    align: "left",
+    width: "10%",
+    align: "center",
   },
   {
     id: "keyword",
     label: "CF Keyword",
-    width: "13%",
+    width: "11%",
     align: "left",
   },
 ];
@@ -102,7 +99,7 @@ function EnhancedTableHead(props) {
   return (
     <TableHead>
       <TableRow>
-        <TableCell padding="checkbox"></TableCell>
+        <TableCell width="2%"></TableCell>
         {headCells.map((headCell) => (
           <TableCell
             key={headCell.id}
@@ -121,7 +118,7 @@ function EnhancedTableHead(props) {
             </TableSortLabel>
           </TableCell>
         ))}
-        <TableCell padding="checkbox"></TableCell>
+        <TableCell width="10%" align="center"></TableCell>
       </TableRow>
     </TableHead>
   );
@@ -136,7 +133,7 @@ EnhancedTableHead.propTypes = {
 
 const useToolbarStyles = makeStyles((theme) => ({
   root: {
-    paddingLeft: theme.spacing(2),
+    paddingLeft: theme.spacing(3),
     paddingRight: theme.spacing(1),
   },
   title: {
@@ -158,40 +155,13 @@ const useToolbarStyles = makeStyles((theme) => ({
 
 const EnhancedTableToolbar = (props) => {
   const classes = useToolbarStyles();
-  const { numSelected } = props;
-
   return (
-    <Toolbar
-      className={clsx(classes.root, {
-        [classes.highlight]: numSelected > 0,
-      })}>
+    <Toolbar className={clsx(classes.root)}>
       <ListItem className={classes.title}>
-        {numSelected > 0 ? (
-          <Typography color="inherit" variant="subtitle1" component="div">
-            {numSelected} selected
-          </Typography>
-        ) : (
-          <Typography variant="h6" id="tableTitle" component="div">
-            ข้อมูลรายการสินค้า
-          </Typography>
-        )}
-
-        {numSelected > 0 ? (
-          <Tooltip title="Delete">
-            <IconButton aria-label="delete">
-              <DeleteIcon />
-            </IconButton>
-          </Tooltip>
-        ) : (
-          false
-        )}
+        <Typography variant="h6">ข้อมูลสินค้าทั้งหมด</Typography>
       </ListItem>
     </Toolbar>
   );
-};
-
-EnhancedTableToolbar.propTypes = {
-  numSelected: PropTypes.number.isRequired,
 };
 
 const useStyles = makeStyles((theme) => ({
@@ -222,6 +192,17 @@ const useStyles = makeStyles((theme) => ({
   tableHeader: {
     color: "rgb(140,140,140)",
   },
+  textInput: {
+    [`& input`]: {
+      textAlign: "center",
+      width: "60px",
+    },
+  },
+  textInput1: {
+    [`& input`]: {
+      width: "80px",
+    },
+  },
 }));
 
 const isNumeric = ["price", "order", "sold", "stock"];
@@ -231,7 +212,7 @@ export default function EnhancedTable(props) {
   const [order, setOrder] = React.useState("asc");
   const [orderBy, setOrderBy] = React.useState("Name");
   const [rows, setRows] = React.useState([]);
-  const [selected, setSelected] = React.useState([]);
+  const [selected, setSelected] = React.useState();
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
@@ -267,29 +248,12 @@ export default function EnhancedTable(props) {
     }
     setRows(data);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [props.rows, props.search_key,props.search_key2]);
+  }, [props.rows, props.search_key, props.search_key2]);
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";
     setOrder(isAsc ? "desc" : "asc");
     setOrderBy(property);
-  };
-
-  const handleClick = (event, name) => {
-    const selectedIndex = selected.indexOf(name);
-    let newSelected = [];
-
-    if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, name);
-    } else if (selectedIndex === 0) {
-      newSelected = newSelected.concat(selected.slice(1));
-    } else if (selectedIndex === selected.length - 1) {
-      newSelected = newSelected.concat(selected.slice(0, -1));
-    } else if (selectedIndex > 0) {
-      newSelected = newSelected.concat(selected.slice(0, selectedIndex), selected.slice(selectedIndex + 1));
-    }
-
-    setSelected(newSelected);
   };
 
   const handleChangePage = (event, newPage) => {
@@ -308,7 +272,8 @@ export default function EnhancedTable(props) {
   return (
     <div className={classes.root}>
       <Paper className={classes.paper}>
-        <EnhancedTableToolbar numSelected={selected.length} />
+        <EnhancedTableToolbar />
+
         <TableContainer>
           <Table className={classes.table} aria-labelledby="tableTitle" size={"medium"} aria-label="enhanced table">
             <EnhancedTableHead classes={classes} order={order} orderBy={orderBy} onRequestSort={handleRequestSort} />
@@ -316,37 +281,69 @@ export default function EnhancedTable(props) {
               {stableSort(rows, getComparator(order, orderBy))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row, index) => {
-                  const isItemSelected = isSelected(row.id);
                   const labelId = `enhanced-table-checkbox-${index}`;
                   return (
-                    <TableRow
-                      hover
-                      role="checkbox"
-                      aria-checked={isItemSelected}
-                      tabIndex={-1}
-                      key={row.id}
-                      selected={isItemSelected}>
-                      <TableCell padding="checkbox" onClick={(event) => handleClick(event, row.id)}>
-                        <Checkbox checked={isItemSelected} inputProps={{ "aria-labelledby": labelId }} />
-                      </TableCell>
+                    <TableRow hover role="checkbox" tabIndex={-1} key={row.id}>
+                      <TableCell></TableCell>
                       <TableCell component="th" id={labelId} scope="row">
-                        {row.sku}
+                        {selected === row.id ? <Textfield value={row.sku} size="small" /> : row.sku}
                       </TableCell>
                       <TableCell align="left">
-                        <Tooltip title={row.name}>
-                          <Typography>{row.name.length > 30 ? row.name.slice(0, 30) + "..." : row.name}</Typography>
-                        </Tooltip>
+                        {selected === row.id ? (
+                          <Textfield value={row.name} size="small" />
+                        ) : (
+                          <Tooltip title={row.name}>
+                            <Typography>{row.name.length > 25 ? row.name.slice(0, 25) + "..." : row.name}</Typography>
+                          </Tooltip>
+                        )}
                       </TableCell>
-                      <TableCell align="left">{row.price}</TableCell>
-                      <TableCell align="left">{row.order}</TableCell>
-                      <TableCell align="left">{row.sold}</TableCell>
-                      <TableCell align="left">{row.stock}</TableCell>
-                      <TableCell align="left">{row.keyword}</TableCell>
-                      <TableCell
-                        onClick={() => {
-                          window.location.href = "/product/productdetail/" + row.id;
-                        }}>
-                        <VisibilityIcon style={{ cursor: "pointer" }} />
+                      <TableCell align="left">
+                        {selected === row.id ? (
+                          <Textfield className={classes.textInput1} value={row.price} size="small" />
+                        ) : (
+                          row.price
+                        )}
+                      </TableCell>
+                      <TableCell align="center">{row.order}</TableCell>
+                      <TableCell align="center">{row.sold}</TableCell>
+                      <TableCell align="center">
+                        {selected === row.id ? (
+                          <Textfield className={classes.textInput} value={row.stock} size="small" />
+                        ) : (
+                          row.stock
+                        )}
+                      </TableCell>
+                      <TableCell align="left">
+                        {selected === row.id ? (
+                          <Textfield className={classes.textInput1} value={row.keyword} size="small" />
+                        ) : (
+                          row.keyword
+                        )}
+                      </TableCell>
+
+                      <TableCell align="center">
+                        {selected === row.id ? (
+                          <ListItem>
+                            <Button style={{ marginLeft: "auto", marginRight: "auto" }} variant="outlined" color="primary">
+                              ยืนยัน
+                            </Button>
+                            <Button
+                              style={{ marginLeft: "auto", marginRight: "auto" }}
+                              variant="outlined"
+                              color="secondary"
+                              onClick={() => {
+                                setSelected("");
+                              }}>
+                              ยกเลิก
+                            </Button>
+                          </ListItem>
+                        ) : (
+                          <MoreMenu
+                            handleEdit={() => {
+                              setSelected(row.id);
+                            }}
+                          />
+                        )}
                       </TableCell>
                     </TableRow>
                   );

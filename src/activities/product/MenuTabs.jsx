@@ -76,6 +76,9 @@ export default function MenuTabs(props) {
       </TabPanel>
       <TabPanel value={props.value} index={2}>
       </TabPanel>
+      <TabPanel value={props.value} index={3}>
+        {props.LowStockTable}
+      </TabPanel>
     </div>
   );
 }
