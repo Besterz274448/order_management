@@ -24,6 +24,8 @@ import AddCircleIcon from "@material-ui/icons/AddCircle";
 import ListItem from "@material-ui/core/ListItem";
 import VisibilityIcon from "@material-ui/icons/Visibility";
 import EditIcon from "@material-ui/icons/Edit";
+import MoreMenu from "./IconMenu";
+
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -313,6 +315,11 @@ export default function EnhancedTable(props) {
                       <TableCell align="left">{row.createon}</TableCell>
                       <TableCell align="left">{row.modifiedon}</TableCell>
                       <TableCell>
+                        <MoreMenu
+                          handleEdit={() => {
+                            props.openEditModal(row.id);
+                          }}
+                        />
                       </TableCell>
                     </TableRow>
                   );

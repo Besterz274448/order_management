@@ -350,7 +350,7 @@ export default function ProductDialog(props) {
                           {props.variants.map((key, index) => {
                             return (
                               <TableCell className={classes.theadCell} key={key+index}>
-                                <Chip variant="outlined" color="primary" label={data.attr[key.name]} />
+                                <Chip variant="outlined" color="primary" label={data.attribute[key.name]} />
                               </TableCell>
                             );
                           })}

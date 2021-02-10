@@ -21,6 +21,16 @@ class Product extends Component {
       },
       new_subproduct: [],
       variants: [],
+
+      edit_product_data: {
+        name: "",
+        delivery_price: 0,
+        weight: 0,
+        description: "",
+      },
+      edit_product_image: [],
+      edit_subproduct_data: [],
+      edit_variants: [],
       addModal: false,
       editModal: false,
       tabSelected: 0,
@@ -86,7 +96,7 @@ class Product extends Component {
         for (let i = 0; i < newItem.length; i++) {
           let item = {};
           item[attr[0]] = newItem[i];
-          newData.push({ product_id: "", sku: "", name: "", attr: item, price: 0, stock: 0, order: 0, sold: 0, keyword: "" });
+          newData.push({ product_id: "", sku: "", name: "", attribute: item, price: 0, stock: 0, order: 0, sold: 0, keyword: "" });
         }
         return newData;
       }
@@ -96,7 +106,7 @@ class Product extends Component {
         for (let j = 0; j < attr.length; j++) {
           item[attr[j]] = cartesianData[i][j];
         }
-        newData.push({ product_id: "", sku: "", name: "", attr: item, price: 0, stock: 0, order: 0, sold: 0, keyword: "" });
+        newData.push({ product_id: "", sku: "", name: "", attribute: item, price: 0, stock: 0, order: 0, sold: 0, keyword: "" });
       }
       return newData;
     }
@@ -184,9 +194,17 @@ class Product extends Component {
   };
 
   openEditModal = (id) => {
-    let subProduct = this.state.subproduct_data.filter(data => id === data.product_id);
-    let editData = this.state.product_data.filter(data => data.id === id);
-    
+    let subProduct = this.state.subproduct_data.filter((data) => id === data.product_id);
+    let editData = this.state.product_data.filter((data) => data.id === id)[0];
+    console.log(editData);
+    this.setState({
+      edit_product_data: {...editData},
+      edit_product_image: editData.image,
+      edit_subproduct_data: subProduct,
+      edit_variants: editData.attribute,
+    },()=>{
+      this.handleClickOpen("editModal")      
+    });
   };
 
   render() {
@@ -213,11 +231,26 @@ class Product extends Component {
           handleChangeAttribute={this.handleChangeAttribute}
           handleNewProduct={this.handleNewProduct}
           handleNewSubProduct={this.handleNewSubProduct}
-          image={this.state.product_image}
           open={this.state.addModal}
+          newProduct={this.state.new_product}
+          image={this.state.product_image}
           sub_product={this.state.new_subproduct}
           variants={this.state.variants}
-          newProduct={this.state.new_product}
+        />
+        <ProductDialog
+          headName={{ id: "แก้ไขสินค้า", label: "editModal" }}
+          handleClickClose={this.handleClickClose}
+          handleProduct={this.handleCreateProduct}
+          handleChangeAttributeValue={this.handleChangeAttributeValue}
+          handleUploadClick={this.handleUploadClick}
+          handleChangeAttribute={this.handleChangeAttribute}
+          handleNewProduct={this.handleNewProduct}
+          handleNewSubProduct={this.handleNewSubProduct}
+          open={this.state.editModal}
+          newProduct={this.state.edit_product_data}
+          image={this.state.edit_product_image}
+          sub_product={this.state.edit_subproduct_data}
+          variants={this.state.edit_variants}
         />
         <MenuTabs
           handleChange={this.handleChangeTabs}
