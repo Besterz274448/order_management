@@ -72,7 +72,13 @@ export default function ProductListHeader(props) {
         </Typography>
         <Typography className={classes.marginBox}>
           <Tooltip title="เพิ่มสินค้าใหม่">
-            <Button color="primary" variant="contained" style={{ marginRight: "0%" }} onClick={props.handleClickOpen}>
+            <Button
+              color="primary"
+              variant="contained"
+              style={{ marginRight: "0%" }}
+              onClick={() => {
+                props.handleClickOpen("addModal");
+              }}>
               <AddCircleIcon />
               เพิ่มสินค้า
             </Button>
@@ -119,7 +125,7 @@ export default function ProductListHeader(props) {
               }
             />
           ) : (
-            <div style={{padding:"20px"}}></div>
+            <div style={{ padding: "20px" }}></div>
           )}
 
           {props.tabSelected === 1 && props.operation === "[]" ? (

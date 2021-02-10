@@ -64,7 +64,7 @@ export default function MenuTabs(props) {
           aria-label="scrollable auto tabs example">
           <Tab label="รายการสินค้าหลัก" {...a11yProps(0)} />
           <Tab label="รายการคลังสินค้า" {...a11yProps(1)} />
-          <Tab label="ประวัติการแก้ไขสินค้า่" {...a11yProps(2)} />
+          <Tab label="ประวัติการแก้ไขสินค้า" {...a11yProps(2)} />
           <Tab label="รายการสินค้าที่จำนวนใกล้หมด" {...a11yProps(3)} />
         </Tabs>
       </AppBar>

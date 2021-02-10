@@ -21,14 +21,23 @@ class Product extends Component {
       },
       new_subproduct: [],
       variants: [],
-      tabSelected: 0,
-      open: true,
       addModal: false,
+      editModal: false,
+      tabSelected: 0,
       filter: "sku",
       operation: "<",
       search_key: "",
       search_key2: "",
     };
+  }
+
+  componentDidMount() {
+    getAllProduct((result) => {
+      this.setState({
+        product_data: result[0],
+        subproduct_data: result[1],
+      });
+    });
   }
 
   handleUploadClick = (event) => {
@@ -66,17 +75,6 @@ class Product extends Component {
     });
   };
 
-  handleCreateProduct = (e) => {
-    e.preventDefault();
-    let { product_image, new_product, new_subproduct, variants } = this.state;
-    if (new_subproduct.length > 0) {
-      new_product["image"] = product_image;
-      new_product["attribute"] = variants;
-      new_product["sale_channel"] = [];
-      createProduct({ new_product, new_subproduct });
-    }
-  };
-
   cartesianProduct = (item) => {
     const cartesian = (...a) => a.reduce((a, b) => a.flatMap((d) => b.map((e) => [d, e].flat())));
     const attr = item.map((data) => data.name);
@@ -103,12 +101,6 @@ class Product extends Component {
       return newData;
     }
     return [];
-  };
-
-  handleSearchData = (index, value) => {
-    this.setState({
-      [index]: value,
-    });
   };
 
   handleChangeAttribute = (value) => {
@@ -139,26 +131,34 @@ class Product extends Component {
     });
   };
 
-  handleClickOpen = () => {
+  handleClickOpen = (tag) => {
     this.setState({
-      addModal: true,
+      [tag]: true,
     });
   };
 
-  handleClickClose = () => {
+  handleClickClose = (tag) => {
     this.setState({
-      addModal: false,
+      [tag]: false,
     });
   };
 
-  componentDidMount() {
-    getAllProduct((result) => {
-      this.setState({
-        product_data: result[0],
-        subproduct_data: result[1],
-      });
+  handleCreateProduct = (e) => {
+    e.preventDefault();
+    let { product_image, new_product, new_subproduct, variants } = this.state;
+    if (new_subproduct.length > 0) {
+      new_product["image"] = product_image;
+      new_product["attribute"] = variants;
+      new_product["sale_channel"] = [];
+      createProduct({ new_product, new_subproduct });
+    }
+  };
+
+  handleSearchData = (index, value) => {
+    this.setState({
+      [index]: value,
     });
-  }
+  };
 
   handleChangeFilter = (value) => {
     this.setState({
@@ -177,6 +177,18 @@ class Product extends Component {
     });
   };
 
+  confirmEditData = (index, data) => {
+    console.log(data);
+    console.log(this.state.subproduct_data[index]);
+    //createEditHistory
+  };
+
+  openEditModal = (id) => {
+    let subProduct = this.state.subproduct_data.filter(data => id === data.product_id);
+    let editData = this.state.product_data.filter(data => data.id === id);
+    
+  };
+
   render() {
     return (
       <div>
@@ -193,24 +205,29 @@ class Product extends Component {
           handleChangeOperation={this.handleChangeOperation}
         />
         <ProductDialog
-          handleChangeAttributeValue={this.handleChangeAttributeValue}
+          headName={{ id: "เพิ่มสินค้า", label: "addModal" }}
           handleClickClose={this.handleClickClose}
+          handleProduct={this.handleCreateProduct}
+          handleChangeAttributeValue={this.handleChangeAttributeValue}
           handleUploadClick={this.handleUploadClick}
           handleChangeAttribute={this.handleChangeAttribute}
+          handleNewProduct={this.handleNewProduct}
+          handleNewSubProduct={this.handleNewSubProduct}
           image={this.state.product_image}
           open={this.state.addModal}
           sub_product={this.state.new_subproduct}
           variants={this.state.variants}
           newProduct={this.state.new_product}
-          handleNewProduct={this.handleNewProduct}
-          handleNewSubProduct={this.handleNewSubProduct}
-          handleProduct={this.handleCreateProduct}
         />
         <MenuTabs
           handleChange={this.handleChangeTabs}
           value={this.state.tabSelected}
           MainProductTable={
-            <MainProduct rows={this.state.product_data} search_key={this.state.tabSelected === 0 ? this.state.search_key : ""} />
+            <MainProduct
+              rows={this.state.product_data}
+              openEditModal={this.openEditModal}
+              search_key={this.state.tabSelected === 0 ? this.state.search_key : ""}
+            />
           }
           SubProductTable={
             <SubProduct
@@ -219,16 +236,11 @@ class Product extends Component {
               search_key2={this.state.search_key2}
               filter={this.state.filter}
               operation={this.state.operation}
+              confirmEditData={this.confirmEditData}
             />
           }
           LowStockTable={
-            <SubProduct
-              rows={this.state.subproduct_data}
-              search_key={"10"}
-              search_key2={""}
-              filter={"stock"}
-              operation={"<"}
-            />
+            <SubProduct rows={this.state.subproduct_data} search_key={"10"} search_key2={""} filter={"stock"} operation={"<"} />
           }
         />
       </div>

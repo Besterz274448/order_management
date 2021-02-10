@@ -131,39 +131,6 @@ EnhancedTableHead.propTypes = {
   orderBy: PropTypes.string.isRequired,
 };
 
-const useToolbarStyles = makeStyles((theme) => ({
-  root: {
-    paddingLeft: theme.spacing(3),
-    paddingRight: theme.spacing(1),
-  },
-  title: {
-    display: "flex",
-    justifyContent: "space-between",
-    padding: 0,
-  },
-  highlight:
-    theme.palette.type === "light"
-      ? {
-          color: theme.palette.secondary.main,
-          backgroundColor: lighten(theme.palette.secondary.light, 0.85),
-        }
-      : {
-          color: theme.palette.text.primary,
-          backgroundColor: theme.palette.secondary.dark,
-        },
-}));
-
-const EnhancedTableToolbar = (props) => {
-  const classes = useToolbarStyles();
-  return (
-    <Toolbar className={clsx(classes.root)}>
-      <ListItem className={classes.title}>
-        <Typography variant="h6">ข้อมูลสินค้าทั้งหมด</Typography>
-      </ListItem>
-    </Toolbar>
-  );
-};
-
 const useStyles = makeStyles((theme) => ({
   root: {
     width: "100%",
@@ -218,7 +185,7 @@ export default function EnhancedTable(props) {
 
   React.useEffect(() => {
     setPage(0);
-    var data = props.rows;
+    var data = JSON.parse(JSON.stringify(props.rows));
     if (props.search_key !== "") {
       if (isNumeric.indexOf(props.filter) !== -1) {
         switch (props.operation) {
@@ -265,15 +232,18 @@ export default function EnhancedTable(props) {
     setPage(0);
   };
 
-  const isSelected = (name) => selected.indexOf(name) !== -1;
+  const handleEditData = (value, tag, id) => {
+    let data = rows;
+    let index = data.map((data) => data.id).indexOf(id);
+    data[index][tag] = value;
+    setRows(data);
+  };
 
   const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
 
   return (
     <div className={classes.root}>
       <Paper className={classes.paper}>
-        <EnhancedTableToolbar />
-
         <TableContainer>
           <Table className={classes.table} aria-labelledby="tableTitle" size={"medium"} aria-label="enhanced table">
             <EnhancedTableHead classes={classes} order={order} orderBy={orderBy} onRequestSort={handleRequestSort} />
@@ -286,11 +256,23 @@ export default function EnhancedTable(props) {
                     <TableRow hover role="checkbox" tabIndex={-1} key={row.id}>
                       <TableCell></TableCell>
                       <TableCell component="th" id={labelId} scope="row">
-                        {selected === row.id ? <Textfield value={row.sku} size="small" /> : row.sku}
+                        {selected === row.id ? (
+                          <Textfield
+                            defaultValue={row.sku}
+                            onChange={(e) => handleEditData(e.target.value, "sku", row.id)}
+                            size="small"
+                          />
+                        ) : (
+                          row.sku
+                        )}
                       </TableCell>
                       <TableCell align="left">
                         {selected === row.id ? (
-                          <Textfield value={row.name} size="small" />
+                          <Textfield
+                            defaultValue={row.name}
+                            onChange={(e) => handleEditData(e.target.value, "name", row.id)}
+                            size="small"
+                          />
                         ) : (
                           <Tooltip title={row.name}>
                             <Typography>{row.name.length > 25 ? row.name.slice(0, 25) + "..." : row.name}</Typography>
@@ -299,7 +281,13 @@ export default function EnhancedTable(props) {
                       </TableCell>
                       <TableCell align="left">
                         {selected === row.id ? (
-                          <Textfield className={classes.textInput1} value={row.price} size="small" />
+                          <Textfield
+                            onChange={(e) => handleEditData(e.target.value, "price", row.id)}
+                            className={classes.textInput1}
+                            type="number"
+                            defaultValue={row.price}
+                            size="small"
+                          />
                         ) : (
                           row.price
                         )}
@@ -308,23 +296,42 @@ export default function EnhancedTable(props) {
                       <TableCell align="center">{row.sold}</TableCell>
                       <TableCell align="center">
                         {selected === row.id ? (
-                          <Textfield className={classes.textInput} value={row.stock} size="small" />
+                          <Textfield
+                            onChange={(e) => handleEditData(e.target.value, "stock", row.id)}
+                            className={classes.textInput}
+                            type="number"
+                            defaultValue={row.stock}
+                            size="small"
+                          />
                         ) : (
                           row.stock
                         )}
                       </TableCell>
                       <TableCell align="left">
                         {selected === row.id ? (
-                          <Textfield className={classes.textInput1} value={row.keyword} size="small" />
+                          <Textfield
+                            onChange={(e) => handleEditData(e.target.value, "keyword", row.id)}
+                            className={classes.textInput1}
+                            defaultValue={row.keyword}
+                            size="small"
+                          />
                         ) : (
                           row.keyword
                         )}
                       </TableCell>
-
                       <TableCell align="center">
                         {selected === row.id ? (
                           <ListItem>
-                            <Button style={{ marginLeft: "auto", marginRight: "auto" }} variant="outlined" color="primary">
+                            <Button
+                              onClick={() => {
+                                //รอเพิ่มเคสกรณี data ส่งไปไม่ถึงฝัน
+                                let index = rows.map((data) => data.id).indexOf(row.id);
+                                setSelected("");
+                                props.confirmEditData(index,rows[index]);
+                              }}
+                              style={{ marginLeft: "auto", marginRight: "auto" }}
+                              variant="outlined"
+                              color="primary">
                               ยืนยัน
                             </Button>
                             <Button

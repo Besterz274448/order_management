@@ -120,12 +120,12 @@ export default function ProductDialog(props) {
     <div>
       <Dialog
         open={props.open}
-        onClose={props.handleClickClose}
+        onClose={()=>{props.handleClickClose(props.headName.label)}}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
         fullWidth
         maxWidth="lg">
-        <DialogTitle id="alert-dialog-title">เพิ่มสินค้า</DialogTitle>
+        <DialogTitle id="alert-dialog-title">{props.headName.id}</DialogTitle>
         <Divider />
         <DialogContent style={{ padding: 0 }}>
           <form id="add_product_form" onSubmit={props.handleProduct}>
@@ -368,7 +368,7 @@ export default function ProductDialog(props) {
           <Button form="add_product_form" type="submit" variant="contained" color="primary">
             บันทึกข้อมูล
           </Button>
-          <Button variant="contained" onClick={props.handleClickClose} color="secondary" autoFocus>
+          <Button variant="contained" onClick={()=>{props.handleClickClose(props.headName.label)}} color="secondary" autoFocus>
             ยกเลิก
           </Button>
         </DialogActions>

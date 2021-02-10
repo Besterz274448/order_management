@@ -23,6 +23,7 @@ import Button from "@material-ui/core/Button";
 import AddCircleIcon from "@material-ui/icons/AddCircle";
 import ListItem from "@material-ui/core/ListItem";
 import VisibilityIcon from "@material-ui/icons/Visibility";
+import EditIcon from "@material-ui/icons/Edit";
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -228,7 +229,7 @@ export default function EnhancedTable(props) {
 
   React.useEffect(() => {
     setPage(0);
-  }, [props.rows,props.search_key]);
+  }, [props.rows, props.search_key]);
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";
@@ -276,9 +277,7 @@ export default function EnhancedTable(props) {
             <TableBody>
               {stableSort(props.rows, getComparator(order, orderBy))
                 .filter((data) => {
-                  return (
-                    data.name.toUpperCase().includes(props.search_key.toUpperCase())
-                  );
+                  return data.name.toUpperCase().includes(props.search_key.toUpperCase());
                 })
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row, index) => {
@@ -313,11 +312,7 @@ export default function EnhancedTable(props) {
                       <TableCell align="left">{row.delivery_price}</TableCell>
                       <TableCell align="left">{row.createon}</TableCell>
                       <TableCell align="left">{row.modifiedon}</TableCell>
-                      <TableCell
-                        onClick={() => {
-                          window.location.href = "/product/productdetail/" + row.id;
-                        }}>
-                        <VisibilityIcon style={{ cursor: "pointer" }} />
+                      <TableCell>
                       </TableCell>
                     </TableRow>
                   );
