@@ -19,7 +19,7 @@ export default function AutoCompleteChip(props) {
       getOptionDisabled={(option) => true}
       value={props.item}
       onChange={(e, newval, reason) => {
-        props.handleChangeAttribute(newval, props.name);
+        props.handleChangeAttribute(newval, props.name , props.dataType.variants,props.dataType.sub);
       }}
       renderInput={(params) => (
         <TextField
@@ -35,7 +35,7 @@ export default function AutoCompleteChip(props) {
           }}
           onKeyDown={(e) => {
             if (e.keyCode === 13 && e.target.value) {
-              props.handleChangeAttribute(props.item.concat(e.target.value), props.name);
+              props.handleChangeAttribute(props.item.concat(e.target.value), props.name,props.dataType.variants,props.dataType.sub);
             }
           }}
         />

@@ -272,7 +272,7 @@ export default function EnhancedTable(props) {
   return (
     <div className={classes.root}>
       <Paper className={classes.paper}>
-        <EnhancedTableToolbar numSelected={selected.length} />
+        {/* <EnhancedTableToolbar numSelected={selected.length} /> */}
         <TableContainer>
           <Table className={classes.table} aria-labelledby="tableTitle" size={"medium"} aria-label="enhanced table">
             <EnhancedTableHead classes={classes} order={order} orderBy={orderBy} onRequestSort={handleRequestSort} />
@@ -299,7 +299,6 @@ export default function EnhancedTable(props) {
                         scope="row"
                         padding="checkbox"
                         onClick={(event) => handleClick(event, row.id)}>
-                        <Checkbox checked={isItemSelected} inputProps={{ "aria-labelledby": labelId }} />
                       </TableCell>
                       <TableCell align="left">
                         <img src={row.image} width="30" height="30" alt={row.name} />

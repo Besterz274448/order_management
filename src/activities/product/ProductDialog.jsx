@@ -101,7 +101,7 @@ export default function ProductDialog(props) {
       description: props.newProduct.description,
     });
     setNewSubProduct(props.sub_product);
-  }, [props.newProduct,props.sub_product]);
+  }, [props.newProduct, props.sub_product]);
 
   const classes = useStyles();
   const defaultInputProp = {
@@ -120,7 +120,9 @@ export default function ProductDialog(props) {
     <div>
       <Dialog
         open={props.open}
-        onClose={()=>{props.handleClickClose(props.headName.label)}}
+        onClose={() => {
+          props.handleClickClose(props.headName.label);
+        }}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
         fullWidth
@@ -146,7 +148,7 @@ export default function ProductDialog(props) {
                         setNewProduct(item);
                       }}
                       onBlur={(event) => {
-                        props.handleNewProduct(event.target.value, "name");
+                        props.handleNewProduct(event.target.value, "name", props.type.product);
                       }}
                     />
                     <TextField
@@ -163,7 +165,7 @@ export default function ProductDialog(props) {
                         setNewProduct(item);
                       }}
                       onBlur={(event) => {
-                        props.handleNewProduct(event.target.value, "delivery_price");
+                        props.handleNewProduct(event.target.value, "delivery_price", props.type.product);
                       }}
                     />
                     <TextField
@@ -180,7 +182,7 @@ export default function ProductDialog(props) {
                         setNewProduct(item);
                       }}
                       onBlur={(event) => {
-                        props.handleNewProduct(event.target.value, "weight");
+                        props.handleNewProduct(event.target.value, "weight", props.type.product);
                       }}
                     />
                   </div>
@@ -194,7 +196,9 @@ export default function ProductDialog(props) {
                       id="contained-button-file"
                       multiple
                       type="file"
-                      onChange={props.handleUploadClick}
+                      onChange={(e) => {
+                        props.handleUploadClick(e, props.type.image);
+                      }}
                     />
                     <label htmlFor="contained-button-file" style={{ width: "80px" }}>
                       <p style={{ textAlign: "center", color: "rgb(150,150,150)", fontWeight: "bold" }}>เพิ่มรูปภาพ</p>
@@ -225,7 +229,7 @@ export default function ProductDialog(props) {
                         setNewProduct(item);
                       }}
                       onBlur={(event) => {
-                        props.handleNewProduct(event.target.value, "description");
+                        props.handleNewProduct(event.target.value, "description", props.type.product);
                       }}
                     />
                   </div>
@@ -237,6 +241,7 @@ export default function ProductDialog(props) {
               <div style={{ width: "98%" }}>
                 <AutoCompleteChip
                   handleChangeAttribute={props.handleChangeAttribute}
+                  dataType={props.type}
                   item={props.variants.map((data) => data.name)}
                   label="ตัวแปรของข้อมูล"
                   helperText="ตัวอย่างเช่น สี ขนาด ความกว้าง ความยาว เป็นต้น"
@@ -247,6 +252,7 @@ export default function ProductDialog(props) {
                     <AutoCompleteChip
                       key={data.name + index}
                       handleChangeAttribute={props.handleChangeAttributeValue}
+                      dataType={props.type}
                       item={data.value}
                       label={"ค่าของ" + data.name}
                       name={data.name}
@@ -277,7 +283,7 @@ export default function ProductDialog(props) {
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                    {newSubProduct.map((data,index) => {
+                    {newSubProduct.map((data, index) => {
                       return (
                         <TableRow key={index}>
                           <TableCell className={classes.theadCell} width="15%">
@@ -288,8 +294,8 @@ export default function ProductDialog(props) {
                               defaultValue={data.sku}
                               margin="none"
                               className={classes.textInput}
-                              onBlur={(event)=>{
-                                props.handleNewSubProduct(event.target.value,"sku",index)
+                              onBlur={(event) => {
+                                props.handleNewSubProduct(event.target.value, "sku", index, props.type.sub);
                               }}
                             />
                           </TableCell>
@@ -301,8 +307,8 @@ export default function ProductDialog(props) {
                               defaultValue={data.name}
                               margin="none"
                               className={classes.textInput}
-                              onBlur={(event)=>{
-                                props.handleNewSubProduct(event.target.value,"name",index)
+                              onBlur={(event) => {
+                                props.handleNewSubProduct(event.target.value, "name", index, props.type.sub);
                               }}
                             />
                           </TableCell>
@@ -315,8 +321,8 @@ export default function ProductDialog(props) {
                               defaultValue={data.price}
                               margin="none"
                               className={classes.textInput}
-                              onBlur={(event)=>{
-                                props.handleNewSubProduct(event.target.value,"price",index)
+                              onBlur={(event) => {
+                                props.handleNewSubProduct(event.target.value, "price", index, props.type.sub);
                               }}
                             />
                           </TableCell>
@@ -329,8 +335,8 @@ export default function ProductDialog(props) {
                               defaultValue={data.stock}
                               margin="none"
                               className={classes.textInput}
-                              onBlur={(event)=>{
-                                props.handleNewSubProduct(event.target.value,"stock",index)
+                              onBlur={(event) => {
+                                props.handleNewSubProduct(event.target.value, "stock", index, props.type.sub);
                               }}
                             />
                           </TableCell>
@@ -342,14 +348,14 @@ export default function ProductDialog(props) {
                               defaultValue={data.keyword}
                               margin="none"
                               className={classes.textInput}
-                              onBlur={(event)=>{
-                                props.handleNewSubProduct(event.target.value,"keyword",index)
+                              onBlur={(event) => {
+                                props.handleNewSubProduct(event.target.value, "keyword", index, props.type.sub);
                               }}
                             />
                           </TableCell>
                           {props.variants.map((key, index) => {
                             return (
-                              <TableCell className={classes.theadCell} key={key+index}>
+                              <TableCell className={classes.theadCell} key={key + index}>
                                 <Chip variant="outlined" color="primary" label={data.attribute[key.name]} />
                               </TableCell>
                             );
@@ -368,7 +374,13 @@ export default function ProductDialog(props) {
           <Button form="add_product_form" type="submit" variant="contained" color="primary">
             บันทึกข้อมูล
           </Button>
-          <Button variant="contained" onClick={()=>{props.handleClickClose(props.headName.label)}} color="secondary" autoFocus>
+          <Button
+            variant="contained"
+            onClick={() => {
+              props.handleClickClose(props.headName.label);
+            }}
+            color="secondary"
+            autoFocus>
             ยกเลิก
           </Button>
         </DialogActions>

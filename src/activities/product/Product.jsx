@@ -50,30 +50,30 @@ class Product extends Component {
     });
   }
 
-  handleUploadClick = (event) => {
+  handleUploadClick = (event, type) => {
     var file = event.target.files[0];
     const reader = new FileReader();
     var url = reader.readAsDataURL(file);
     reader.onloadend = async (e) => {
       await this.setState({
-        product_image: [...this.state.product_image, reader.result],
+        [type]: [...this.state[type], reader.result],
       });
     };
   };
 
-  handleNewProduct = (value, key) => {
-    let newValue = this.state.new_product;
+  handleNewProduct = (value, key, type) => {
+    let newValue = this.state[type];
     newValue[key] = value;
     this.setState({
-      new_product: newValue,
+      [type]: newValue,
     });
   };
 
-  handleNewSubProduct = (value, key, index) => {
-    let newValue = this.state.new_subproduct;
+  handleNewSubProduct = (value, key, index, type) => {
+    let newValue = this.state[type];
     newValue[index][key] = value;
     this.setState({
-      new_subproduct: newValue,
+      [type]: newValue,
     });
   };
 
@@ -96,7 +96,17 @@ class Product extends Component {
         for (let i = 0; i < newItem.length; i++) {
           let item = {};
           item[attr[0]] = newItem[i];
-          newData.push({ product_id: "", sku: "", name: "", attribute: item, price: 0, stock: 0, order: 0, sold: 0, keyword: "" });
+          newData.push({
+            product_id: "",
+            sku: "",
+            name: "",
+            attribute: item,
+            price: 0,
+            stock: 0,
+            order: 0,
+            sold: 0,
+            keyword: "",
+          });
         }
         return newData;
       }
@@ -113,8 +123,8 @@ class Product extends Component {
     return [];
   };
 
-  handleChangeAttribute = (value) => {
-    let newItem = this.state.variants;
+  handleChangeAttribute = (value, name, type_variants, type_sub) => {
+    let newItem = this.state[type_variants];
     newItem = value.map((data) => {
       let index = newItem.map((data) => data.name).indexOf(data);
       let valueAttr = [];
@@ -125,19 +135,19 @@ class Product extends Component {
     });
     let newAttr = this.cartesianProduct(newItem);
     this.setState({
-      variants: newItem,
-      new_subproduct: newAttr,
+      [type_variants]: newItem,
+      [type_sub]: newAttr,
     });
   };
 
-  handleChangeAttributeValue = (value, name) => {
-    let newItem = this.state.variants;
+  handleChangeAttributeValue = (value, name, type_variants, type_sub) => {
+    let newItem = this.state[type_variants];
     const index = newItem.map((data) => data.name).indexOf(name);
     newItem[index].value = value;
     let newAttr = this.cartesianProduct(newItem);
     this.setState({
-      variants: newItem,
-      new_subproduct: newAttr,
+      [type_variants]: newItem,
+      [type_sub]: newAttr,
     });
   };
 
@@ -196,15 +206,17 @@ class Product extends Component {
   openEditModal = (id) => {
     let subProduct = this.state.subproduct_data.filter((data) => id === data.product_id);
     let editData = this.state.product_data.filter((data) => data.id === id)[0];
-    console.log(editData);
-    this.setState({
-      edit_product_data: {...editData},
-      edit_product_image: editData.image,
-      edit_subproduct_data: subProduct,
-      edit_variants: editData.attribute,
-    },()=>{
-      this.handleClickOpen("editModal")      
-    });
+    this.setState(
+      {
+        edit_product_data: { ...editData },
+        edit_product_image: JSON.parse(JSON.stringify(editData.image)),
+        edit_subproduct_data: JSON.parse(JSON.stringify(subProduct)),
+        edit_variants: JSON.parse(JSON.stringify(editData.attribute)),
+      },
+      () => {
+        this.handleClickOpen("editModal");
+      }
+    );
   };
 
   render() {
@@ -224,13 +236,14 @@ class Product extends Component {
         />
         <ProductDialog
           headName={{ id: "เพิ่มสินค้า", label: "addModal" }}
+          type={{ image: "product_image", product: "new_product", sub: "new_subproduct", variants: "variants" }}
           handleClickClose={this.handleClickClose}
           handleProduct={this.handleCreateProduct}
-          handleChangeAttributeValue={this.handleChangeAttributeValue}
           handleUploadClick={this.handleUploadClick}
-          handleChangeAttribute={this.handleChangeAttribute}
           handleNewProduct={this.handleNewProduct}
           handleNewSubProduct={this.handleNewSubProduct}
+          handleChangeAttributeValue={this.handleChangeAttributeValue}
+          handleChangeAttribute={this.handleChangeAttribute}
           open={this.state.addModal}
           newProduct={this.state.new_product}
           image={this.state.product_image}
@@ -239,13 +252,19 @@ class Product extends Component {
         />
         <ProductDialog
           headName={{ id: "แก้ไขสินค้า", label: "editModal" }}
+          type={{
+            image: "edit_product_image",
+            product: "edit_product_data",
+            sub: "edit_subproduct_data",
+            variants: "edit_variants",
+          }}
           handleClickClose={this.handleClickClose}
           handleProduct={this.handleCreateProduct}
-          handleChangeAttributeValue={this.handleChangeAttributeValue}
           handleUploadClick={this.handleUploadClick}
-          handleChangeAttribute={this.handleChangeAttribute}
           handleNewProduct={this.handleNewProduct}
           handleNewSubProduct={this.handleNewSubProduct}
+          handleChangeAttributeValue={this.handleChangeAttributeValue}
+          handleChangeAttribute={this.handleChangeAttribute}
           open={this.state.editModal}
           newProduct={this.state.edit_product_data}
           image={this.state.edit_product_image}
