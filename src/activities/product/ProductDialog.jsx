@@ -14,11 +14,9 @@ import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import { Divider, Grid } from "@material-ui/core";
-import ListItem from "@material-ui/core/ListItem";
 import ImageComponent from "./ImageComponent";
 import Paper from "@material-ui/core/Paper";
 import Chip from "@material-ui/core/Chip";
-import DeleteIcon from "@material-ui/icons/Delete";
 
 const useStyles = makeStyles((theme) => ({
   headerMain: {

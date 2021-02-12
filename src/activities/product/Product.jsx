@@ -53,7 +53,7 @@ class Product extends Component {
   handleUploadClick = (event, type) => {
     var file = event.target.files[0];
     const reader = new FileReader();
-    var url = reader.readAsDataURL(file);
+    reader.readAsDataURL(file);
     reader.onloadend = async (e) => {
       await this.setState({
         [type]: [...this.state[type], reader.result],
@@ -259,7 +259,10 @@ class Product extends Component {
             variants: "edit_variants",
           }}
           handleClickClose={this.handleClickClose}
-          handleProduct={this.handleCreateProduct}
+          handleProduct={(e) => {
+            e.preventDefault();
+            alert("test");
+          }}
           handleUploadClick={this.handleUploadClick}
           handleNewProduct={this.handleNewProduct}
           handleNewSubProduct={this.handleNewSubProduct}

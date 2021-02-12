@@ -66,7 +66,7 @@ export default function BestSellBoard() {
         },
       ],
     };
-    var myDoughnutChart = new window.Chart(ctx, {
+    new window.Chart(ctx, {
       type: "doughnut",
       data: data,
     });
@@ -89,9 +89,7 @@ export default function BestSellBoard() {
             <Table aria-label="simple table">
               <TableHead>
                 <TableRow>
-                  <TableCell className={classes.tableHead}>
-                    ชื่อสินค้า
-                  </TableCell>
+                  <TableCell className={classes.tableHead}>ชื่อสินค้า</TableCell>
                   <TableCell className={classes.tableHead} align="right">
                     จำนวน
                   </TableCell>
@@ -103,17 +101,10 @@ export default function BestSellBoard() {
               <TableBody>
                 {rows.map((row) => (
                   <TableRow key={row.product_name}>
-                    <TableCell
-                      style={{ color: "rgba(50,50,50,0.8)" }}
-                      component="th"
-                      scope="row"
-                    >
+                    <TableCell style={{ color: "rgba(50,50,50,0.8)" }} component="th" scope="row">
                       {row.product_name}
                     </TableCell>
-                    <TableCell
-                      style={{ color: "rgba(50,50,50,0.8)" }}
-                      align="right"
-                    >
+                    <TableCell style={{ color: "rgba(50,50,50,0.8)" }} align="right">
                       {row.amount}
                     </TableCell>
                     <TableCell className={classes.dataPercentage} align="right">
