@@ -1,0 +1,47 @@
+{
+    "general": {
+        "shopID": "props.data.shopID",
+        "shopName": "Ton Ton Pond",
+        "email": "props.data.Email",
+        "texCode": "props.data.texCode",
+        "phone": "0685312312",
+        "package": {
+            "expire": 1612112400000,
+            "pack": 1,
+            "enroll": ""
+        },
+        "address": {
+            "name": "name",
+            "tel": "0989928575",
+            "detail": "props.data.address.detail",
+            "distrust": "props.data.address.distrust",
+            "province": "props.data.address.province",
+            "city": "props.data.address.city",
+            "zipCode": "props.data.address.zipCode"
+        }
+    },
+    "transport": {
+        "main": "kerry",
+        "chooseList": {
+            "kerry": {
+                "perWeight": true,
+                "cost": {}
+            }
+        },
+        "JT": {
+            "name": "ton",
+            "id": "snt9691"
+        },
+        "DHL": {
+            "id": "",
+            "token": ""
+        }
+    },
+    "autoText": {},
+    "chanelAPI": {},
+    "account": {
+        "email": "",
+        "telephone": "",
+        "name": ""
+    }
+}
