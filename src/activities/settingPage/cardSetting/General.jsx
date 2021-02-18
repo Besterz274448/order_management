@@ -8,15 +8,24 @@ import {
 } from "@material-ui/core";
 import TextFields from "../../../components/TextFieldCustom";
 import UpPackage from "../../../components/DialogUpPackage";
+import Cards from "../../../components/CardCpn";
+import InfoIcon from "@material-ui/icons/Info";
 
 const useStyles = makeStyles((theme) => ({
-  boxInput: { marginLeft: "10%" },
-  formInput: { width: "80ch", margin: "8px" },
+  boxInput: { marginLeft: "0%" },
+  formInput: { width: "100%", margin: "8px" },
   inputText: { color: "rgb(70,70,70)" },
   FormControl: { width: "100%" },
-  packageFrom: { width: "39ch", margin: "8px" },
-  address: { width: "40ch" },
-  detail: { width: "70%" },
+  packageFrom: { width: "38.1%", margin: "8px" },
+  button: {
+    width: "100%",
+    color: "rgb(220, 220, 220)",
+    backgroundColor: "rgb(61, 120, 204)",
+    "&:hover": {
+      backgroundColor: "rgb(58, 150, 194)",
+      color: "rgb(255, 255, 255)",
+    },
+  },
 }));
 export default function InputWithIcon(props) {
   const packages = [
@@ -62,13 +71,13 @@ export default function InputWithIcon(props) {
   };
   React.useEffect(() => {
     setData(props.data);
-    // console.log(props.oldData, props.data);
   }, [props.data]);
   return (
-    <>
-      <Typography variant="h6" className={classes.boxInput}>
-        ข้อมูลร้านค้า
-      </Typography>
+    <Cards
+      classes={classes.cardSize}
+      title={"ข้อมูลร้านค้า"}
+      icon={<InfoIcon />}
+    >
       <Box className={classes.boxInput} display="flex">
         <TextField
           label="รหัสร้านค้า"
@@ -76,6 +85,7 @@ export default function InputWithIcon(props) {
           value={data.shopID}
           helperText="ใช้สำหรับแจ้งเจ้าหน้าที่เพื่อติดต่อ"
           disabled
+          size="small"
           margin="normal"
           variant="outlined"
           onChange={() => {
@@ -94,21 +104,21 @@ export default function InputWithIcon(props) {
               : expire === true
               ? `หมดอายุ เมื่อวันที่ ${new Date(
                   data.package.expire
-                ).toLocaleDateString()} ต้องดำเนินการต่ออายุเพื่อใช้งาน`
+                ).toLocaleDateString()} ต้องต่ออายุการใช้งาน`
               : `จะหมดอายุในวันที่ ${new Date(
                   data.package.expire
                 ).toLocaleDateString()}`
           }
           disabled
+          size="small"
           margin="normal"
           variant="outlined"
         />
-        <Box ml={2} mt={2}>
+        <Box mt={1}>
           <Button
-            marginLeft="20px"
             variant="contained"
             size="large"
-            color="primary"
+            className={classes.button}
             onClick={handleClickOpen}
           >
             {"อัพเกรดแพ็คเกจ"}
@@ -124,6 +134,7 @@ export default function InputWithIcon(props) {
           value={data.email}
           helperText="E-Mail ที่ใช้สำหรับเข้าระบบ"
           disabled
+          size="small"
           margin="normal"
           variant="outlined"
           onChange={() => {
@@ -157,6 +168,6 @@ export default function InputWithIcon(props) {
           onBlur={handleOnBlur}
         />
       </Box>
-    </>
+    </Cards>
   );
 }

@@ -8,12 +8,21 @@ import {
   Typography,
   Box,
   Button,
-  Divider,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  Snackbar,
+  Grid,
 } from "@material-ui/core";
-import General from "./general/General";
+import General from "./cardSetting/General";
 import Alert from "@material-ui/lab/Alert";
-import Address from "./general/Address";
+import Address from "./cardSetting/Address";
 import { getSetting } from "../../config/setting";
+import ContactButton from "../../components/ContectButton";
+import BreadCrumbs from "../../components/BreadCrumbs";
+import Cards from "../../components/CardCpn";
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
   return (
@@ -21,14 +30,10 @@ function TabPanel(props) {
       role="tabpanel"
       hidden={value !== index}
       id={`setting-tabpanel-${index}`}
-      aria-labelledby={`setting-tab${index}`}
+      aria-labelledby={`setting-tab-${index}`}
       {...other}
     >
-      {value === index && (
-        <Box p={3}>
-          <Typography>{children}</Typography>
-        </Box>
-      )}
+      {value === index && <Box p={3}>{children}</Box>}
     </div>
   );
 }
@@ -41,7 +46,7 @@ TabPanel.propTypes = {
 
 function a11yProps(index) {
   return {
-    id: `setting-tab${index}`,
+    id: `setting-tab-${index}`,
     "aria-controls": `setting-tabpanel-${index}`,
   };
 }
@@ -51,12 +56,13 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
     backgroundColor: theme.palette.background.paper,
   },
+  textHeader: {
+    fontWeight: "bold",
+  },
+  alert: { marginLeft: "auto" },
 }));
 
 export default function SimpleTabs() {
-  const classes = useStyles();
-  const [value, setValue] = React.useState(0);
-  const handleChangeTabs = (event, newValue) => setValue(newValue);
   const tabs = [
     "ทั่วไป",
     "การขนส่ง",
@@ -64,33 +70,6 @@ export default function SimpleTabs() {
     "ช่องทางเชื่อมต่อ",
     "บัญชีผู้ใช้",
   ];
-  const [edited, setEdited] = React.useState(false);
-  const handleData = (value, tag) => {
-    let items = { ...account };
-    switch (tag.length) {
-      case 1:
-        items[tag[0]] = value;
-        break;
-      case 2:
-        items[tag[0]][tag[1]] = value;
-        break;
-      case 3:
-        items[tag[0]][tag[1]][tag[2]] = value;
-        break;
-      case 4:
-        items[tag[0]][tag[1]][tag[2]][tag[3]] = value;
-        break;
-      default:
-        break;
-    }
-    setAccount(items);
-    if (JSON.stringify(account) !== JSON.stringify(oldAccount)) {
-      setEdited(true);
-    } else {
-      setEdited(false);
-    }
-  };
-
   const [account, setAccount] = React.useState({
     general: {
       shopID: "",
@@ -186,8 +165,72 @@ export default function SimpleTabs() {
       name: "",
     },
   });
-  const [change, setChange] = React.useState(false);
+  const handleData = (value, tag) => {
+    let items = { ...account };
+    switch (tag.length) {
+      case 1:
+        items[tag[0]] = value;
+        break;
+      case 2:
+        items[tag[0]][tag[1]] = value;
+        break;
+      case 3:
+        items[tag[0]][tag[1]][tag[2]] = value;
+        break;
+      case 4:
+        items[tag[0]][tag[1]][tag[2]][tag[3]] = value;
+        break;
+      default:
+        break;
+    }
+    setAccount(items);
+    let newConfig = { ...config };
+    if (JSON.stringify(account) !== JSON.stringify(oldAccount)) {
+      newConfig.edited = true;
+      setConfig(newConfig);
+    } else {
+      newConfig.edited = false;
+      setConfig(newConfig);
+    }
+  };
+  const [config, setConfig] = React.useState({
+    alert: false,
+    value: 0,
+    edited: false,
+    nextTab: 0,
+  });
+  const classes = useStyles();
+  const handleChangeTabs = (event, newValue) => {
+    if (config.edited) {
+      let newConfig = { ...config };
+      newConfig.nextTab = newValue;
+      newConfig.alert = true;
+      setConfig(newConfig);
+    } else {
+      let newConfig = { ...config };
+      newConfig.value = newValue;
+      setConfig(newConfig);
+    }
+  };
 
+  const handleClose = () => {
+    let newConfig = { ...config };
+    newConfig.value = newConfig.nextTab;
+    newConfig.edited = false;
+    newConfig.alert = false;
+    setConfig(newConfig);
+    setAccount(JSON.parse(JSON.stringify(oldAccount)));
+  };
+  const save = () => {
+    let newConfig = { ...config };
+    newConfig.value = newConfig.nextTab;
+    newConfig.edited = false;
+    newConfig.alert = false;
+    setConfig(newConfig);
+    setOldAccount(JSON.parse(JSON.stringify(account)));
+  };
+
+  const [change, setChange] = React.useState(false);
   React.useEffect(() => {
     const path = window.location.pathname;
     console.log(path);
@@ -195,10 +238,66 @@ export default function SimpleTabs() {
   }, []);
   return (
     <>
-      <div className={classes.root}>
-        <AppBar position="static" color="transparent">
+      <Snackbar
+        anchorOrigin={{
+          vertical: "bottom",
+          horizontal: "left",
+        }}
+        open={config.edited}
+        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+        // autoHideDuration={6000}
+        message="Note archived"
+      >
+        <Alert
+          severity="warning"
+          action={
+            <React.Fragment>
+              <Button
+                color="secondary"
+                size="small"
+                onClick={() => {
+                  setAccount(JSON.parse(JSON.stringify(oldAccount)));
+                  let newConfig = { ...config };
+                  newConfig.edited = false;
+                  setConfig(newConfig);
+                }}
+              >
+                ละทิ้ง
+              </Button>
+              <Button
+                color="secondary"
+                size="small"
+                onClick={(e) => {
+                  setOldAccount(JSON.parse(JSON.stringify(account)));
+                  let newConfig = { ...config };
+                  newConfig.edited = false;
+                  setConfig(newConfig);
+                }}
+              >
+                บันทึก
+              </Button>
+            </React.Fragment>
+          }
+        >
+          ข้อมูลมีการเปลี่ยนแปลง! กรุณากดปุ่ม "บันทึก" เพื่อยืนยันการเปลี่ยนแปลง
+        </Alert>
+      </Snackbar>
+      <div style={{ padding: "1% 0%" }}>
+        <BreadCrumbs
+          before={[{ href: "/dashboard", name: "หน้าแรก" }]}
+          presentpage="ตั้งค่า"
+        />
+      </div>
+      <Box marginBottom="1%">
+        <Typography className={classes.textHeader} variant="h5">
+          ตั้งค่า
+        </Typography>
+      </Box>
+      <div>
+        <AppBar position="static" color="inherit">
           <Tabs
-            value={value}
+            id="tabs"
+            value={config.value}
             onChange={handleChangeTabs}
             indicatorColor="secondary"
             textColor="primary"
@@ -208,58 +307,68 @@ export default function SimpleTabs() {
               <Tab label={data} {...a11yProps({ index })} />
             ))}
           </Tabs>
-        </AppBar>
-        {edited ? (
-          <Alert
-            action={
-              <Button
-                color="secondary"
-                variant="contained"
-                size="large"
-                onClick={(e) => {
-                  setOldAccount(JSON.parse(JSON.stringify(account)));
-                  setEdited(false);
-                }}
-              >
+          <Dialog
+            open={config.alert}
+            onClose={handleClose}
+            aria-labelledby="alert-dialog-title"
+            aria-describedby="alert-dialog-description"
+          >
+            <DialogTitle id="alert-dialog-title">
+              {"ข้อมูลมีการเปลี่ยนแปลง"}
+            </DialogTitle>
+            <DialogContent>
+              <DialogContentText id="alert-dialog-description">
+                ต้องการบันทึกหรือไม่
+              </DialogContentText>
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={handleClose} color="primary">
+                ละทิ้ง
+              </Button>
+              <Button onClick={save} color="primary" autoFocus>
                 บันทึก
               </Button>
-            }
-          >
-            ข้อมูลมีการเปลี่ยนแปลง! กรุณากดปุ่ม "บันทึกข้อมูล"
-            เพื่อยืนยันการเปลี่ยนแปลง
-          </Alert>
-        ) : null}
-        <TabPanel value={value} index={0}>
-          <div style={{ marginTop: !edited ? "3.35rem" : "0rem" }}>
-            <General
-              handleData={handleData}
-              data={account.general}
-              oldData={oldAccount.general}
-              change={change}
-              setChange={setChange}
-            />
-            <Divider />
-            <Divider />
-            <Divider />
-            <Divider />
-            <Address
-              handleData={handleData}
-              data={account.general.address}
-              oldData={oldAccount.general.address}
-              change={change}
-              setChange={setChange}
-            />
-          </div>
+            </DialogActions>
+          </Dialog>{" "}
+        </AppBar>
+        <TabPanel value={config.value} index={0}>
+          <Grid container spacing={3}>
+            <Grid item xs={12} lg={6}>
+              <General
+                handleData={handleData}
+                data={account.general}
+                oldData={oldAccount.general}
+                change={change}
+                setChange={setChange}
+              />
+            </Grid>
+            <Grid lg={6} xs={0}></Grid>
+            <Grid item xs={12} lg={6}>
+              <Address
+                handleData={handleData}
+                data={account.general.address}
+                oldData={oldAccount.general.address}
+                change={change}
+                setChange={setChange}
+              />
+            </Grid>
+          </Grid>
         </TabPanel>
-        <TabPanel value={value} index={1}>
-          <div style={{ marginTop: !edited ? "3.35rem" : "0rem" }}>
-            testesss
-          </div>
+        <TabPanel value={config.value} index={1}>
+          <Box marginTop="1%">
+            <ContactButton />
+          </Box>
         </TabPanel>
-        <TabPanel value={value} index={2}>
-          <div style={{ marginTop: !edited ? "3.35rem" : "0rem" }}>
-            Item Three
-          </div>
+        <TabPanel value={config.value} index={2}>
+          <Box marginTop="1%">
+            <Cards></Cards>
+          </Box>
+        </TabPanel>
+        <TabPanel value={config.value} index={3}>
+          <Box marginTop="1%">Item 4</Box>
+        </TabPanel>
+        <TabPanel value={config.value} index={4}>
+          <Box marginTop="1%">Item 5</Box>
         </TabPanel>
       </div>
     </>

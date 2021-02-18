@@ -41,6 +41,7 @@ export default function TextFieldCustom(props) {
       margin="normal"
       InputLabelProps={{ shrink: value !== "" }}
       variant="outlined"
+      size="small"
       onChange={(e) => {
         console.log(helper);
         handleOnChange(e.target.value, tag);

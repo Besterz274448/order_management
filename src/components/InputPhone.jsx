@@ -69,8 +69,9 @@ export default function InputPhone(props) {
         onBlur={(e) => {
           handleOnBlur(e.target.value, tag);
         }}
-        label="Name"
+        label="เบอร์โทร"
         inputComponent={TextMaskCustom}
+        margin="dense"
         {...other}
       />
       <FormHelperText id={id}>

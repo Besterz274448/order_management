@@ -54,7 +54,11 @@ export default function MainApp({ selected }) {
     <Router>
       <div className={classes.root}>
         <Navbar open={open} handleDrawerOpen={handleDrawerOpen} />
-        <Sidebar open={open} handleDrawerClose={handleDrawerClose} sideBarIcon={sideBarIcon} />
+        <Sidebar
+          open={open}
+          handleDrawerClose={handleDrawerClose}
+          sideBarIcon={sideBarIcon}
+        />
         <div className={classes.content}>
           <Routes />
         </div>

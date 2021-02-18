@@ -2,10 +2,12 @@ import React from "react";
 import { Typography, Box, makeStyles } from "@material-ui/core";
 import InputPhone from "../../../components/InputPhone";
 import TextFields from "../../../components/TextFieldCustom";
+import Cards from "../../../components/CardCpn";
+import BusinessIcon from "@material-ui/icons/Business";
 const useStyles = makeStyles((theme) => ({
-  boxFull: { marginLeft: "10%", marginRight: "10%" },
-  inputFull: { width: "98%", marginLeft: "2%" },
-  inputHalf: { width: "48%", marginLeft: "2%" },
+  boxFull: { marginLeft: "0%", marginRight: "0%" },
+  inputFull: { width: "98%", marginLeft: "0%" },
+  inputHalf: { width: "48%", marginLeft: "0%" },
 }));
 
 export default function Address(props) {
@@ -38,10 +40,7 @@ export default function Address(props) {
     setAddress(props.data);
   }, [props.data]);
   return (
-    <div>
-      <Box className={classes.boxFull} mt={5}>
-        <Typography variant="h6">ข้อมูลที่อยู่ผู้จัดส่งสินค้า</Typography>
-      </Box>
+    <Cards title={"ข้อมูลที่อยู่ผู้จัดส่งสินค้า"} icon={<BusinessIcon />}>
       <Box className={classes.boxFull}>
         <TextFields
           label="ชื่อผู้ส่ง"
@@ -54,6 +53,7 @@ export default function Address(props) {
         />
         <InputPhone
           classes={classes.inputHalf}
+          style={{ marginLeft: "2%" }}
           id="phone"
           label="เบอร์โทร"
           tag="tel"
@@ -73,6 +73,8 @@ export default function Address(props) {
           onBlur={handleOnBlur}
           onChange={handleOnChange}
           className={classes.inputFull}
+          multiline
+          rows={4}
         />
       </Box>
       <Box className={classes.boxFull}>
@@ -115,6 +117,6 @@ export default function Address(props) {
           className={classes.inputHalf}
         />
       </Box>
-    </div>
+    </Cards>
   );
 }
