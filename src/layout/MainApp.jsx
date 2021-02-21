@@ -65,7 +65,7 @@ export default function MainApp({ selected }) {
       },
       secondary: {
         // This is green.A700 as hex.
-        main: red[700],
+        main: "#00C9A7",
       },
       default:{
         main: "white"
