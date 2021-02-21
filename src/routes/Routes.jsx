@@ -3,7 +3,7 @@ import React from "react";
 import Product from "../activities/product/Product";
 import ProductAdd from "../activities/product/AddProduct"
 import Order from "../activities/order/Order";
-// import LiveStream from "../../Feature/LiveStreamComponents/LiveStream";
+import LiveStream from "../activities/livestream/LiveStream";
 // import Order from "../../Feature/OrderComponents/Order";
 import Dashboard from "../activities/dashboard/Dashboard";
 import Campaign from "../activities/campaign/Campaign";
@@ -31,7 +31,7 @@ export default function MainComponents() {
           <Route path="/report" exact component={ComingSoon} />
           <Route path="/contact" exact component={ComingSoon} />
           <Route path="/setting" exact component={ComingSoon} />
-          <Route path="/livestream" exact component={ComingSoon} />
+          <Route path="/livestream" exact component={LiveStream} />
 
         </Switch>
       ) : (
