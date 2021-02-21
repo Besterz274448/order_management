@@ -36,16 +36,14 @@ const useStyles = makeStyles({
     width: "100%",
     backgroundColor: "white",
     padding: "1% 1.5% 1.5% 1.5%",
-    boxShadow: "5px 5px 20px rgb(233,233,233)",
-    borderRadius: "10px",
+    // boxShadow: "5px 5px 20px rgb(233,233,233)",
+    // borderRadius: "10px",
   },
   product_image: {
     width: "100%",
     height: "100%",
     backgroundColor: "white",
     padding: "1% 1.5% 3% 1.5%",
-    boxShadow: "5px 5px 20px rgb(233,233,233)",
-    borderRadius: "10px",
   },
   textGroup: {
     size: "18px",
@@ -69,7 +67,6 @@ const useStyles = makeStyles({
     padding: "0% 1.5% 3% 1.5%",
     width: "100%",
     backgroundColor: "white",
-    boxShadow: "5px 5px 20px rgb(233,233,233)",
     marginTop: "1.5%",
   },
 });
@@ -112,7 +109,7 @@ export default function AddProduct(props) {
     reader.onloadend = async (e) => {
       // eslint-disable-next-line no-useless-computed-key
       await setData({ ...data, ["image"]: [...data.image, { name: event.target.files[0].name, src: reader.result }] });
-      console.log(data.image)
+      console.log(data.image);
     };
   };
 
@@ -120,7 +117,7 @@ export default function AddProduct(props) {
     <form>
       <div style={{ paddingTop: "1%", paddingLeft: "0.5%", paddingRight: "0.5%" }}>
         <div className={classes.productadd_header}>
-          <BreadCrumbs before={[{ href: "/dashboard", name: "หน้าแรก" }]} presentpage="เพิ่มสินค้า" />
+          <BreadCrumbs before={[{ href: "/dashboard", name: "หน้าแรก" },{href:"/product",name:"รายการสินค้า"}]} presentpage="เพิ่มสินค้า" />
           <div style={{ marginRight: "1%" }}>
             <Button variant="contained" color="primary">
               บันทึกข้อมูล
@@ -128,10 +125,10 @@ export default function AddProduct(props) {
           </div>
         </div>
         <div style={{ marginTop: "1%" }}>
-          <Grid container spacing={1}>
+          <Grid container spacing={3}>
             <Grid item sm={12} lg={8}>
-              {/* <div className={classes.flexbox}> */}
-              <div className={classes.product_detail}>
+              <Paper elevation={2} className={classes.product_detail}>
+                {/* <div className={classes.product_detail}> */}
                 <Typography color="initial" className={classes.textGroup}>
                   ข้อมูลทั่วไป
                 </Typography>
@@ -239,102 +236,99 @@ export default function AddProduct(props) {
                     handleData(e.target.value, "description");
                   }}
                 />
-              </div>
+                {/* </div> */}
+              </Paper>
             </Grid>
             <Grid item sm={12} lg={4}>
-              <div className={classes.product_image}>
-                <Typography style={{ textAlign: "center", fontWeight: "bold" }}>เพิ่มรูปภาพสินค้า</Typography>
-                <div className={classes.imageBox}>
-                  <div className={classes.imageContent}>
-                    <img
-                      src="https://cdn1.iconfinder.com/data/icons/hawcons/32/698394-icon-130-cloud-upload-512.png"
-                      alt="upload"
-                      width="50px"></img>
-                    <div style={{ paddingBottom: "4%" }}>จำนวนรูปภาพอัพได้สูงสุดที่ 4 รูป</div>
-                    <input
-                      accept="image/*"
-                      style={{ display: "none" }}
-                      id="contained-button-file"
-                      multiple
-                      type="file"
-                      onChange={(e) => {
-                        handleUploadClick(e);
-                      }}
-                    />
-                    <Button
-                      component="label"
-                      htmlFor="contained-button-file"
-                      style={{ width: "60%" }}
-                      variant="contained"
-                      color="primary">
-                      UPLOAD
-                    </Button>
+              <Paper elevation={2} className={classes.product_image}>
+                  <Typography style={{ textAlign: "center", fontWeight: "bold" }}>เพิ่มรูปภาพสินค้า</Typography>
+                  <div className={classes.imageBox}>
+                    <div className={classes.imageContent}>
+                      <img
+                        src="https://cdn1.iconfinder.com/data/icons/hawcons/32/698394-icon-130-cloud-upload-512.png"
+                        alt="upload"
+                        width="50px"></img>
+                      <div style={{ paddingBottom: "4%" }}>จำนวนรูปภาพอัพได้สูงสุดที่ 4 รูป</div>
+                      <input
+                        accept="image/*"
+                        style={{ display: "none" }}
+                        id="contained-button-file"
+                        multiple
+                        type="file"
+                        onChange={(e) => {
+                          handleUploadClick(e);
+                        }}
+                      />
+                      <Button
+                        htmlFor="contained-button-file"
+                        style={{ width: "60%" }}
+                        variant="contained"
+                        color="primary">
+                        UPLOAD
+                      </Button>
+                    </div>
                   </div>
-                </div>
-                <List style={{ overflowY: "auto", height: "170px", marginTop: "1%" }}>
-                  {data.image.map((item, index) => {
-                    return (
-                      <ListItem key={item.name+index}>
-                        <ListItemAvatar>
-                            <img
-                              src={item.src}
-                              alt="upload"
-                              width="40px"
-                              height="40px"></img>
-                        </ListItemAvatar>
-                        <ListItemText primary={item.name} />
-                        <ListItemSecondaryAction>
-                          <IconButton edge="end" aria-label="delete">
-                            <DeleteIcon />
-                          </IconButton>
-                        </ListItemSecondaryAction>
-                      </ListItem>
-                    );
-                  })}
-                </List>
-              </div>
+                  <List style={{ overflowY: "auto", height: "170px", marginTop: "1%" }}>
+                    {data.image.map((item, index) => {
+                      return (
+                        <ListItem key={item.name + index}>
+                          <ListItemAvatar>
+                            <img src={item.src} alt="upload" width="40px" height="40px"></img>
+                          </ListItemAvatar>
+                          <ListItemText primary={item.name} />
+                          <ListItemSecondaryAction>
+                            <IconButton edge="end" aria-label="delete">
+                              <DeleteIcon />
+                            </IconButton>
+                          </ListItemSecondaryAction>
+                        </ListItem>
+                      );
+                    })}
+                  </List>
+              </Paper>
             </Grid>
           </Grid>
         </div>
-        <div className={classes.table_box}>
-          <div style={{ padding: "1% 0%" }}>
-            <Typography className={classes.textGroup} style={{ padding: "1% 0%" }}>
-              ข้อมูลจำเพาะของสินค้า
-            </Typography>
-            <Button style={{ marginRight: "1%" }} variant="outlined" color="primary">
-              เพิ่มสินค้าย่อย
-            </Button>
-            <Button style={{ marginRight: "1%" }} variant="outlined" color="primary">
-              จัดการประเภทของสินค้า
-            </Button>
-            <Button style={{ marginRight: "1%" }} variant="outlined" color="primary">
-              ตั้งSKUอัตโนมัติ
-            </Button>
-          </div>
-          <TableContainer component={Paper}>
-            <Table>
-              <TableHead>
-                <TableRow hover className={classes.theadRow}>
-                  <TableCell className={classes.theadCell}>SKU</TableCell>
-                  <TableCell className={classes.theadCell}>ชื่อสินค้า</TableCell>
-                  <TableCell className={classes.theadCell}>ราคา</TableCell>
-                  <TableCell className={classes.theadCell}>จำนวน</TableCell>
-                  <TableCell className={classes.theadCell}>Keyword</TableCell>
-                  {["size", "color"].map((data, index) => {
-                    return (
-                      <TableCell key={index} width="7%" className={classes.theadCell}>
-                        {data.name}
-                      </TableCell>
-                    );
-                  })}
-                  <TableCell width="10%" className={classes.theadCell}>
-                    ซิงค์ข้อมูล
-                  </TableCell>
-                </TableRow>
-              </TableHead>
-            </Table>
-          </TableContainer>
-        </div>
+        <Paper elevation={2}  className={classes.table_box}>
+            <div style={{ padding: "1% 0%" }}>
+              <Typography className={classes.textGroup} style={{ padding: "1% 0%" }}>
+                ข้อมูลจำเพาะของสินค้า
+              </Typography>
+              <Button style={{ marginRight: "1%" }} variant="outlined" color="primary">
+                เพิ่มสินค้าย่อย
+              </Button>
+              <Button style={{ marginRight: "1%" }} variant="outlined" color="primary">
+                จัดการประเภทของสินค้า
+              </Button>
+              <Button style={{ marginRight: "1%" }} variant="outlined" color="primary">
+                ตั้งSKUอัตโนมัติ
+              </Button>
+            </div>
+
+            <TableContainer component={Paper}>
+              <Table>
+                <TableHead>
+                  <TableRow hover className={classes.theadRow}>
+                    <TableCell className={classes.theadCell}>SKU</TableCell>
+                    <TableCell className={classes.theadCell}>ชื่อสินค้า</TableCell>
+                    <TableCell className={classes.theadCell}>ราคา</TableCell>
+                    <TableCell className={classes.theadCell}>จำนวน</TableCell>
+                    <TableCell className={classes.theadCell}>Keyword</TableCell>
+                    {["size", "color"].map((data, index) => {
+                      return (
+                        <TableCell key={index} width="7%" className={classes.theadCell}>
+                          {data.name}
+                        </TableCell>
+                      );
+                    })}
+                    <TableCell width="10%" className={classes.theadCell}>
+                      ซิงค์ข้อมูล
+                    </TableCell>
+                  </TableRow>
+                </TableHead>
+              </Table>
+            </TableContainer>
+        </Paper>
       </div>
     </form>
   );
