@@ -2,8 +2,6 @@ import React from "react";
 import PropTypes from "prop-types";
 import clsx from "clsx";
 import { lighten, makeStyles } from "@material-ui/core/styles";
-import Backdrop from "@material-ui/core/Backdrop";
-import CircularProgress from "@material-ui/core/CircularProgress";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
@@ -15,14 +13,11 @@ import TableSortLabel from "@material-ui/core/TableSortLabel";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import Paper from "@material-ui/core/Paper";
-import Checkbox from "@material-ui/core/Checkbox";
 import IconButton from "@material-ui/core/IconButton";
 import Tooltip from "@material-ui/core/Tooltip";
 import DeleteIcon from "@material-ui/icons/Delete";
-import Button from "@material-ui/core/Button";
-import AddCircleIcon from "@material-ui/icons/AddCircle";
 import ListItem from "@material-ui/core/ListItem";
-import VisibilityIcon from "@material-ui/icons/Visibility";
+import MoreMenu from "./IconMenu";
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -50,46 +45,40 @@ function stableSort(array, comparator) {
 
 const headCells = [
   {
-    id: "id",
-    numeric: false,
-    disablePadding: true,
-    label: "รหัสสินค้า",
-    width: "20%",
-  },
-  {
-    id: "Name",
-    numeric: false,
-    disablePadding: false,
-    label: "ชื่อสินค้า",
-    width: "30%",
-  },
-  {
-    id: "Price",
+    id: "image",
+    label: "รูปภาพ",
+    align: "left",
     width: "5%",
-    numeric: true,
-    disablePadding: false,
-    label: "ราคา",
   },
   {
-    id: "Stock",
-    width: "10%",
-    numeric: true,
-    disablePadding: false,
-    label: "คงเหลือ",
+    id: "name",
+    label: "ชื่อสินค้า",
+    width: "35%",
+    align: "left",
   },
   {
-    id: "Category",
-    width: "10%",
-    numeric: false,
-    disablePadding: false,
-    label: "ประเภท",
+    id: "weight",
+    label: "น้ำหนัก",
+    width: "9%",
+    align: "left",
   },
   {
-    id: "Sold",
-    width: "10",
-    numeric: true,
-    disablePadding: false,
-    label: "ขายแล้ว",
+    id: "delivery_price",
+    label: "ค่าจัดส่งสินค้า",
+    width: "13%",
+    align: "left",
+  },
+  {
+    id: "createon",
+    label: "วันที่สร้าง",
+    width: "13%",
+    align: "left",
+  },
+  {
+    id: "modifiedon",
+    label: "แก้ไขล่าสุด",
+    width: "13%",
+    align: "left",
   },
 ];
 
@@ -106,8 +95,7 @@ function EnhancedTableHead(props) {
         {headCells.map((headCell) => (
           <TableCell
             key={headCell.id}
-            align={headCell.numeric ? "right" : "left"}
-            padding={headCell.disablePadding ? "none" : "default"}
+            align={headCell.align}
             sortDirection={orderBy === headCell.id ? order : false}
             width={headCell.width}
             className={classes.tableHeader}>
@@ -184,18 +172,7 @@ const EnhancedTableToolbar = (props) => {
             </IconButton>
           </Tooltip>
         ) : (
-          <Tooltip title="เพิ่มสินค้าใหม่">
-            <Button
-              color="primary"
-              variant="contained"
-              style={{ marginRight: "0%" }}
-              onClick={() => {
-                window.location.href = "/product/addproduct";
-              }}>
-              <AddCircleIcon />
-              เพิ่มสินค้า
-            </Button>
-          </Tooltip>
+          false
         )}
       </ListItem>
     </Toolbar>
@@ -209,11 +186,9 @@ EnhancedTableToolbar.propTypes = {
 const useStyles = makeStyles((theme) => ({
   root: {
     width: "100%",
-
   },
   paper: {
     width: "100%",
-
   },
   table: {
     minWidth: 750,
@@ -241,14 +216,14 @@ const useStyles = makeStyles((theme) => ({
 export default function EnhancedTable(props) {
   const classes = useStyles();
   const [order, setOrder] = React.useState("asc");
-  const [orderBy, setOrderBy] = React.useState("Name");
+  const [orderBy, setOrderBy] = React.useState("name");
   const [selected, setSelected] = React.useState([]);
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
   React.useEffect(() => {
     setPage(0);
-  }, [props.rows]);
+  }, [props.rows, props.search_key]);
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";
@@ -288,16 +263,16 @@ export default function EnhancedTable(props) {
 
   return (
     <div className={classes.root}>
-      <Paper className={classes.paper}>
-        <Backdrop className={classes.backdrop} open={props.open}>
-          <CircularProgress />
-        </Backdrop>
-        <EnhancedTableToolbar numSelected={selected.length} />
+      <Paper className={classes.paper} component="div">
+        {/* <EnhancedTableToolbar numSelected={selected.length} /> */}
         <TableContainer>
           <Table className={classes.table} aria-labelledby="tableTitle" size={"medium"} aria-label="enhanced table">
             <EnhancedTableHead classes={classes} order={order} orderBy={orderBy} onRequestSort={handleRequestSort} />
             <TableBody>
               {stableSort(props.rows, getComparator(order, orderBy))
+                .filter((data) => {
+                  return data.name.toUpperCase().includes(props.search_key.toUpperCase());
+                })
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row, index) => {
                   const isItemSelected = isSelected(row.id);
@@ -309,30 +284,32 @@ export default function EnhancedTable(props) {
                       aria-checked={isItemSelected}
                       tabIndex={-1}
                       key={row.id}
-                      selected={isItemSelected}
-                      onDoubleClick={() => {
-                        window.location.href = "/product/productdetail/" + row.id;
-                      }}>
-                      <TableCell padding="checkbox" onClick={(event) => handleClick(event, row.id)}>
-                        <Checkbox checked={isItemSelected} inputProps={{ "aria-labelledby": labelId }} />
-                      </TableCell>
-                      <TableCell component="th" id={labelId} scope="row" padding="none">
-                        {row.id}
-                      </TableCell>
+                      selected={isItemSelected}>
+                      <TableCell
+                        component="th"
+                        id={labelId}
+                        scope="row"
+                        padding="checkbox"
+                        onClick={(event) => handleClick(event, row.id)}></TableCell>
                       <TableCell align="left">
-                        <Tooltip title={row.Name}>
-                          <Typography>{row.Name.length > 30 ? row.Name.slice(0, 30) + "..." : row.Name}</Typography>
+                        <img src={row.image} width="30" height="30" alt={row.name} />
+                      </TableCell>
+
+                      <TableCell align="left">
+                        <Tooltip title={row.name}>
+                          <Typography>{row.name.length > 50 ? row.name.slice(0, 50) + "..." : row.name}</Typography>
                         </Tooltip>
                       </TableCell>
-                      <TableCell align="right">{row.Price}</TableCell>
-                      <TableCell align="right">{row.Stock}</TableCell>
-                      <TableCell align="left">{row.Category}</TableCell>
-                      <TableCell align="right">{row.Sold}</TableCell>
-                      <TableCell
-                        onClick={() => {
-                          window.location.href = "/product/productdetail/" + row.id;
-                        }}>
-                        <VisibilityIcon style={{ cursor: "pointer" }} />
+                      <TableCell align="left">{row.weight}</TableCell>
+                      <TableCell align="left">{row.delivery_price}</TableCell>
+                      <TableCell align="left">{row.createon}</TableCell>
+                      <TableCell align="left">{row.modifiedon}</TableCell>
+                      <TableCell>
+                        <MoreMenu
+                          handleEdit={() => {
+                            props.openEditModal(row.id);
+                          }}
+                        />
                       </TableCell>
                     </TableRow>
                   );

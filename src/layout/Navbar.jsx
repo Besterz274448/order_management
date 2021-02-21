@@ -10,15 +10,17 @@ import AddCircleIcon from "@material-ui/icons/AddCircle";
 import Badge from "@material-ui/core/Badge";
 import NotificationsIcon from "@material-ui/icons/Notifications";
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
-const drawerWidth = 230;
+const drawerWidth = 250;
 
 const useStyles = makeStyles((theme) => ({
   appBar: {
     zIndex: theme.zIndex.drawer + 1,
+    boxShadow:"none",
     transition: theme.transitions.create(["width", "margin"], {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
     }),
+    
   },
   appBarShift: {
     marginLeft: drawerWidth,
@@ -38,6 +40,9 @@ const useStyles = makeStyles((theme) => ({
     marginRight: "1%",
     marginLeft: "auto",
   },
+  iconColor:{
+    color:"rgb(150,150,150)"
+  }
 }));
 
 export default function Navbar({ open, handleDrawerOpen }) {
@@ -47,6 +52,7 @@ export default function Navbar({ open, handleDrawerOpen }) {
     <React.Fragment>
       <CssBaseline />
       <AppBar
+        color="inherit"
         position="fixed"
         className={clsx(classes.appBar, {
           [classes.appBarShift]: open,
@@ -69,10 +75,10 @@ export default function Navbar({ open, handleDrawerOpen }) {
             badgeContent={4}
             color="primary"
           >
-            <NotificationsIcon />
+            <NotificationsIcon  className={classes.iconColor}/>
           </Badge>
-          <AddCircleIcon style={{ marginRight: "1%" }} />
-          <AccountCircleIcon />
+          <AddCircleIcon  className={classes.iconColor} style={{marginRight:"1%"}}/>
+          <AccountCircleIcon  className={classes.iconColor}/>
         </Toolbar>
       </AppBar>
     </React.Fragment>

@@ -19,7 +19,7 @@ function TabPanel(props) {
       {...other}>
       {value === index && (
         <Box p={0}>
-          <Typography>{children}</Typography>
+          <Typography component={'span'}>{children}</Typography>
         </Box>
       )}
     </div>
@@ -50,18 +50,13 @@ const useStyles = makeStyles((theme) => ({
 
 export default function MenuTabs(props) {
   const classes = useStyles();
-  const [value, setValue] = React.useState(0);
-
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
-  };
 
   return (
     <div className={classes.root}>
       <AppBar position="static" color="default">
         <Tabs
-          value={value}
-          onChange={handleChange}
+          value={props.value}
+          onChange={props.handleChange}
           indicatorColor="primary"
           textColor="primary"
           variant="scrollable"
@@ -69,13 +64,20 @@ export default function MenuTabs(props) {
           aria-label="scrollable auto tabs example">
           <Tab label="รายการสินค้าหลัก" {...a11yProps(0)} />
           <Tab label="รายการคลังสินค้า" {...a11yProps(1)} />
+          <Tab label="ประวัติการแก้ไขสินค้า" {...a11yProps(2)} />
+          <Tab label="รายการสินค้าที่จำนวนใกล้หมด" {...a11yProps(3)} />
         </Tabs>
       </AppBar>
-      <TabPanel value={value} index={0}>
+      <TabPanel value={props.value} index={0}>
           {props.MainProductTable}
       </TabPanel>
-      <TabPanel value={value} index={1}>
+      <TabPanel value={props.value} index={1}>
         {props.SubProductTable}
+      </TabPanel>
+      <TabPanel value={props.value} index={2}>
+      </TabPanel>
+      <TabPanel value={props.value} index={3}>
+        {props.LowStockTable}
       </TabPanel>
     </div>
   );
