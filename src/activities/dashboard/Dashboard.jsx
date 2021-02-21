@@ -34,18 +34,18 @@ class DashBoardContainer extends Component {
         </Grid>
         <Divider></Divider>
         <Grid container style={{ padding: "3% 1%" }}>
-          <Grid item xs={3}>
-            <Paper style={{ width: "95%" }}>
+          <Grid item xs={12} lg={3}>
+            <Paper style={{ width: "95%",height:"100%" }}>
               <DataBox label={"ยอดขายวันนี้"} type="Today" total={"32"} profit={26} sinceDate={"จากสัปดาห์ก่อน"} />
             </Paper>
           </Grid>
-          <Grid item xs={3}>
-            <Paper style={{ width: "95%" }}>
+          <Grid item xs={12} lg={3}>
+            <Paper style={{ width: "95%",height:"100%" }}>
               <DataBox label={"ยอดขายทั้งหมด"} type="Year" total={"524"} profit={15} sinceDate={"จากสัปดาห์ก่อน"} />
             </Paper>
           </Grid>
-          <Grid item xs={3}>
-            <Paper style={{ width: "95%" }}>
+          <Grid item xs={12} lg={3}>
+            <Paper style={{ width: "95%",height:"100%" }}>
               <DataBox
                 label={"จำนวนเงินที่ได้รับ"}
                 type="Today"
@@ -55,8 +55,8 @@ class DashBoardContainer extends Component {
               />
             </Paper>
           </Grid>
-          <Grid item xs={3}>
-            <Paper style={{ width: "95%" }}>
+          <Grid item xs={12} lg={3}>
+            <Paper style={{ width: "95%",height:"100%" }}>
               <DataBox label={"จำนวนสั่งซื้อทั้งหมด"} type="Year" total={"610"} profit={-14} sinceDate={"จากสัปดาห์ก่อน"} />
             </Paper>
           </Grid>

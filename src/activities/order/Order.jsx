@@ -28,12 +28,12 @@ const classStyle = {
   TabListStyle: {
     width: "18.5%",
     border: "1px solid rgb(200,200,200)",
-    boxShadow: "2px 2px 3px rgba(0,0,0,0.2)",    
+    boxShadow: "5px 5px 8px rgba(0,0,0,0.2)",
   },
-  flexBox:{
-    display:"flex",
-    justifyContent:"space-between"
-  }
+  flexBox: {
+    display: "flex",
+    justifyContent: "space-between",
+  },
 };
 
 function TabPanel(props) {
@@ -141,11 +141,8 @@ class OrderContainer extends Component {
 
   render() {
     return (
-      <>
-        <div style={{padding:"1% 0%"}}>
-          <BreadCrumbs before={[{ href: "/dashboard", name: "หน้าแรก" }]} presentpage="รายการสั่งซื้อ" />
-        </div>
-        <Box component="span" style={{ display: "flex" }}>
+      <div style={{ padding: "2% 1.5%" }}>
+        <div style={{ display: "flex" }}>
           <Typography variant="h5" style={{ fontWeight: "bold", flex: 1 }}>
             รายการสั่งซื้อ
           </Typography>
@@ -157,11 +154,14 @@ class OrderContainer extends Component {
             }}
             variant="outlined"
           />
-        </Box>
+        </div>
+        <div style={{ paddingBottom: "1%" }}>
+          <BreadCrumbs before={[{ href: "/dashboard", name: "หน้าแรก" }]} presentpage="รายการสั่งซื้อ" />
+        </div>
         <Typography
           style={{
             color: "rgb(150,150,150)",
-            paddingTop:"0.7%"
+            paddingTop: "0.7%",
           }}>
           จำนวนสั่งซื้อ 25 รายการ
         </Typography>
@@ -173,10 +173,10 @@ class OrderContainer extends Component {
               aria-label="simple tabs example"
               style={classStyle.TabsBox}
               classes={{
-                flexContainer: "flexSpace"
+                flexContainer: "flexSpace",
               }}
               TabIndicatorProps={{
-                style: { background: "sandybrown", height: "5px" ,width:"18.4%" },
+                style: { background: "sandybrown", height: "5px", width: "18.4%" },
               }}>
               <Tab
                 style={classStyle.TabListStyle}
@@ -266,7 +266,7 @@ class OrderContainer extends Component {
             Item five
           </TabPanel>
         </div>
-      </>
+      </div>
     );
   }
 }

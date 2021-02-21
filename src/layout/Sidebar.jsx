@@ -6,19 +6,26 @@ import IconButton from "@material-ui/core/IconButton";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 import Divider from "@material-ui/core/Divider";
+import Typography from "@material-ui/core/Typography";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
+import Collapse from "@material-ui/core/Collapse";
+import ExpandLess from "@material-ui/icons/ExpandLess";
+import ExpandMore from "@material-ui/icons/ExpandMore";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import { NavLink } from "react-router-dom";
 
-const drawerWidth = 230;
+const drawerWidth = 250;
 
 const useStyles = makeStyles((theme) => ({
   drawer: {
     width: drawerWidth,
     flexShrink: 0,
     whiteSpace: "nowrap",
+  },
+  drawerPaper: {
+    background: "rgb(35,48,68)",
   },
   drawerOpen: {
     width: drawerWidth,
@@ -52,12 +59,21 @@ const useStyles = makeStyles((theme) => ({
   },
   textLink: {
     textDecoration: "none",
+    color: "rgb(210,210,210)",
+  },
+  listIcon: {
+    color: "rgb(136,143,153)",
+  },
+  textColor: {
+    color: "rgb(200,200,200)",
   },
 }));
 
 export default function Sidebar({ open, handleDrawerClose, sideBarIcon }) {
   const classes = useStyles();
   const theme = useTheme();
+  const [openCollapse, setCollapse] = React.useState(false);
+
   return (
     <Drawer
       variant="permanent"
@@ -66,30 +82,81 @@ export default function Sidebar({ open, handleDrawerClose, sideBarIcon }) {
         [classes.drawerClose]: !open,
       })}
       classes={{
-        paper: clsx({
+        paper: clsx(classes.drawerPaper, {
           [classes.drawerOpen]: open,
           [classes.drawerClose]: !open,
         }),
       }}>
       <div className={classes.toolbar}>
-        <IconButton onClick={handleDrawerClose}>
+        <div>
+          <img
+            src="https://i7.uihere.com/icons/272/575/804/confirm-826b3f9c92bc3fb1463cd5d406a82fec.png"
+            alt="logoImage"
+            width="25px"
+          />
+          <span
+            style={{ color: "rgb(220,220,220)", fontWeight: "bold", fontSize: "18px", verticalAlign: "top", paddingLeft: "5px" }}>
+            CF Management
+          </span>
+        </div>
+        <IconButton className={classes.listIcon} onClick={handleDrawerClose}>
           {theme.direction === "rtl" ? <ChevronRightIcon /> : <ChevronLeftIcon />}
         </IconButton>
       </div>
-      <Divider />
-      <List style={{height:"inherit"}}>
-        {sideBarIcon.map((data) => (
-          <ListItem button key={data.text}>
-            <NavLink to={data.path}>
-              <ListItemIcon>{<data.icon />}</ListItemIcon>
+      <Divider style={{ backgroundColor: "rgb(100,100,100)" }} />
+      {open && (
+        <ListItem>
+          <Typography className={classes.textColor}>การจัดการสินค้า</Typography>
+        </ListItem>
+      )}
+      <List>
+        {sideBarIcon
+          .filter((data) => data.type === "product")
+          .map((data) => (
+              <NavLink key={data.text} to={data.path} className={classes.textLink}>
+                <ListItem button key={data.text}>
+                  <ListItemIcon className={classes.listIcon}>{<data.icon />}</ListItemIcon>
+                  <ListItemText style={{ fontWeight: "bold" }} primary={data.text} />
+                </ListItem>                           
+              </NavLink>
+          ))}
+      </List> 
+      <Divider style={{ backgroundColor: "rgb(100,100,100)" }} />
+      {open && (
+        <ListItem>
+          <Typography className={classes.textColor}>รายชื่อผู้ติดต่อ</Typography>
+        </ListItem>
+      )}
+      <List>
+        {sideBarIcon
+          .filter((data) => data.type === "lead")
+          .map((data) => (
+            <NavLink key={data.text} to={data.path} className={classes.textLink}>
+              <ListItem button key={data.text}>
+                <ListItemIcon className={classes.listIcon}>{<data.icon />}</ListItemIcon>
+                <ListItemText style={{ fontWeight: "bold" }} primary={data.text} />
+              </ListItem>
             </NavLink>
-            <NavLink className={classes.textLink} activeClassName={classes.textLink} to={data.path}>
-              <ListItemText  primary={data.text} />
-            </NavLink>
-          </ListItem>
-        ))}
+          ))}
       </List>
-      <Divider />
+      <Divider style={{ backgroundColor: "rgb(100,100,100)" }} />
+      {open && (
+        <ListItem>
+          <Typography className={classes.textColor}>จัดการข้อมูลร้านค้า</Typography>
+        </ListItem>
+      )}
+      <List>
+        {sideBarIcon
+          .filter((data) => data.type === "shop_manage")
+          .map((data) => (
+            <NavLink key={data.text} to={data.path} className={classes.textLink}>
+              <ListItem button key={data.text}>
+                <ListItemIcon className={classes.listIcon}>{<data.icon />}</ListItemIcon>
+                <ListItemText style={{ fontWeight: "bold" }} primary={data.text} />
+              </ListItem>
+            </NavLink>
+          ))}
+      </List>
     </Drawer>
   );
 }

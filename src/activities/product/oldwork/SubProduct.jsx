@@ -16,6 +16,7 @@ import ListItem from "@material-ui/core/ListItem";
 import Textfield from "@material-ui/core/Textfield";
 import Button from "@material-ui/core/Button";
 import MoreMenu from "./IconMenu";
+import { Grow, Fade } from "@material-ui/core";
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -51,7 +52,7 @@ const headCells = [
   {
     id: "name",
     label: "ชื่อสินค้า",
-    width: "24%",
+    width: "20%",
     align: "left",
   },
   {
@@ -114,7 +115,7 @@ function EnhancedTableHead(props) {
             </TableSortLabel>
           </TableCell>
         ))}
-        <TableCell width="10%" align="center"></TableCell>
+        <TableCell width="15%" align="center"></TableCell>
       </TableRow>
     </TableHead>
   );
@@ -253,22 +254,26 @@ export default function EnhancedTable(props) {
                       <TableCell></TableCell>
                       <TableCell component="th" id={labelId} scope="row">
                         {selected === row.id ? (
-                          <Textfield
-                            defaultValue={row.sku}
-                            onChange={(e) => handleEditData(e.target.value, "sku", row.id)}
-                            size="small"
-                          />
+                          <Grow in={selected === row.id}>
+                            <Textfield
+                              defaultValue={row.sku}
+                              onChange={(e) => handleEditData(e.target.value, "sku", row.id)}
+                              size="small"
+                            />
+                          </Grow>
                         ) : (
                           row.sku
                         )}
                       </TableCell>
                       <TableCell align="left">
                         {selected === row.id ? (
-                          <Textfield
-                            defaultValue={row.name}
-                            onChange={(e) => handleEditData(e.target.value, "name", row.id)}
-                            size="small"
-                          />
+                          <Grow in={selected === row.id}>
+                            <Textfield
+                              defaultValue={row.name}
+                              onChange={(e) => handleEditData(e.target.value, "name", row.id)}
+                              size="small"
+                            />
+                          </Grow>
                         ) : (
                           <Tooltip title={row.name}>
                             <Typography>{row.name.length > 25 ? row.name.slice(0, 25) + "..." : row.name}</Typography>
@@ -277,13 +282,15 @@ export default function EnhancedTable(props) {
                       </TableCell>
                       <TableCell align="left">
                         {selected === row.id ? (
-                          <Textfield
-                            onChange={(e) => handleEditData(e.target.value, "price", row.id)}
-                            className={classes.textInput1}
-                            type="number"
-                            defaultValue={row.price}
-                            size="small"
-                          />
+                          <Grow in={selected === row.id}>
+                            <Textfield
+                              onChange={(e) => handleEditData(e.target.value, "price", row.id)}
+                              className={classes.textInput1}
+                              type="number"
+                              defaultValue={row.price}
+                              size="small"
+                            />
+                          </Grow>
                         ) : (
                           row.price
                         )}
@@ -292,54 +299,60 @@ export default function EnhancedTable(props) {
                       <TableCell align="center">{row.sold}</TableCell>
                       <TableCell align="center">
                         {selected === row.id ? (
-                          <Textfield
-                            onChange={(e) => handleEditData(e.target.value, "stock", row.id)}
-                            className={classes.textInput}
-                            type="number"
-                            defaultValue={row.stock}
-                            size="small"
-                          />
+                          <Grow in={selected === row.id}>
+                            <Textfield
+                              onChange={(e) => handleEditData(e.target.value, "stock", row.id)}
+                              className={classes.textInput}
+                              type="number"
+                              defaultValue={row.stock}
+                              size="small"
+                            />
+                          </Grow>
                         ) : (
                           row.stock
                         )}
                       </TableCell>
                       <TableCell align="left">
                         {selected === row.id ? (
-                          <Textfield
-                            onChange={(e) => handleEditData(e.target.value, "keyword", row.id)}
-                            className={classes.textInput1}
-                            defaultValue={row.keyword}
-                            size="small"
-                          />
+                          <Grow in={selected === row.id}>
+                            <Textfield
+                              onChange={(e) => handleEditData(e.target.value, "keyword", row.id)}
+                              className={classes.textInput1}
+                              defaultValue={row.keyword}
+                              size="small"
+                            />
+                          </Grow>
                         ) : (
                           row.keyword
                         )}
                       </TableCell>
                       <TableCell align="center">
                         {selected === row.id ? (
-                          <ListItem>
-                            <Button
-                              onClick={() => {
-                                //รอเพิ่มเคสกรณี data ส่งไปไม่ถึงฝัน
-                                let index = rows.map((data) => data.id).indexOf(row.id);
-                                setSelected("");
-                                props.confirmEditData(index,rows[index]);
-                              }}
-                              style={{ marginLeft: "auto", marginRight: "auto" }}
-                              variant="outlined"
-                              color="primary">
-                              ยืนยัน
-                            </Button>
-                            <Button
-                              style={{ marginLeft: "auto", marginRight: "auto" }}
-                              variant="outlined"
-                              color="secondary"
-                              onClick={() => {
-                                setSelected("");
-                              }}>
-                              ยกเลิก
-                            </Button>
-                          </ListItem>
+                          <Grow in={selected === row.id}>
+                            <ListItem>
+                              <Button
+                                onClick={() => {
+                                  //รอเพิ่มเคสกรณี data ส่งไปไม่ถึงฝัน
+                                  let index = rows.map((data) => data.id).indexOf(row.id);
+                                  setSelected("");
+                                  props.confirmEditData(index, rows[index]);
+                                }}
+                                style={{ marginLeft: "auto", marginRight: "auto" }}
+                                variant="outlined"
+                                color="primary">
+                                ยืนยัน
+                              </Button>
+                              <Button
+                                style={{ marginLeft: "auto", marginRight: "auto" }}
+                                variant="outlined"
+                                color="secondary"
+                                onClick={() => {
+                                  setSelected("");
+                                }}>
+                                ยกเลิก
+                              </Button>
+                            </ListItem>
+                          </Grow>
                         ) : (
                           <MoreMenu
                             handleEdit={() => {

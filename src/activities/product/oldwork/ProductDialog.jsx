@@ -13,7 +13,7 @@ import TableCell from "@material-ui/core/TableCell";
 import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
-import { Divider, Grid } from "@material-ui/core";
+import { Divider, Grid, FormControlLabel, Switch, hidden } from "@material-ui/core";
 import ImageComponent from "./ImageComponent";
 import Paper from "@material-ui/core/Paper";
 import Chip from "@material-ui/core/Chip";
@@ -24,12 +24,13 @@ const useStyles = makeStyles((theme) => ({
     padding: 0,
   },
   inputForm: {
-    width: "96.5%",
+    width: "96%",
   },
   inputText: {
     color: "rgb(70,70,70)",
   },
   boxInput: {
+    display: "flex",
     width: "100%",
   },
   boxInputInline: {
@@ -44,14 +45,13 @@ const useStyles = makeStyles((theme) => ({
     display: "none",
   },
   imageTag: {
-    marginLeft: "1%",
-    paddingTop: "3.2%",
+    marginTop: "2%",
+    paddingTop: "6%",
     paddingBottom: "3.2%",
-    display: "flex",
-    justifyContent: "center",
-    width: "96.5%",
+    textAlign: "center",
+    width: "100%",
+    whiteSpace: "nowrap",
     overflowX: "auto",
-    overflowY: "none",
     border: "3px dotted rgb(200,200,200)",
     minHeight: "100px",
   },
@@ -78,6 +78,9 @@ const useStyles = makeStyles((theme) => ({
     [`& input`]: {
       textAlign: "center",
     },
+  },
+  dialogTitle: {
+    paddingLeft: "9px",
   },
 }));
 
@@ -125,11 +128,11 @@ export default function ProductDialog(props) {
         aria-describedby="alert-dialog-description"
         fullWidth
         maxWidth="lg">
-        <DialogTitle id="alert-dialog-title">{props.headName.id}</DialogTitle>
+        <DialogTitle id="simple-dialog-title">{props.headName.id}</DialogTitle>
         <Divider />
         <DialogContent style={{ padding: 0 }}>
           <form id="add_product_form" onSubmit={props.handleProduct}>
-            <div style={{ padding: "1% 3%" }}>
+            <div style={{ paddingLeft: "3%", paddingRight: "3%", paddingTop: "3%", paddingBottom: "1%" }}>
               <h4 style={{ marginLeft: "1%", paddingBottom: "1%" }}>ข้อมูลทั่วไป</h4>
               <Grid container>
                 <Grid item xs={7}>
@@ -139,6 +142,7 @@ export default function ProductDialog(props) {
                       style={{ margin: 8, width: "60%" }}
                       placeholder="ชื่อสินค้า"
                       {...defaultInputProp}
+                      helperText="สำหรับตั้งชื่อสินค้าหลัก หรือ ตั้งชื่อกลุ่มของสินค้า"
                       defaultValue={newProduct.name}
                       onChange={(event) => {
                         let item = newProduct;
@@ -184,6 +188,29 @@ export default function ProductDialog(props) {
                       }}
                     />
                   </div>
+                  <div className={classes.boxInput} style={{ marginLeft: "9px" }}>
+                    <TextField
+                      className={classes.inputForm}
+                      label="รายละเอียดสินค้า"
+                      InputLabelProps={{
+                        shrink: true,
+                      }}
+                      multiline
+                      rows={4}
+                      variant="outlined"
+                      defaultValue={newProduct.description}
+                      onChange={(event) => {
+                        let item = newProduct;
+                        item.description = event.target.value;
+                        setNewProduct(item);
+                      }}
+                      onBlur={(event) => {
+                        props.handleNewProduct(event.target.value, "description", props.type.product);
+                      }}
+                    />
+                  </div>
+                </Grid>
+                <Grid item xs={5}>
                   <div className={classes.imageTag}>
                     {props.image.map((data, index) => {
                       return <ImageComponent image={data} key={data + index} />;
@@ -198,38 +225,14 @@ export default function ProductDialog(props) {
                         props.handleUploadClick(e, props.type.image);
                       }}
                     />
-                    <label htmlFor="contained-button-file" style={{ width: "80px" }}>
-                      <p style={{ textAlign: "center", color: "rgb(150,150,150)", fontWeight: "bold" }}>เพิ่มรูปภาพ</p>
+                    <label  style={{ width: "80px", height: "100px", display: "inline-block" }}>
+                      <p  style={{ textAlign: "center", color: "rgb(150,150,150)", fontWeight: "bold" }}>เพิ่มรูปภาพ</p>
                       <img
-                        width="100%"
+                        width="80px"
                         src="https://www.devlog.in.th/wp-content/uploads/2018/06/cloud-2044823_960_720.png"
                         alt="imageUpload"
                       />
                     </label>
-                  </div>
-                </Grid>
-                <Grid item xs={5}>
-                  <div className={classes.boxInput}>
-                    <TextField
-                      className={classes.inputForm}
-                      style={{ marginTop: 6 }}
-                      label="รายละเอียดสินค้า"
-                      InputLabelProps={{
-                        shrink: true,
-                      }}
-                      multiline
-                      rows={9}
-                      variant="outlined"
-                      defaultValue={newProduct.description}
-                      onChange={(event) => {
-                        let item = newProduct;
-                        item.description = event.target.value;
-                        setNewProduct(item);
-                      }}
-                      onBlur={(event) => {
-                        props.handleNewProduct(event.target.value, "description", props.type.product);
-                      }}
-                    />
                   </div>
                 </Grid>
               </Grid>
@@ -241,7 +244,7 @@ export default function ProductDialog(props) {
                   handleChangeAttribute={props.handleChangeAttribute}
                   dataType={props.type}
                   item={props.variants.map((data) => data.name)}
-                  label="ตัวแปรของข้อมูล"
+                  label="ประเภทข้อมูล"
                   helperText="ตัวอย่างเช่น สี ขนาด ความกว้าง ความยาว เป็นต้น"
                   color="primary"
                 />
@@ -278,6 +281,9 @@ export default function ProductDialog(props) {
                           </TableCell>
                         );
                       })}
+                      <TableCell width="5%" className={classes.theadCell}>
+                        ซิงค์ข้อมูล
+                      </TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
@@ -358,6 +364,9 @@ export default function ProductDialog(props) {
                               </TableCell>
                             );
                           })}
+                          <TableCell align="center">
+                            <FormControlLabel control={<Switch color="primary" />} />
+                          </TableCell>
                         </TableRow>
                       );
                     })}

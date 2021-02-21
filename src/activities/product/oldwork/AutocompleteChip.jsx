@@ -23,7 +23,7 @@ export default function AutoCompleteChip(props) {
           required={props.item.length === 0}
           {...params}
           variant="outlined"
-          style={{ margin: 8, width: "100%"}}
+          style={{ margin: 8, width: "100%" }}
           placeholder={props.label}
           label={props.label}
           helperText={props.helperText}

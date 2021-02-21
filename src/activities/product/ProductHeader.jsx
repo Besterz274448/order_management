@@ -1,45 +1,38 @@
 import React from "react";
+import Tabs from "@material-ui/core/Tabs";
+import Tab from "@material-ui/core/Tab";
+import BreadCrumbs from "../../components/BreadCrumbs";
 import { makeStyles } from "@material-ui/core/styles";
-import Typography from "@material-ui/core/Typography";
-import ListItem from "@material-ui/core/ListItem";
+import TextField from "@material-ui/core/TextField";
+import SearchIcon from "@material-ui/icons/Search";
+import InputAdornment from "@material-ui/core/InputAdornment";
+import FilterBox from "../../components/FilterBox";
+import Tooltip from "@material-ui/core/Tooltip";
 import Button from "@material-ui/core/Button";
 import AddCircleIcon from "@material-ui/icons/AddCircle";
-import BreadCrumbs from "../../components/BreadCrumbs";
-import Tooltip from "@material-ui/core/Tooltip";
-import TextField from "@material-ui/core/TextField";
-import FilterBox from "../../components/FilterBox";
+import ListItem from "@material-ui/core/ListItem";
+import { NavLink } from "react-router-dom";
 
-const useHeaderStyles = makeStyles((theme) => ({
-  root: {},
-  textHeader: {
+const useStyles = makeStyles({
+  textTab: {
     fontWeight: "bold",
   },
-  textSub: {
+  search_container: {
+    width: "100%",
+    marginTop: "0.2%",
+    backgroundColor: "white",
+    padding: "8px",
+    boxShadow: "3px 2px 2px rgb(215,215,215)",
+  },
+  search_field: {
+    marginRight: "8px",
+    verticalAlign: "bottom",
     color: "rgb(150,150,150)",
-  },
-  flexBox: {
-    display: "flex",
-    justifyContent: "space-between",
-    padding: 0,
-    paddingBottom: "1%",
-  },
-  searchIcon: {
-    color: "rgb(150,150,150)",
-  },
-  marginBox: {
-    marginRight: "0.5%",
-  },
-  textInput: {
-    [`& fieldset`]: {
-      borderRadius: "5px",
+    [`& p`]: {
+      paddingBottom: "4px",
     },
-    [`& input`]: {
-      textAlign: "center",
-    },
-    marginLeft: "5px",
   },
-}));
-
+});
 const filterLabel = [
   { id: "sku", label: "รหัส SKU" },
   { id: "name", label: "ชื่อสินค้า" },
@@ -58,96 +51,116 @@ const mathLabel = [
   { id: "[]", label: "ระหว่าง" },
 ];
 
-export default function ProductListHeader(props) {
-  const classes = useHeaderStyles();
-  const index = filterLabel.map((data) => data.id).indexOf(props.filter);
+export default function ProductHeader(props) {
+  const [value, setValue] = React.useState(0);
+  const classes = useStyles();
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
+  };
   return (
-    <div>
-      <div style={{ padding: "1% 0%" }}>
+    <div className="product_header_container">
+      <div style={{ padding: "1% 1.5%" }}>
         <BreadCrumbs before={[{ href: "/dashboard", name: "หน้าแรก" }]} presentpage="รายการสินค้า" />
       </div>
-      <ListItem className={classes.flexBox}>
-        <Typography className={classes.textHeader} variant="h5">
-          รายการสินค้า
-        </Typography>
-        <Typography className={classes.marginBox}>
-          <Tooltip title="เพิ่มสินค้าใหม่">
-            <Button
-              color="primary"
-              variant="contained"
-              style={{ marginRight: "0%" }}
-              onClick={() => {
-                props.handleClickOpen("addModal");
-              }}>
-              <AddCircleIcon />
-              เพิ่มสินค้า
-            </Button>
-          </Tooltip>
-        </Typography>
-      </ListItem>
-      <ListItem className={classes.flexBox}>
-        <Typography className={classes.textSub}>รายการสินค้าทั้งหมด {props.dataLength} รายการ</Typography>
-        <div>
-          {props.tabSelected === 1 ? (
-            <FilterBox
-              data={filterLabel}
-              minWidth={60}
-              maxWidth={150}
-              filterSelected={props.filter}
-              handleChangeSelected={props.handleChangeFilter}
-            />
-          ) : (
-            false
-          )}
-          {props.tabSelected === 1 && isNumeric.indexOf(props.filter) !== -1 ? (
-            <FilterBox
-              data={mathLabel}
-              minWidth={100}
-              filterSelected={props.operation}
-              handleChangeSelected={props.handleChangeOperation}
-            />
-          ) : (
-            false
-          )}
-          {props.tabSelected === 1 || props.tabSelected === 0 ? (
+      <Tabs
+        value={props.tabSelected}
+        indicatorColor="primary"
+        textColor="primary"
+        onChange={props.handleChangeTabs}
+        aria-label="disabled tabs example">
+        <Tab className={classes.textTab} label="รายการสินค้าหลัก" />
+        <Tab className={classes.textTab} label="รายการสินค้าทั้งหมด" />
+        <Tab className={classes.textTab} label="รายการสินค้าที่จำนวนใกล้หมด" />
+      </Tabs>
+      <div className={classes.search_container}>
+        <ListItem>
+          <div className={classes.search_field} style={{ width: "20%" }}>
+            <p>Search By</p>
             <TextField
-              className={classes.textInput}
+              id="searchbox1"
               variant="outlined"
+              fullWidth
+              disabled={props.tabSelected === 2 ? true : false}
+              placeholder={"ค้นหาสินค้าจาก" + filterLabel.filter((data) => data.id === props.filter)[0].label}
               value={props.search_key}
-              type={isNumeric.indexOf(props.filter) !== -1 ? "number" : "text"}
               onChange={(event) => {
                 props.handleSearchData("search_key", event.target.value);
               }}
-              style={{ width: "210px" }}
+              type={isNumeric.indexOf(props.filter) === -1 ? "text" : "number"}
               size="small"
-              placeholder={
-                props.tabSelected === 0 ? "ค้นหาสินค้าจากชื่อสินค้า . . ." : "ค้นหาสินค้าจาก" + filterLabel[index].label
-              }
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="start">
+                    <SearchIcon />
+                  </InputAdornment>
+                ),
+              }}
             />
-          ) : (
-            <div style={{ padding: "20px" }}></div>
-          )}
-
-          {props.tabSelected === 1 && props.operation === "[]" ? (
+          </div>
+          <div className={classes.search_field} style={{ width: "20%" }}>
+            <p>&nbsp;</p>
             <TextField
-              className={classes.textInput}
+              id="searchbox2"
               variant="outlined"
+              fullWidth
+              placeholder="ค้นหาสินค้าจาก"
+              size="small"
               value={props.search_key2}
-              type="number"
               onChange={(event) => {
                 props.handleSearchData("search_key2", event.target.value);
               }}
-              style={{ width: "210px" }}
-              size="small"
-              placeholder={
-                props.tabSelected === 0 ? "ค้นหาสินค้าจากชื่อสินค้า . . ." : "ค้นหาสินค้าจาก" + filterLabel[index].label
-              }
+              // eslint-disable-next-line react/jsx-no-duplicate-props
+              placeholder={"ค้นหาสินค้า" + filterLabel.filter((data) => data.id === props.filter)[0].label}
+              disabled={props.operation === "[]" ? false : true}
+              type={isNumeric.indexOf(props.filter) === -1 ? "text" : "number"}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="start">
+                    <SearchIcon />
+                  </InputAdornment>
+                ),
+              }}
             />
-          ) : (
-            false
-          )}
-        </div>
-      </ListItem>
+          </div>
+          <div className={classes.search_field}>
+            <p>Filter By</p>
+            <FilterBox
+              disabled={props.tabSelected !== 1 ? true : false}
+              data={filterLabel}
+              minWidth={150}
+              filterSelected={props.filter}
+              handleChangeSelected={props.handleChangeFilter}
+            />
+          </div>
+          <div className={classes.search_field}>
+            <p>&nbsp;</p>
+            <FilterBox
+              disabled={isNumeric.indexOf(props.filter) === -1 ? true : false}
+              data={mathLabel}
+              minWidth={150}
+              filterSelected={props.operation}
+              handleChangeSelected={props.handleChangeOperation}
+            />
+          </div>
+          <div className={classes.search_field} style={{ marginLeft: "auto" }}>
+            <p>&nbsp;</p>
+            <NavLink to="/product/addproduct" style={{ textDecoration: "none" }}>
+              <Tooltip title="เพิ่มสินค้าใหม่">
+                <Button
+                  color="primary"
+                  variant="contained"
+                  style={{ marginRight: "0%" }}
+                  onClick={() => {
+                    props.handleClickOpen("addModal");
+                  }}>
+                  <AddCircleIcon />
+                  เพิ่มสินค้า
+                </Button>
+              </Tooltip>
+            </NavLink>
+          </div>
+        </ListItem>
+      </div>
     </div>
   );
 }
