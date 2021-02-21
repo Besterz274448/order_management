@@ -58,7 +58,7 @@ export default function Navbar({ open, handleDrawerOpen }) {
           [classes.appBarShift]: open,
         })}
       >
-        <Toolbar style={{paddingLeft:16}}>
+        <Toolbar style={{ paddingLeft: 16 }}>
           <IconButton
             color="inherit"
             aria-label="open drawer"
