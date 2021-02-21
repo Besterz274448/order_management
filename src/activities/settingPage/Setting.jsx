@@ -194,6 +194,7 @@ export default function SimpleTabs() {
       setConfig(newConfig);
     }
   };
+  // 
   const [config, setConfig] = React.useState({
     alert: false,
     value: 0,
