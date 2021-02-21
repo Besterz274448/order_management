@@ -15,6 +15,7 @@ import {
   DialogTitle,
   Snackbar,
   Grid,
+  ButtonGroup,
 } from "@material-ui/core";
 import General from "./cardSetting/General";
 import Alert from "@material-ui/lab/Alert";
@@ -197,13 +198,12 @@ export default function SimpleTabs() {
     alert: false,
     value: 0,
     edited: false,
-    nextTab: 0,
   });
   const classes = useStyles();
   const handleChangeTabs = (event, newValue) => {
     if (config.edited) {
       let newConfig = { ...config };
-      newConfig.nextTab = newValue;
+      newConfig.value = newValue;
       newConfig.alert = true;
       setConfig(newConfig);
     } else {
@@ -212,22 +212,26 @@ export default function SimpleTabs() {
       setConfig(newConfig);
     }
   };
-
-  const handleClose = () => {
-    let newConfig = { ...config };
-    newConfig.value = newConfig.nextTab;
-    newConfig.edited = false;
-    newConfig.alert = false;
-    setConfig(newConfig);
+  const saveAccount = () => {
+    setOldAccount(JSON.parse(JSON.stringify(account)));
+  };
+  const undoAccount = () => {
     setAccount(JSON.parse(JSON.stringify(oldAccount)));
   };
-  const save = () => {
+  const dialogCancel = () => {
+    changeAlert();
+    undoAccount();
+  };
+  const dialogSave = () => {
+    changeAlert();
+    saveAccount();
+    console.log(oldAccount.general.address.tel);
+  };
+  const changeAlert = (alert = false, edited = false) => {
     let newConfig = { ...config };
-    newConfig.value = newConfig.nextTab;
-    newConfig.edited = false;
-    newConfig.alert = false;
+    newConfig.edited = edited;
+    newConfig.alert = alert;
     setConfig(newConfig);
-    setOldAccount(JSON.parse(JSON.stringify(account)));
   };
 
   const [change, setChange] = React.useState(false);
@@ -243,23 +247,20 @@ export default function SimpleTabs() {
           vertical: "bottom",
           horizontal: "left",
         }}
-        open={config.edited}
+        open={config.edited && !config.alert}
         anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
-        // autoHideDuration={6000}
         message="Note archived"
       >
         <Alert
           severity="warning"
           action={
-            <React.Fragment>
+            <ButtonGroup variant="text" color="default" aria-label="">
               <Button
                 color="secondary"
                 size="small"
                 onClick={() => {
-                  setAccount(JSON.parse(JSON.stringify(oldAccount)));
-                  let newConfig = { ...config };
-                  newConfig.edited = false;
-                  setConfig(newConfig);
+                  changeAlert();
+                  undoAccount();
                 }}
               >
                 ละทิ้ง
@@ -267,16 +268,14 @@ export default function SimpleTabs() {
               <Button
                 color="secondary"
                 size="small"
-                onClick={(e) => {
-                  setOldAccount(JSON.parse(JSON.stringify(account)));
-                  let newConfig = { ...config };
-                  newConfig.edited = false;
-                  setConfig(newConfig);
+                onClick={() => {
+                  changeAlert();
+                  saveAccount();
                 }}
               >
                 บันทึก
               </Button>
-            </React.Fragment>
+            </ButtonGroup>
           }
         >
           ข้อมูลมีการเปลี่ยนแปลง! กรุณากดปุ่ม "บันทึก" เพื่อยืนยันการเปลี่ยนแปลง
@@ -301,6 +300,8 @@ export default function SimpleTabs() {
             onChange={handleChangeTabs}
             indicatorColor="secondary"
             textColor="primary"
+            variant="scrollable"
+            scrollButtons="auto"
             aria-label="full width tabs example"
           >
             {tabs.map((data, index) => (
@@ -309,7 +310,7 @@ export default function SimpleTabs() {
           </Tabs>
           <Dialog
             open={config.alert}
-            onClose={handleClose}
+            onClose={dialogCancel}
             aria-labelledby="alert-dialog-title"
             aria-describedby="alert-dialog-description"
           >
@@ -322,10 +323,10 @@ export default function SimpleTabs() {
               </DialogContentText>
             </DialogContent>
             <DialogActions>
-              <Button onClick={handleClose} color="primary">
+              <Button onClick={dialogCancel} color="primary">
                 ละทิ้ง
               </Button>
-              <Button onClick={save} color="primary" autoFocus>
+              <Button onClick={dialogSave} color="primary" autoFocus>
                 บันทึก
               </Button>
             </DialogActions>
@@ -355,13 +356,13 @@ export default function SimpleTabs() {
           </Grid>
         </TabPanel>
         <TabPanel value={config.value} index={1}>
-          <Box marginTop="1%">
-            <ContactButton />
-          </Box>
+          <Box marginTop="1%">{/* <ContactButton /> */}</Box>
         </TabPanel>
         <TabPanel value={config.value} index={2}>
           <Box marginTop="1%">
-            <Cards></Cards>
+            <Grid item xs={5}>
+              <Cards></Cards>
+            </Grid>
           </Box>
         </TabPanel>
         <TabPanel value={config.value} index={3}>

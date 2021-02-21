@@ -43,7 +43,6 @@ export default function TextFieldCustom(props) {
       variant="outlined"
       size="small"
       onChange={(e) => {
-        console.log(helper);
         handleOnChange(e.target.value, tag);
       }}
       onBlur={(e) => {

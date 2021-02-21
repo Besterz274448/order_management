@@ -46,7 +46,6 @@ export default function InputPhone(props) {
     label = "inputLabel",
     tag,
     id,
-    helper,
     classes,
     onChange: handleOnChange,
     onBlur: handleOnBlur,
@@ -57,7 +56,7 @@ export default function InputPhone(props) {
       variant="outlined"
       className={classes}
       style={{ marginTop: "16px", marginBottom: "8px" }}
-      error={value.replace(/-/g, "") !== oldValue}
+      error={value.replace(/-/g, "") !== oldValue.replace(/-/g, "")}
     >
       <InputLabel htmlFor={id}>{label}</InputLabel>
       <OutlinedInput
@@ -65,9 +64,10 @@ export default function InputPhone(props) {
         value={value}
         onChange={(e) => {
           handleOnChange(e.target.value, tag);
+          console.log(value);
         }}
         onBlur={(e) => {
-          handleOnBlur(e.target.value, tag);
+          handleOnBlur(e.target.value.replace(/-/g, ""), tag);
         }}
         label="เบอร์โทร"
         inputComponent={TextMaskCustom}
@@ -78,9 +78,7 @@ export default function InputPhone(props) {
         {value === ""
           ? "กรุณากรอกเบอร์โทร"
           : value.replace(/-/g, "") !== oldValue
-          ? helper === null
-            ? "ข้อมูลเบอร์โทรถูกแก้ไข"
-            : helper
+          ? "ข้อมูลเบอร์โทรถูกแก้ไข"
           : " "}
       </FormHelperText>
     </FormControl>

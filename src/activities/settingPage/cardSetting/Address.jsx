@@ -61,7 +61,6 @@ export default function Address(props) {
           oldValue={props.oldData.tel}
           onChange={handleOnChange}
           onBlur={handleOnBlur}
-          helper="กรุณากรอกเบอร์โทร"
         />
       </Box>
       <Box className={classes.boxFull}>

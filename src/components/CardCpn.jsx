@@ -45,11 +45,13 @@ export default function RecipeReviewCard(props) {
         avatar={icon || "icon"}
         action={actionOnTop || <Button color="primary">Button</Button>}
         title={
-          (
+          title ? (
             <Typography gutterBottom variant="h6">
               {title}
             </Typography>
-          ) || "title"
+          ) : (
+            "title"
+          )
         }
       />
       <Divider />
