@@ -4,6 +4,7 @@ import { makeStyles, useTheme } from "@material-ui/core/styles";
 import Drawer from "@material-ui/core/Drawer";
 import IconButton from "@material-ui/core/IconButton";
 import ChevronRightIcon from "@material-ui/icons/ChevronRight";
+import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import Divider from "@material-ui/core/Divider";
 import Typography from "@material-ui/core/Typography";
 import List from "@material-ui/core/List";
@@ -15,10 +16,6 @@ import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import { NavLink } from "react-router-dom";
 import { MenuOpen } from "@material-ui/icons";
-import Collapse from "@material-ui/core/Collapse";
-import StarBorder from "@material-ui/icons/StarBorder";
-import ExpandLess from "@material-ui/icons/ExpandLess";
-import ExpandMore from "@material-ui/icons/ExpandMore";
 
 const drawerWidth = 250;
 
