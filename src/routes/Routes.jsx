@@ -7,6 +7,7 @@ import Order from "../activities/order/Order";
 // import Order from "../../Feature/OrderComponents/Order";
 import Dashboard from "../activities/dashboard/Dashboard";
 import Campaign from "../activities/campaign/Campaign";
+import Setting from "../activities/settingPage/Setting.jsx";
 // import Report from "../../Feature/ReportComponents/Report";
 // import Promotion from "../../Feature/PromotionComponents/Promotion";
 // import Campaign from "../../Feature/CampaignComponents/Campaign";
@@ -30,7 +31,7 @@ export default function MainComponents() {
           <Route path="/campaign" component={Campaign} />
           <Route path="/report" exact component={ComingSoon} />
           <Route path="/contact" exact component={ComingSoon} />
-          <Route path="/setting" exact component={ComingSoon} />
+          <Route path="/setting" exact component={Setting} />
           <Route path="/livestream" exact component={ComingSoon} />
 
         </Switch>
