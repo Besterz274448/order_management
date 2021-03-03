@@ -15,7 +15,7 @@ import SettingsIcon from "@material-ui/icons/Settings";
 import PersonAddIcon from "@material-ui/icons/PersonAdd";
 import { createMuiTheme } from '@material-ui/core/styles';
 import { ThemeProvider } from '@material-ui/styles';
-import { blue,red} from '@material-ui/core/colors';
+import { blue} from '@material-ui/core/colors';
 
 const useStyles = makeStyles((theme) => ({
   root: {

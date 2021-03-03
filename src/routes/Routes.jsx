@@ -16,6 +16,7 @@ import Setting from "../activities/settingPage/Setting.jsx";
 import ComingSoon from "../activities/comingSoon/ComingSoon";
 import { Switch, Route } from "react-router-dom";
 
+
 export default function MainComponents() {
   const checkSession = 0;
   return (
