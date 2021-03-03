@@ -259,22 +259,22 @@ export default function SimpleTabs() {
           changeAlert();
           saveAccount();
         }}
-      />
-        }}
+        cancel={() => {
           undoAccount();
           changeAlert();
-        cancel={() => {
         }}
+      />
+      <EditPopup
+        edited={config.edited && !config.alert}
+        save={() => {
           saveAccount();
           changeAlert();
-        save={() => {
-        edited={config.edited && !config.alert}
-      <EditPopup
-      />
         }}
+        cancel={() => {
           undoAccount();
           changeAlert();
-        cancel={() => {
+        }}
+      />
       <div style={{ padding: "1% 0%" }}>
         <BreadCrumbs
           before={[{ href: "/dashboard", name: "หน้าแรก" }]}
