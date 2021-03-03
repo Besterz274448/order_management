@@ -1,5 +1,5 @@
 import React from "react";
-import { Typography, Box, makeStyles } from "@material-ui/core";
+import {Box, makeStyles } from "@material-ui/core";
 import InputPhone from "../../../components/InputPhone";
 import TextFields from "../../../components/TextFieldCustom";
 import Cards from "../../../components/CardCpn";

@@ -21,7 +21,6 @@ import General from "./cardSetting/General";
 import Alert from "@material-ui/lab/Alert";
 import Address from "./cardSetting/Address";
 import { getSetting } from "../../config/setting";
-import ContactButton from "../../components/ContectButton";
 import BreadCrumbs from "../../components/BreadCrumbs";
 import Cards from "../../components/CardCpn";
 function TabPanel(props) {
@@ -248,6 +247,7 @@ export default function SimpleTabs() {
           horizontal: "left",
         }}
         open={config.edited && !config.alert}
+        // eslint-disable-next-line react/jsx-no-duplicate-props
         anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
         message="Note archived"
       >

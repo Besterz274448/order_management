@@ -11,7 +11,6 @@ class Product extends Component {
       product_data: [],
       subproduct_data: [],
       product_image: [],
-      addModal: false,
       editModal: false,
       tabSelected: 0,
       filter: "name",
@@ -31,116 +30,12 @@ class Product extends Component {
     });
   }
 
-  handleUploadClick = (event, type) => {
-    var file = event.target.files[0];
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onloadend = async (e) => {
-      await this.setState({
-        [type]: [...this.state[type], reader.result],
-      });
-    };
-  };
-
-  handleNewProduct = (value, key, type) => {
-    let newValue = this.state[type];
-    newValue[key] = value;
-    this.setState({
-      [type]: newValue,
-    });
-  };
-
-  handleNewSubProduct = (value, key, index, type) => {
-    let newValue = this.state[type];
-    newValue[index][key] = value;
-    this.setState({
-      [type]: newValue,
-    });
-  };
 
   handleChangeTabs = (event, newValue) => {
     this.setState({
       search_key: "",
       search_key2: "",
       tabSelected: newValue,
-    });
-  };
-
-  cartesianProduct = (item) => {
-    const cartesian = (...a) => a.reduce((a, b) => a.flatMap((d) => b.map((e) => [d, e].flat())));
-    const attr = item.map((data) => data.name);
-    const value = item.map((data) => data.value);
-    if (attr.length > 0) {
-      let newData = [];
-      if (attr.length === 1) {
-        const newItem = value[0];
-        for (let i = 0; i < newItem.length; i++) {
-          let item = {};
-          item[attr[0]] = newItem[i];
-          newData.push({
-            product_id: "",
-            sku: "",
-            name: "",
-            attribute: item,
-            price: 0,
-            stock: 0,
-            order: 0,
-            sold: 0,
-            keyword: "",
-          });
-        }
-        return newData;
-      }
-      let cartesianData = cartesian(...value);
-      for (let i = 0; i < cartesianData.length; i++) {
-        let item = {};
-        for (let j = 0; j < attr.length; j++) {
-          item[attr[j]] = cartesianData[i][j];
-        }
-        newData.push({ product_id: "", sku: "", name: "", attribute: item, price: 0, stock: 0, order: 0, sold: 0, keyword: "" });
-      }
-      return newData;
-    }
-    return [];
-  };
-
-  handleChangeAttribute = (value, name, type_variants, type_sub) => {
-    let newItem = this.state[type_variants];
-    newItem = value.map((data) => {
-      let index = newItem.map((data) => data.name).indexOf(data);
-      let valueAttr = [];
-      if (index !== -1) {
-        valueAttr = newItem[index].value.length > 0 ? newItem[index].value : [];
-      }
-      return { name: data, value: valueAttr };
-    });
-    let newAttr = this.cartesianProduct(newItem);
-    this.setState({
-      [type_variants]: newItem,
-      [type_sub]: newAttr,
-    });
-  };
-
-  handleChangeAttributeValue = (value, name, type_variants, type_sub) => {
-    let newItem = this.state[type_variants];
-    const index = newItem.map((data) => data.name).indexOf(name);
-    newItem[index].value = value;
-    let newAttr = this.cartesianProduct(newItem);
-    this.setState({
-      [type_variants]: newItem,
-      [type_sub]: newAttr,
-    });
-  };
-
-  handleClickOpen = (tag) => {
-    this.setState({
-      [tag]: true,
-    });
-  };
-
-  handleClickClose = (tag) => {
-    this.setState({
-      [tag]: false,
     });
   };
 
@@ -184,27 +79,10 @@ class Product extends Component {
     //createEditHistory
   };
 
-  openEditModal = (id) => {
-    let subProduct = this.state.subproduct_data.filter((data) => id === data.product_id);
-    let editData = this.state.product_data.filter((data) => data.id === id)[0];
-    this.setState(
-      {
-        edit_product_data: { ...editData },
-        edit_product_image: JSON.parse(JSON.stringify(editData.image)),
-        edit_subproduct_data: JSON.parse(JSON.stringify(subProduct)),
-        edit_variants: JSON.parse(JSON.stringify(editData.attribute)),
-      },
-      () => {
-        this.handleClickOpen("editModal");
-      }
-    );
-  };
-
   render() {
     return (
       <div>
         <ProductHeader
-          handleClickOpen={this.handleClickOpen}
           dataLength={this.state.product_data.length}
           search_key={this.state.search_key}
           search_key2={this.state.search_key2}
