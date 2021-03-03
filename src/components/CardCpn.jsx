@@ -35,16 +35,18 @@ const useStyles = makeStyles((theme) => ({
 
 export default function RecipeReviewCard(props) {
   const [expanded, setExpanded] = React.useState(false);
-  const { icon, actionOnTop, title, children, classes, style } = props;
+  const { icon, actionOnTop, title, children, classes } = props;
 
   return (
     <Card className={classes}>
+      <Divider />
+      <Divider />
       <CardHeader
-        avatar={icon}
-        action={actionOnTop}
+        avatar={icon || "icon"}
+        action={actionOnTop || <Button color="primary">Button</Button>}
         title={
           title ? (
-            <Typography variant="subtitle1" display="block">
+            <Typography gutterBottom variant="h6">
               {title}
             </Typography>
           ) : (
@@ -53,9 +55,7 @@ export default function RecipeReviewCard(props) {
         }
       />
       <Divider />
-      <CardContent style={style}>
-        {children || "information for show"}
-      </CardContent>
+      <CardContent>{children || "information for show"}</CardContent>
     </Card>
   );
 }

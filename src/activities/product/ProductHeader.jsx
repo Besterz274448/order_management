@@ -54,11 +54,8 @@ const mathLabel = [
 ];
 
 export default function ProductHeader(props) {
-  const [value, setValue] = React.useState(0);
   const classes = useStyles();
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
-  };
+
   return (
     <div className="product_header_container">
       <div style={{ padding: "1% 1.5%" }}>
@@ -148,13 +145,7 @@ export default function ProductHeader(props) {
             <p>&nbsp;</p>
             <NavLink to="/product/addproduct" style={{ textDecoration: "none" }}>
               <Tooltip title="เพิ่มสินค้าใหม่">
-                <Button
-                  color="primary"
-                  variant="contained"
-                  style={{ marginRight: "0%" }}
-                  onClick={() => {
-                    props.handleClickOpen("addModal");
-                  }}>
+                <Button color="primary" variant="contained" style={{ marginRight: "0%" }}>
                   <AddCircleIcon />
                   เพิ่มสินค้า
                 </Button>

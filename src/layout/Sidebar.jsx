@@ -9,13 +9,10 @@ import Divider from "@material-ui/core/Divider";
 import Typography from "@material-ui/core/Typography";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
-import Collapse from "@material-ui/core/Collapse";
-import ExpandLess from "@material-ui/icons/ExpandLess";
-import ExpandMore from "@material-ui/icons/ExpandMore";
+
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import { NavLink } from "react-router-dom";
-import { MenuOpen } from "@material-ui/icons";
 
 
 const drawerWidth = 250;
@@ -67,9 +64,6 @@ const useStyles = makeStyles((theme) => ({
     color: "rgb(136,143,153)",
   },
   textColor: {
-    color: "rgb(200,200,200)",
-  },
-  textColor: {
     color: "rgb(112, 112, 112)",
   },
 }));
@@ -77,8 +71,7 @@ const useStyles = makeStyles((theme) => ({
 export default function Sidebar({ open, handleDrawerClose, sideBarIcon }) {
   const classes = useStyles();
   const theme = useTheme();
-  const [openCollapse, setCollapse] = React.useState(false);
-
+                        
   return (
     <Drawer
       variant="permanent"

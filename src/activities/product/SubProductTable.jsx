@@ -16,7 +16,7 @@ import ListItem from "@material-ui/core/ListItem";
 import Textfield from "@material-ui/core/Textfield";
 import Button from "@material-ui/core/Button";
 import MoreMenu from "./IconMenu";
-import { Grow, Fade } from "@material-ui/core";
+import { Grow } from "@material-ui/core";
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -179,6 +179,7 @@ export default function EnhancedTable(props) {
   const [selected, setSelected] = React.useState();
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [oldData, setOldData] = React.useState({});
 
   React.useEffect(() => {
     setPage(0);
@@ -347,7 +348,11 @@ export default function EnhancedTable(props) {
                                 variant="outlined"
                                 color="secondary"
                                 onClick={() => {
-                                  //refresh data
+                                  let oldrow = JSON.parse(JSON.stringify(rows));
+                                  const index = oldrow.findIndex(data => data.id === selected);
+                                  oldrow[index] = oldData;
+                                  console.log(oldrow[index]);
+                                  setRows(oldrow);
                                   setSelected("");
                                 }}>
                                 ยกเลิก
@@ -357,6 +362,8 @@ export default function EnhancedTable(props) {
                         ) : (
                           <MoreMenu
                             handleEdit={() => {
+                              const temp = JSON.parse(JSON.stringify(rows.filter(data => data.id === row.id)[0]));
+                              setOldData(temp);
                               setSelected(row.id);
                             }}
                           />
