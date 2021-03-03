@@ -17,6 +17,7 @@ import ListItemText from "@material-ui/core/ListItemText";
 import { NavLink } from "react-router-dom";
 import { MenuOpen } from "@material-ui/icons";
 
+
 const drawerWidth = 250;
 
 const useStyles = makeStyles((theme) => ({
@@ -26,7 +27,7 @@ const useStyles = makeStyles((theme) => ({
     whiteSpace: "nowrap",
   },
   drawerPaper: {
-    background: "rgb(35,48,68)",
+    background: "#233044",
   },
   drawerOpen: {
     width: drawerWidth,
