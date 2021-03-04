@@ -7,22 +7,19 @@ import {
   Tab,
   Typography,
   Box,
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
-  Snackbar,
   Grid,
-  ButtonGroup,
 } from "@material-ui/core";
 import General from "./cardSetting/General";
-import Alert from "@material-ui/lab/Alert";
 import Address from "./cardSetting/Address";
+import Package from "./cardSetting/Package";
 import { getSetting } from "../../config/setting";
 import BreadCrumbs from "../../components/BreadCrumbs";
-import Cards from "../../components/CardCpn";
+import Cards from "../../components/Element/CardCpn";
+import EditPopup from "../../components/EditPopup";
+import UpPackage from "../../components/DialogUpPackage";
+import Contact from "./cardSetting/Contact";
+import AlertDialog from "../../components/AlertDialog";
+import UsageAmount from "./cardSetting/UsageAmount";
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
   return (
@@ -91,6 +88,15 @@ export default function SimpleTabs() {
         city: "",
         zipCode: "",
       },
+      contact: {
+        tel: "",
+        phone: "",
+        email: "",
+        website: "",
+        facebook: "",
+        line: "",
+        IG: "",
+      },
     },
     transport: {
       main: "kerry",
@@ -138,6 +144,15 @@ export default function SimpleTabs() {
         province: "",
         city: "",
         zipCode: "",
+      },
+      contact: {
+        tel: "",
+        phone: "",
+        email: "",
+        website: "",
+        facebook: "",
+        line: "",
+        IG: "",
       },
     },
     transport: {
@@ -193,6 +208,7 @@ export default function SimpleTabs() {
       setConfig(newConfig);
     }
   };
+  //
   const [config, setConfig] = React.useState({
     alert: false,
     value: 0,
@@ -217,15 +233,6 @@ export default function SimpleTabs() {
   const undoAccount = () => {
     setAccount(JSON.parse(JSON.stringify(oldAccount)));
   };
-  const dialogCancel = () => {
-    changeAlert();
-    undoAccount();
-  };
-  const dialogSave = () => {
-    changeAlert();
-    saveAccount();
-    console.log(oldAccount.general.address.tel);
-  };
   const changeAlert = (alert = false, edited = false) => {
     let newConfig = { ...config };
     newConfig.edited = edited;
@@ -234,6 +241,10 @@ export default function SimpleTabs() {
   };
 
   const [change, setChange] = React.useState(false);
+  const [open, setOpen] = React.useState(false);
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
   React.useEffect(() => {
     const path = window.location.pathname;
     console.log(path);
@@ -241,46 +252,29 @@ export default function SimpleTabs() {
   }, []);
   return (
     <>
-      <Snackbar
-        anchorOrigin={{
-          vertical: "bottom",
-          horizontal: "left",
+      <UpPackage open={open} setOpen={setOpen} />
+      <AlertDialog
+        config={config}
+        save={() => {
+          changeAlert();
+          saveAccount();
         }}
-        open={config.edited && !config.alert}
-        // eslint-disable-next-line react/jsx-no-duplicate-props
-        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
-        message="Note archived"
-      >
-        <Alert
-          severity="warning"
-          action={
-            <ButtonGroup variant="text" color="default" aria-label="">
-              <Button
-                color="secondary"
-                size="small"
-                onClick={() => {
-                  changeAlert();
-                  undoAccount();
-                }}
-              >
-                ละทิ้ง
-              </Button>
-              <Button
-                color="secondary"
-                size="small"
-                onClick={() => {
-                  changeAlert();
-                  saveAccount();
-                }}
-              >
-                บันทึก
-              </Button>
-            </ButtonGroup>
-          }
-        >
-          ข้อมูลมีการเปลี่ยนแปลง! กรุณากดปุ่ม "บันทึก" เพื่อยืนยันการเปลี่ยนแปลง
-        </Alert>
-      </Snackbar>
+        cancel={() => {
+          undoAccount();
+          changeAlert();
+        }}
+      />
+      <EditPopup
+        edited={config.edited && !config.alert}
+        save={() => {
+          saveAccount();
+          changeAlert();
+        }}
+        cancel={() => {
+          undoAccount();
+          changeAlert();
+        }}
+      />
       <div style={{ padding: "1% 0%" }}>
         <BreadCrumbs
           before={[{ href: "/dashboard", name: "หน้าแรก" }]}
@@ -298,7 +292,7 @@ export default function SimpleTabs() {
             id="tabs"
             value={config.value}
             onChange={handleChangeTabs}
-            indicatorColor="secondary"
+            indicatorColor="primary"
             textColor="primary"
             variant="scrollable"
             scrollButtons="auto"
@@ -308,50 +302,51 @@ export default function SimpleTabs() {
               <Tab label={data} {...a11yProps({ index })} />
             ))}
           </Tabs>
-          <Dialog
-            open={config.alert}
-            onClose={dialogCancel}
-            aria-labelledby="alert-dialog-title"
-            aria-describedby="alert-dialog-description"
-          >
-            <DialogTitle id="alert-dialog-title">
-              {"ข้อมูลมีการเปลี่ยนแปลง"}
-            </DialogTitle>
-            <DialogContent>
-              <DialogContentText id="alert-dialog-description">
-                ต้องการบันทึกหรือไม่
-              </DialogContentText>
-            </DialogContent>
-            <DialogActions>
-              <Button onClick={dialogCancel} color="primary">
-                ละทิ้ง
-              </Button>
-              <Button onClick={dialogSave} color="primary" autoFocus>
-                บันทึก
-              </Button>
-            </DialogActions>
-          </Dialog>{" "}
         </AppBar>
         <TabPanel value={config.value} index={0}>
           <Grid container spacing={3}>
-            <Grid item xs={12} lg={6}>
-              <General
-                handleData={handleData}
-                data={account.general}
-                oldData={oldAccount.general}
-                change={change}
-                setChange={setChange}
-              />
+            <Grid item xs={12} md={4}>
+              <Grid container spacing={3}>
+                <Grid item xs={12}>
+                  <Package
+                    onClick={handleClickOpen}
+                    current={account.general.package}
+                    old={oldAccount.general.package}
+                    setChange={setChange}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <General
+                    handleData={handleData}
+                    data={account.general}
+                    oldData={oldAccount.general}
+                    change={change}
+                    setChange={setChange}
+                  />
+                </Grid>
+              </Grid>
             </Grid>
-            <Grid lg={6} xs={0}></Grid>
-            <Grid item xs={12} lg={6}>
-              <Address
-                handleData={handleData}
-                data={account.general.address}
-                oldData={oldAccount.general.address}
-                change={change}
-                setChange={setChange}
-              />
+            <Grid item xs={12} md={8}>
+              <Grid container spacing={3}>
+                <Grid item xs={12}>
+                  <Address
+                    handleData={handleData}
+                    data={account.general.address}
+                    oldData={oldAccount.general.address}
+                    change={change}
+                    setChange={setChange}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <Contact
+                    setChange={setChange}
+                    handleData={handleData}
+                    data={account.general.contact}
+                    oldData={oldAccount.general.contact}
+                    change={change}
+                  />
+                </Grid>
+              </Grid>
             </Grid>
           </Grid>
         </TabPanel>
@@ -369,7 +364,9 @@ export default function SimpleTabs() {
           <Box marginTop="1%">Item 4</Box>
         </TabPanel>
         <TabPanel value={config.value} index={4}>
-          <Box marginTop="1%">Item 5</Box>
+          <Box marginTop="1%">
+            <UsageAmount />
+          </Box>
         </TabPanel>
       </div>
     </>
