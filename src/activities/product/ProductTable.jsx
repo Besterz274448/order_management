@@ -214,8 +214,7 @@ const useStyles = makeStyles((theme) => ({
   },
   tableData:{
     color:"rgb(100,100,100)",
-    fontWeight:"bold",
-    fontSize:"13px"
+    fontSize:"14px"
   }
 }));
 

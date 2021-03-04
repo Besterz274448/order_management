@@ -260,19 +260,19 @@ export default function SimpleTabs() {
           saveAccount();
         }}
         cancel={() => {
-          changeAlert();
           undoAccount();
+          changeAlert();
         }}
       />
       <EditPopup
         edited={config.edited && !config.alert}
         save={() => {
-          changeAlert();
           saveAccount();
+          changeAlert();
         }}
         cancel={() => {
-          changeAlert();
           undoAccount();
+          changeAlert();
         }}
       />
       <div style={{ padding: "1% 0%" }}>
