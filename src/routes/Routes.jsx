@@ -11,7 +11,7 @@ import Campaign from "../activities/campaign/Campaign";
 // import Promotion from "../../Feature/PromotionComponents/Promotion";
 // import Campaign from "../../Feature/CampaignComponents/Campaign";
 // import Contact from "../../Feature/ContactComponents/Contact";
-// import Setting from "../../Feature/SettingComponents/Setting";
+import Setting from "../activities/settingPage/Setting";
 import ComingSoon from "../activities/comingSoon/ComingSoon";
 import { Switch, Route } from "react-router-dom";
 
@@ -30,9 +30,8 @@ export default function MainComponents() {
           <Route path="/campaign" component={Campaign} />
           <Route path="/report" exact component={ComingSoon} />
           <Route path="/contact" exact component={ComingSoon} />
-          <Route path="/setting" exact component={ComingSoon} />
-          <Route path="/livestream" exact component={LiveStream} />
-
+          <Route path="/setting" exact component={Setting} />
+          <Route path="/livestream" component={LiveStream} />
         </Switch>
       ) : (
         "hello"
