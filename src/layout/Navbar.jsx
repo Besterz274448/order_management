@@ -16,12 +16,11 @@ const drawerWidth = 250;
 const useStyles = makeStyles((theme) => ({
   appBar: {
     zIndex: theme.zIndex.drawer + 1,
-    boxShadow:"2px 2px 2px rgb(220,220,220)",
+    boxShadow: "2px 2px 2px rgb(220,220,220)",
     transition: theme.transitions.create(["width", "margin"], {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
     }),
-    
   },
   appBarShift: {
     marginLeft: drawerWidth,
@@ -41,12 +40,12 @@ const useStyles = makeStyles((theme) => ({
     marginRight: "1%",
     marginLeft: "auto",
   },
-  iconColor:{
-    color:"rgb(150,150,150)"
-  }
+  iconColor: {
+    color: "rgb(150,150,150)",
+  },
 }));
 
-export default function Navbar({ open, handleDrawerOpen,page }) {
+export default function Navbar({ open, handleDrawerOpen, page }) {
   const classes = useStyles();
 
   return (
@@ -57,12 +56,8 @@ export default function Navbar({ open, handleDrawerOpen,page }) {
         position="fixed"
         className={clsx(classes.appBar, {
           [classes.appBarShift]: open,
-        })}
-      >
+        })}>
         <Toolbar style={{ paddingLeft: 16 }}>
-          <Typography variant="h5" style={{marginLeft:"1.0%"}}>
-            {page}
-          </Typography>
           <IconButton
             color="inherit"
             aria-label="open drawer"
@@ -70,19 +65,17 @@ export default function Navbar({ open, handleDrawerOpen,page }) {
             edge="start"
             className={clsx(classes.menuButton, {
               [classes.hide]: open,
-            })}
-          >
+            })}>
             <MenuIcon />
           </IconButton>
-          <Badge
-            className={classes.buttonIcon}
-            badgeContent={4}
-            color="primary"
-          >
-            <NotificationsIcon  className={classes.iconColor}/>
+          <Typography variant="h5" style={{ marginLeft: "1.0%" }}>
+            {page}
+          </Typography>
+          <Badge className={classes.buttonIcon} badgeContent={4} color="primary">
+            <NotificationsIcon className={classes.iconColor} />
           </Badge>
-          <AddCircleIcon  className={classes.iconColor} style={{marginRight:"1%"}}/>
-          <AccountCircleIcon  className={classes.iconColor}/>
+          <AddCircleIcon className={classes.iconColor} style={{ marginRight: "1%" }} />
+          <AccountCircleIcon className={classes.iconColor} />
         </Toolbar>
       </AppBar>
     </React.Fragment>

@@ -32,7 +32,6 @@ const useStyles = makeStyles({
   },
 });
 
-const isNumeric = ["price", "order", "sold", "stock"];
 
 export default function ProductHeader(props) {
   const classes = useStyles();
@@ -56,7 +55,7 @@ export default function ProductHeader(props) {
               onChange={(event) => {
                 props.handleSearchData("search_key", event.target.value);
               }}
-              type={isNumeric.indexOf(props.filter) === -1 ? "text" : "number"}
+              type={"text"}
               size="small"
               InputProps={{
                 endAdornment: (

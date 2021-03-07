@@ -84,15 +84,16 @@ const useStyles = makeStyles({
 
 export default function EditProduct() {
   const classes = useStyles();
+  const [oldData, setOldData] = React.useState({});
   const [data, setData] = React.useState({
     id: "",
     name: "",
-    weight: undefined,
+    weight: 0,
     description: "",
-    delivery_price: undefined,
-    width: undefined,
-    height: undefined,
-    length: undefined,
+    delivery_price: 0,
+    width: 0,
+    height: 0,
+    length: 0,
     attribute: [],
     image: [],
     salechannnel: [],
@@ -102,8 +103,8 @@ export default function EditProduct() {
         product_id: "",
         sku: "",
         name: "",
-        price: "",
-        stock: "",
+        price: 0,
+        stock: 0,
         keyword: "",
         attribute: {},
         sold: "",
@@ -119,17 +120,18 @@ export default function EditProduct() {
     const path = window.location.pathname.split("/");
     getProductById(path[3], (data) => {
       let newData = JSON.parse(JSON.stringify(data.product));
-      
+
       //แก้ขัด รอแก้งานหลัก
-      if(typeof data.product.image !== typeof []){
-        let item = {src: data.product.image,name:"image01"};
+      if (typeof data.product.image !== typeof []) {
+        let item = { src: data.product.image, name: "image01" };
         newData.image = [item];
       }
       newData.subproduct = [...data.variant];
-      if(newData.attribute === null){
+      if (newData.attribute === null) {
         newData.attribute = [];
       }
-      setData(newData);
+      setData(JSON.parse(JSON.stringify(newData)));
+      setOldData(JSON.parse(JSON.stringify(newData)));
     });
   }, []);
 
@@ -150,27 +152,45 @@ export default function EditProduct() {
   };
 
   const handleChangeTabs = (event, newValue) => {
-    let newData = data;
-    if (newValue === 0) {
-      data.subproduct = [
-        {
-          product_id: "",
-          sku: "",
-          name: "",
-          price: 0,
-          stock: 0,
-          keyword: "",
-          order: 0,
-          sold: 0,
-          attribute: {},
-        },
-      ];
-    } else {
-      data.subproduct = [];
+    if (newValue === tabSelected) {
+      return;
     }
-    data.attribute = [];
-    setData(newData);
-    setTabSelected(newValue);
+    const confirm = window.confirm("ต้องการเปลี่ยน Tab ใช่หรือไม่");
+    if (confirm) {
+      let newData = data;
+      if (newValue === 0) {
+        if (oldData.attribute.length === 0) {
+          newData.subproduct = JSON.parse(JSON.stringify(oldData.subproduct));
+        } else {
+          newData.subproduct = [
+            {
+              product_id: "",
+              sku: "",
+              name: "",
+              price: 0,
+              stock: 0,
+              keyword: "",
+              order: 0,
+              sold: 0,
+              attribute: {},
+            },
+          ];
+        }
+      } else {
+        if (oldData.attribute.length === 0) {
+          newData.subproduct = [];
+        } else {
+          newData.subproduct = JSON.parse(JSON.stringify(oldData.subproduct));
+        }
+      }
+      if (oldData.attribute.length === 0) {
+        newData.attribute = [];
+      } else {
+        newData.attribute = JSON.parse(JSON.stringify(oldData.attribute));
+      }
+      setData(newData);
+      setTabSelected(newValue);
+    }
   };
   const handleDialog = (value) => {
     setOpen(value);
@@ -256,7 +276,7 @@ export default function EditProduct() {
       if (attr.length === 1) {
         for (let i = 0; i < value[0].length; i++) {
           let item = {};
-          item[attr[0]] = value[i];
+          item[attr[0]] = value[0][i];
           newData.push({
             product_id: "",
             sku: "",

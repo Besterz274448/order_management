@@ -85,12 +85,12 @@ export default function AddProduct(props) {
   const classes = useStyles();
   const [data, setData] = React.useState({
     name: "",
-    weight: undefined,
+    weight: 0,
     description: "",
-    delivery_price: undefined,
-    width: undefined,
-    height: undefined,
-    length: undefined,
+    delivery_price: 0,
+    width: 0,
+    height: 0,
+    length: 0,
     attribute: [],
     image: [],
     sale_channnel: [],
@@ -98,8 +98,8 @@ export default function AddProduct(props) {
       {
         sku: "",
         name: "",
-        price: "",
-        stock: "",
+        price: 0,
+        stock: 0,
         keyword: "",
         attribute: {},
       },
@@ -123,7 +123,7 @@ export default function AddProduct(props) {
   };
 
   const handleChangeTabs = (event, newValue) => {
-    if(newValue === tabSelected){
+    if (newValue === tabSelected) {
       return;
     }
     const confirm = window.confirm("ต้องการเปลี่ยน Tab ใช่หรือไม่");
@@ -227,15 +227,12 @@ export default function AddProduct(props) {
     const cartesian = (...a) => a.reduce((a, b) => a.flatMap((d) => b.map((e) => [d, e].flat())));
     const attr = item.map((data) => data.name);
     const value = item.map((data) => data.value);
-
-    console.log(attr);
-    console.log(value);
     if (attr.length > 0) {
       let newData = [];
       if (attr.length === 1) {
         for (let i = 0; i < value[0].length; i++) {
           let item = {};
-          item[attr[0]] = value[i];
+          item[attr[0]] = value[0][i];
           newData.push({
             product_id: "",
             sku: "",
@@ -280,7 +277,6 @@ export default function AddProduct(props) {
     setData(newData);
     setDialogState("none");
     setOpen(false);
-    console.log(newData);
   };
 
   const onDeleteItem = (key, index) => {
