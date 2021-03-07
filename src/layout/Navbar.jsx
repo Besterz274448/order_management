@@ -3,6 +3,7 @@ import clsx from "clsx";
 import { makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import CssBaseline from "@material-ui/core/CssBaseline";
+import Typography from "@material-ui/core/Typography";
 import Toolbar from "@material-ui/core/Toolbar";
 import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";
@@ -45,7 +46,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-export default function Navbar({ open, handleDrawerOpen }) {
+export default function Navbar({ open, handleDrawerOpen,page }) {
   const classes = useStyles();
 
   return (
@@ -59,6 +60,9 @@ export default function Navbar({ open, handleDrawerOpen }) {
         })}
       >
         <Toolbar style={{ paddingLeft: 16 }}>
+          <Typography variant="h5" style={{marginLeft:"1.0%"}}>
+            {page}
+          </Typography>
           <IconButton
             color="inherit"
             aria-label="open drawer"

@@ -32,6 +32,18 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function MainApp({ selected }) {
+  React.useEffect(()=>{
+    const path = window.location.pathname.split('/');
+    if(path[1] !==  ""){
+      const index = sideBarIcon.map(data => data.path).indexOf("/"+path[1]);
+      if(index !== -1){
+        const word = sideBarIcon[index].text;
+        setPage(word);
+      }
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  },[]);
+
   const classes = useStyles();
   const [open, setOpen] = useState(true);
   const sideBarIcon = [
@@ -46,9 +58,17 @@ export default function MainApp({ selected }) {
     { icon: FlagIcon, text: "แคมเปญ", path: "/campaign",type:"shop_manage"},
     { icon: NotificationsActiveIcon, text: "โปรโมชั่น", path: "/promotion",type:"shop_manage"},
     { icon: ReceiptIcon, text: "รายงาน", path: "/report",type:"shop_manage"},
-    { icon: PersonAddIcon, text: "รายชื่อผู้ติดต่อ", path: "/contact",type:"lead"},
+    { icon: PersonAddIcon, text: "รายชื่อผู้ติดต่อ", path: "/contract",type:"lead"},
     { icon: SettingsIcon, text: "ตั้งค่า", path: "/setting",type:"shop_manage"},
   ];
+
+  
+
+  const [page,setPage] = useState('สรุปผล');
+  
+  const handlePage = (text) =>{
+    setPage(text);
+  }
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -77,8 +97,8 @@ export default function MainApp({ selected }) {
     <Router>
       <ThemeProvider theme={theme}>
         <div className={classes.root}>
-          <Navbar open={open} handleDrawerOpen={handleDrawerOpen} />
-          <Sidebar open={open} handleDrawerClose={handleDrawerClose} sideBarIcon={sideBarIcon} />
+          <Navbar open={open} handleDrawerOpen={handleDrawerOpen} page={page}/>
+          <Sidebar open={open} handleDrawerClose={handleDrawerClose} handlePage={handlePage}  sideBarIcon={sideBarIcon} />
           <div className={classes.content}>
             <Routes />
           </div>

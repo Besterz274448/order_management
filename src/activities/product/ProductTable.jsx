@@ -280,7 +280,7 @@ export default function EnhancedTable(props) {
                 })
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row, index) => {
-                  const isItemSelected = isSelected(row.id);
+                  const isItemSelected = isSelected(row.ID);
                   const labelId = `enhanced-table-checkbox-${index}`;
                   return (
                     <TableRow
@@ -288,31 +288,31 @@ export default function EnhancedTable(props) {
                       role="checkbox"
                       aria-checked={isItemSelected}
                       tabIndex={-1}
-                      key={row.id}
+                      key={row.ID}
                       selected={isItemSelected}>
                       <TableCell
                         component="th"
                         id={labelId}
                         scope="row"
                         padding="checkbox"
-                        onClick={(event) => handleClick(event, row.id)}></TableCell>
+                        onClick={(event) => handleClick(event, row.ID)}></TableCell>
                       <TableCell align="left">
                         <img src={row.image} width="30" height="30" alt={row.name} />
                       </TableCell>
 
                       <TableCell align="left">
                         <Tooltip title={row.name}>
-                          <Typography  className={classes.tableData}>{row.name.length > 50 ? row.name.slice(0, 50) + "..." : row.name}</Typography>
+                          <Typography  className={classes.tableData}>{row.name.length > 33 ? row.name.slice(0, 33) + "..." : row.name}</Typography>
                         </Tooltip>
                       </TableCell>
                       <TableCell  className={classes.tableData} align="right">{row.weight}</TableCell>
                       <TableCell  className={classes.tableData} align="right">{row.delivery_price}</TableCell>
-                      <TableCell  className={classes.tableData} align="left">{row.createon}</TableCell>
+                      <TableCell  className={classes.tableData} align="left">{row.createdon}</TableCell>
                       <TableCell   className={classes.tableData}align="left">{row.modifiedon}</TableCell>
                       <TableCell>
                         <MoreMenu
                           handleEdit={() => {
-                            props.openEditModal(row.id);
+                            window.location.pathname = "/product/edit/"+row.ID
                           }}
                         />
                       </TableCell>

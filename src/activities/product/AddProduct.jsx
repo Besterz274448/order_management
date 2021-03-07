@@ -16,13 +16,8 @@ import TableCell from "@material-ui/core/TableCell";
 import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Switch from "@material-ui/core/Switch";
 import List from "@material-ui/core/List";
 import ListItemAvatar from "@material-ui/core/ListItemAvatar";
-import Avatar from "@material-ui/core/Avatar";
-import Hidden from "@material-ui/core/Hidden";
-import FolderIcon from "@material-ui/icons/Folder";
 import ListItemText from "@material-ui/core/ListItemText";
 import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
 import Grid from "@material-ui/core/Grid";
@@ -128,27 +123,33 @@ export default function AddProduct(props) {
   };
 
   const handleChangeTabs = (event, newValue) => {
-    let newData = data;
-    if (newValue === 0) {
-      data.subproduct = [
-        {
-          product_id: "",
-          sku: "",
-          name: "",
-          price: 0,
-          stock: 0,
-          keyword: "",
-          order: 0,
-          sold: 0,
-          attribute: {},
-        },
-      ];
-    } else {
-      data.subproduct = [];
+    if(newValue === tabSelected){
+      return;
     }
-    data.attribute = [];
-    setData(newData);
-    setTabSelected(newValue);
+    const confirm = window.confirm("ต้องการเปลี่ยน Tab ใช่หรือไม่");
+    if (confirm) {
+      let newData = data;
+      if (newValue === 0) {
+        newData.subproduct = [
+          {
+            product_id: "",
+            sku: "",
+            name: "",
+            price: 0,
+            stock: 0,
+            keyword: "",
+            order: 0,
+            sold: 0,
+            attribute: {},
+          },
+        ];
+      } else {
+        newData.subproduct = [];
+      }
+      newData.attribute = [];
+      setData(newData);
+      setTabSelected(newValue);
+    }
   };
   const handleDialog = (value) => {
     setOpen(value);
@@ -282,30 +283,29 @@ export default function AddProduct(props) {
     console.log(newData);
   };
 
-  const onDeleteItem = (key,index) => {
+  const onDeleteItem = (key, index) => {
     let newData = JSON.parse(JSON.stringify(data[key]));
     newData.splice(index, 1);
     // eslint-disable-next-line no-useless-computed-key
     setData({ ...data, [key]: [...newData] });
   };
 
-  const onChangeSubProduct = (value,index,key) =>{
-    
+  const onChangeSubProduct = (value, index, key) => {
     let newData = JSON.parse(JSON.stringify(data.subproduct));
     newData[index][key] = value;
     // eslint-disable-next-line no-useless-computed-key
-    setData({ ...data, ['subproduct']: [...newData] });
-  }
+    setData({ ...data, ["subproduct"]: [...newData] });
+  };
 
-  const createProductData = (e)=>{
+  const createProductData = (e) => {
     e.preventDefault();
-    if(data.subproduct.length < 1){
-      alert('ต้องมีข้อมูลสินค้าย่อยอย่างน้อย 1 ชิ้น');
+    if (data.subproduct.length < 1) {
+      alert("ต้องมีข้อมูลสินค้าย่อยอย่างน้อย 1 ชิ้น");
       return;
     }
-    
-    alert('pass');
-  }
+
+    alert("pass");
+  };
 
   return (
     <form id="add_product_form" onSubmit={createProductData}>
@@ -483,7 +483,7 @@ export default function AddProduct(props) {
                         <ListItemSecondaryAction>
                           <IconButton
                             onClick={() => {
-                              onDeleteItem("image",index);
+                              onDeleteItem("image", index);
                             }}
                             edge="end"
                             aria-label="delete">
@@ -573,8 +573,8 @@ export default function AddProduct(props) {
                           InputProps={{ classes: { input: classes.input_table } }}
                           size="small"
                           variant="outlined"
-                          onChange={(e)=>{
-                            onChangeSubProduct(e.target.value,index,"sku")
+                          onChange={(e) => {
+                            onChangeSubProduct(e.target.value, index, "sku");
                           }}
                         />
                       </TableCell>
@@ -586,8 +586,8 @@ export default function AddProduct(props) {
                           InputProps={{ classes: { input: classes.input_table } }}
                           size="small"
                           variant="outlined"
-                          onChange={(e)=>{
-                            onChangeSubProduct(e.target.value,index,"name")
+                          onChange={(e) => {
+                            onChangeSubProduct(e.target.value, index, "name");
                           }}
                         />
                       </TableCell>
@@ -603,8 +603,8 @@ export default function AddProduct(props) {
                           required
                           size="small"
                           variant="outlined"
-                          onChange={(e)=>{
-                            onChangeSubProduct(e.target.value,index,"price")
+                          onChange={(e) => {
+                            onChangeSubProduct(e.target.value, index, "price");
                           }}
                         />
                       </TableCell>
@@ -617,8 +617,8 @@ export default function AddProduct(props) {
                           value={item.stock}
                           type="number"
                           variant="outlined"
-                          onChange={(e)=>{
-                            onChangeSubProduct(e.target.value,index,"stock")
+                          onChange={(e) => {
+                            onChangeSubProduct(e.target.value, index, "stock");
                           }}
                         />
                       </TableCell>
@@ -630,8 +630,8 @@ export default function AddProduct(props) {
                           InputProps={{ classes: { input: classes.input_table } }}
                           size="small"
                           variant="outlined"
-                          onChange={(e)=>{
-                            onChangeSubProduct(e.target.value,index,"keyword")
+                          onChange={(e) => {
+                            onChangeSubProduct(e.target.value, index, "keyword");
                           }}
                         />
                       </TableCell>
@@ -654,7 +654,7 @@ export default function AddProduct(props) {
                         <TableCell>
                           <IconButton
                             onClick={() => {
-                              onDeleteItem("subproduct",index);
+                              onDeleteItem("subproduct", index);
                             }}
                             edge="end"
                             aria-label="delete">

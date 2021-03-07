@@ -232,7 +232,7 @@ export default function EnhancedTable(props) {
 
   const handleEditData = (value, tag, id) => {
     let data = rows;
-    let index = data.map((data) => data.id).indexOf(id);
+    let index = data.map((data) => data.ID).indexOf(id);
     data[index][tag] = value;
     setRows(data);
   };
@@ -251,14 +251,14 @@ export default function EnhancedTable(props) {
                 .map((row, index) => {
                   const labelId = `enhanced-table-checkbox-${index}`;
                   return (
-                    <TableRow hover role="checkbox" tabIndex={-1} key={row.id}>
+                    <TableRow hover role="checkbox" tabIndex={-1} key={row.ID}>
                       <TableCell></TableCell>
                       <TableCell component="th" id={labelId} scope="row">
-                        {selected === row.id ? (
-                          <Grow in={selected === row.id}>
+                        {selected === row.ID ? (
+                          <Grow in={selected === row.ID}>
                             <Textfield
                               defaultValue={row.sku}
-                              onChange={(e) => handleEditData(e.target.value, "sku", row.id)}
+                              onChange={(e) => handleEditData(e.target.value, "sku", row.ID)}
                               size="small"
                             />
                           </Grow>
@@ -267,11 +267,11 @@ export default function EnhancedTable(props) {
                         )}
                       </TableCell>
                       <TableCell align="left">
-                        {selected === row.id ? (
-                          <Grow in={selected === row.id}>
+                        {selected === row.ID ? (
+                          <Grow in={selected === row.ID}>
                             <Textfield
                               defaultValue={row.name}
-                              onChange={(e) => handleEditData(e.target.value, "name", row.id)}
+                              onChange={(e) => handleEditData(e.target.value, "name", row.ID)}
                               size="small"
                             />
                           </Grow>
@@ -282,10 +282,10 @@ export default function EnhancedTable(props) {
                         )}
                       </TableCell>
                       <TableCell align="left">
-                        {selected === row.id ? (
-                          <Grow in={selected === row.id}>
+                        {selected === row.ID ? (
+                          <Grow in={selected === row.ID}>
                             <Textfield
-                              onChange={(e) => handleEditData(e.target.value, "price", row.id)}
+                              onChange={(e) => handleEditData(e.target.value, "price", row.ID)}
                               className={classes.textInput1}
                               type="number"
                               defaultValue={row.price}
@@ -299,10 +299,10 @@ export default function EnhancedTable(props) {
                       <TableCell align="center">{row.order}</TableCell>
                       <TableCell align="center">{row.sold}</TableCell>
                       <TableCell align="center">
-                        {selected === row.id ? (
-                          <Grow in={selected === row.id}>
+                        {selected === row.ID ? (
+                          <Grow in={selected === row.ID}>
                             <Textfield
-                              onChange={(e) => handleEditData(e.target.value, "stock", row.id)}
+                              onChange={(e) => handleEditData(e.target.value, "stock", row.ID)}
                               className={classes.textInput}
                               type="number"
                               defaultValue={row.stock}
@@ -314,10 +314,10 @@ export default function EnhancedTable(props) {
                         )}
                       </TableCell>
                       <TableCell align="left">
-                        {selected === row.id ? (
-                          <Grow in={selected === row.id}>
+                        {selected === row.ID ? (
+                          <Grow in={selected === row.ID}>
                             <Textfield
-                              onChange={(e) => handleEditData(e.target.value, "keyword", row.id)}
+                              onChange={(e) => handleEditData(e.target.value, "keyword", row.ID)}
                               className={classes.textInput1}
                               defaultValue={row.keyword}
                               size="small"
@@ -328,13 +328,13 @@ export default function EnhancedTable(props) {
                         )}
                       </TableCell>
                       <TableCell align="center">
-                        {selected === row.id ? (
-                          <Grow in={selected === row.id}>
+                        {selected === row.ID ? (
+                          <Grow in={selected === row.ID}>
                             <ListItem>
                               <Button
                                 onClick={() => {
                                   //รอเพิ่มเคสกรณี data ส่งไปไม่ถึงฝัน
-                                  let index = rows.map((data) => data.id).indexOf(row.id);
+                                  let index = rows.map((data) => data.ID).indexOf(row.ID);
                                   setSelected("");
                                   props.confirmEditData(index, rows[index]);
                                 }}
@@ -349,9 +349,8 @@ export default function EnhancedTable(props) {
                                 color="secondary"
                                 onClick={() => {
                                   let oldrow = JSON.parse(JSON.stringify(rows));
-                                  const index = oldrow.findIndex(data => data.id === selected);
+                                  const index = oldrow.findIndex(data => data.ID === selected);
                                   oldrow[index] = oldData;
-                                  console.log(oldrow[index]);
                                   setRows(oldrow);
                                   setSelected("");
                                 }}>
@@ -362,9 +361,9 @@ export default function EnhancedTable(props) {
                         ) : (
                           <MoreMenu
                             handleEdit={() => {
-                              const temp = JSON.parse(JSON.stringify(rows.filter(data => data.id === row.id)[0]));
+                              const temp = JSON.parse(JSON.stringify(rows.filter(data => data.ID === row.ID)[0]));
                               setOldData(temp);
-                              setSelected(row.id);
+                              setSelected(row.ID);
                             }}
                           />
                         )}

@@ -141,11 +141,9 @@ class OrderContainer extends Component {
 
   render() {
     return (
-      <div style={{ padding: "2% 1.5%" }}>
-        <div style={{ display: "flex" }}>
-          <Typography variant="h5" style={{ fontWeight: "bold", flex: 1 }}>
-            รายการสั่งซื้อ
-          </Typography>
+      <div style={{ padding: "1% 1.5%" }}>
+        <div style={{ paddingBottom: "0.3%",display:"flex",justifyContent:"space-between"}}>
+          <BreadCrumbs before={[{ href: "/dashboard", name: "หน้าแรก" }]} presentpage="รายการสั่งซื้อ" />
           <TextField
             placeholder="SearchBox"
             size="small"
@@ -154,9 +152,6 @@ class OrderContainer extends Component {
             }}
             variant="outlined"
           />
-        </div>
-        <div style={{ paddingBottom: "1%" }}>
-          <BreadCrumbs before={[{ href: "/dashboard", name: "หน้าแรก" }]} presentpage="รายการสั่งซื้อ" />
         </div>
         <Typography
           style={{

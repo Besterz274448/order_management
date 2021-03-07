@@ -67,10 +67,10 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Sidebar({ open, handleDrawerClose, sideBarIcon }) {
+export default function Sidebar({ open, handleDrawerClose, sideBarIcon, handlePage }) {
   const classes = useStyles();
   const theme = useTheme();
-                        
+
   return (
     <Drawer
       variant="permanent"
@@ -83,8 +83,7 @@ export default function Sidebar({ open, handleDrawerClose, sideBarIcon }) {
           [classes.drawerOpen]: open,
           [classes.drawerClose]: !open,
         }),
-      }}
-    >
+      }}>
       <div className={classes.toolbar}>
         <div>
           <img
@@ -111,14 +110,20 @@ export default function Sidebar({ open, handleDrawerClose, sideBarIcon }) {
         {sideBarIcon
           .filter((data) => data.type === "product")
           .map((data) => (
-              <NavLink key={data.text} to={data.path} className={classes.textLink}>
-                <ListItem button key={data.text}>
-                  <ListItemIcon className={classes.listIcon}>{<data.icon />}</ListItemIcon>
-                  <ListItemText style={{ fontWeight: "bold" }} primary={data.text} />
-                </ListItem>                           
-              </NavLink>
+            <NavLink
+              onClick={() => {
+                handlePage(data.text);
+              }}
+              key={data.text}
+              to={data.path}
+              className={classes.textLink}>
+              <ListItem button key={data.text}>
+                <ListItemIcon className={classes.listIcon}>{<data.icon />}</ListItemIcon>
+                <ListItemText style={{ fontWeight: "bold" }} primary={data.text} />
+              </ListItem>
+            </NavLink>
           ))}
-      </List> 
+      </List>
       <Divider style={{ backgroundColor: "rgb(100,100,100)" }} />
       {open && (
         <ListItem>
@@ -129,7 +134,13 @@ export default function Sidebar({ open, handleDrawerClose, sideBarIcon }) {
         {sideBarIcon
           .filter((data) => data.type === "lead")
           .map((data) => (
-            <NavLink key={data.text} to={data.path} className={classes.textLink}>
+            <NavLink
+              onClick={() => {
+                handlePage(data.text);
+              }}
+              key={data.text}
+              to={data.path}
+              className={classes.textLink}>
               <ListItem button key={data.text}>
                 <ListItemIcon className={classes.listIcon}>{<data.icon />}</ListItemIcon>
                 <ListItemText style={{ fontWeight: "bold" }} primary={data.text} />
@@ -147,7 +158,13 @@ export default function Sidebar({ open, handleDrawerClose, sideBarIcon }) {
         {sideBarIcon
           .filter((data) => data.type === "shop_manage")
           .map((data) => (
-            <NavLink key={data.text} to={data.path} className={classes.textLink}>
+            <NavLink
+              onClick={() => {
+                handlePage(data.text);
+              }}
+              key={data.text}
+              to={data.path}
+              className={classes.textLink}>
               <ListItem button key={data.text}>
                 <ListItemIcon className={classes.listIcon}>{<data.icon />}</ListItemIcon>
                 <ListItemText style={{ fontWeight: "bold" }} primary={data.text} />

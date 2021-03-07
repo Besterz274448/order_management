@@ -16,13 +16,8 @@ import TableCell from "@material-ui/core/TableCell";
 import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Switch from "@material-ui/core/Switch";
 import List from "@material-ui/core/List";
 import ListItemAvatar from "@material-ui/core/ListItemAvatar";
-import Avatar from "@material-ui/core/Avatar";
-import Hidden from "@material-ui/core/Hidden";
-import FolderIcon from "@material-ui/icons/Folder";
 import ListItemText from "@material-ui/core/ListItemText";
 import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
 import Grid from "@material-ui/core/Grid";
@@ -33,6 +28,7 @@ import Tab from "@material-ui/core/Tab";
 import Tooltip from "@material-ui/core/Tooltip";
 import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
 import shortid from "shortid";
+import { getProductById } from "../../config/product";
 
 const useStyles = makeStyles({
   flexbox: {
@@ -86,9 +82,10 @@ const useStyles = makeStyles({
   },
 });
 
-export default function AddProduct(props) {
+export default function EditProduct() {
   const classes = useStyles();
   const [data, setData] = React.useState({
+    id: "",
     name: "",
     weight: undefined,
     description: "",
@@ -98,18 +95,43 @@ export default function AddProduct(props) {
     length: undefined,
     attribute: [],
     image: [],
-    sale_channnel: [],
+    salechannnel: [],
     subproduct: [
       {
+        ID: "",
+        product_id: "",
         sku: "",
         name: "",
         price: "",
         stock: "",
         keyword: "",
         attribute: {},
+        sold: "",
+        order: "",
       },
     ],
+    createdon: "",
+    modifiedon: "",
+    modifiedby: "",
   });
+
+  React.useEffect(() => {
+    const path = window.location.pathname.split("/");
+    getProductById(path[3], (data) => {
+      let newData = JSON.parse(JSON.stringify(data.product));
+      
+      //แก้ขัด รอแก้งานหลัก
+      if(typeof data.product.image !== typeof []){
+        let item = {src: data.product.image,name:"image01"};
+        newData.image = [item];
+      }
+      newData.subproduct = [...data.variant];
+      if(newData.attribute === null){
+        newData.attribute = [];
+      }
+      setData(newData);
+    });
+  }, []);
 
   const [open, setOpen] = React.useState(false);
   const [dialogState, setDialogState] = React.useState("none");
@@ -282,30 +304,29 @@ export default function AddProduct(props) {
     console.log(newData);
   };
 
-  const onDeleteItem = (key,index) => {
+  const onDeleteItem = (key, index) => {
     let newData = JSON.parse(JSON.stringify(data[key]));
     newData.splice(index, 1);
     // eslint-disable-next-line no-useless-computed-key
     setData({ ...data, [key]: [...newData] });
   };
 
-  const onChangeSubProduct = (value,index,key) =>{
-    
+  const onChangeSubProduct = (value, index, key) => {
     let newData = JSON.parse(JSON.stringify(data.subproduct));
     newData[index][key] = value;
     // eslint-disable-next-line no-useless-computed-key
-    setData({ ...data, ['subproduct']: [...newData] });
-  }
+    setData({ ...data, ["subproduct"]: [...newData] });
+  };
 
-  const createProductData = (e)=>{
+  const createProductData = (e) => {
     e.preventDefault();
-    if(data.subproduct.length < 1){
-      alert('ต้องมีข้อมูลสินค้าย่อยอย่างน้อย 1 ชิ้น');
+    if (data.subproduct.length < 1) {
+      alert("ต้องมีข้อมูลสินค้าย่อยอย่างน้อย 1 ชิ้น");
       return;
     }
-    
-    alert('pass');
-  }
+
+    alert("pass");
+  };
 
   return (
     <form id="add_product_form" onSubmit={createProductData}>
@@ -317,7 +338,7 @@ export default function AddProduct(props) {
               { href: "/dashboard", name: "หน้าแรก" },
               { href: "/product", name: "รายการสินค้า" },
             ]}
-            presentpage="เพิ่มสินค้า"
+            presentpage="แก้ไขข้อมูลสินค้า"
           />
           <div style={{ marginRight: "1%" }}>
             <Button variant="contained" color="primary" form="add_product_form" type="submit">
@@ -483,7 +504,7 @@ export default function AddProduct(props) {
                         <ListItemSecondaryAction>
                           <IconButton
                             onClick={() => {
-                              onDeleteItem("image",index);
+                              onDeleteItem("image", index);
                             }}
                             edge="end"
                             aria-label="delete">
@@ -573,8 +594,8 @@ export default function AddProduct(props) {
                           InputProps={{ classes: { input: classes.input_table } }}
                           size="small"
                           variant="outlined"
-                          onChange={(e)=>{
-                            onChangeSubProduct(e.target.value,index,"sku")
+                          onChange={(e) => {
+                            onChangeSubProduct(e.target.value, index, "sku");
                           }}
                         />
                       </TableCell>
@@ -586,8 +607,8 @@ export default function AddProduct(props) {
                           InputProps={{ classes: { input: classes.input_table } }}
                           size="small"
                           variant="outlined"
-                          onChange={(e)=>{
-                            onChangeSubProduct(e.target.value,index,"name")
+                          onChange={(e) => {
+                            onChangeSubProduct(e.target.value, index, "name");
                           }}
                         />
                       </TableCell>
@@ -603,8 +624,8 @@ export default function AddProduct(props) {
                           required
                           size="small"
                           variant="outlined"
-                          onChange={(e)=>{
-                            onChangeSubProduct(e.target.value,index,"price")
+                          onChange={(e) => {
+                            onChangeSubProduct(e.target.value, index, "price");
                           }}
                         />
                       </TableCell>
@@ -617,8 +638,8 @@ export default function AddProduct(props) {
                           value={item.stock}
                           type="number"
                           variant="outlined"
-                          onChange={(e)=>{
-                            onChangeSubProduct(e.target.value,index,"stock")
+                          onChange={(e) => {
+                            onChangeSubProduct(e.target.value, index, "stock");
                           }}
                         />
                       </TableCell>
@@ -630,8 +651,8 @@ export default function AddProduct(props) {
                           InputProps={{ classes: { input: classes.input_table } }}
                           size="small"
                           variant="outlined"
-                          onChange={(e)=>{
-                            onChangeSubProduct(e.target.value,index,"keyword")
+                          onChange={(e) => {
+                            onChangeSubProduct(e.target.value, index, "keyword");
                           }}
                         />
                       </TableCell>
@@ -654,7 +675,7 @@ export default function AddProduct(props) {
                         <TableCell>
                           <IconButton
                             onClick={() => {
-                              onDeleteItem("subproduct",index);
+                              onDeleteItem("subproduct", index);
                             }}
                             edge="end"
                             aria-label="delete">

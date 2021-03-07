@@ -141,7 +141,7 @@ export default function ProductHeader(props) {
           </div>
           <div className={classes.search_field} style={{ marginLeft: "auto" }}>
             <p>&nbsp;</p>
-            <NavLink to="/product/addproduct" style={{ textDecoration: "none" }}>
+            <NavLink to="/product/add" style={{ textDecoration: "none" }}>
               <Tooltip title="เพิ่มสินค้าใหม่">
                 <Button color="primary" variant="contained" style={{ marginRight: "0%" }}>
                   <AddCircleIcon />
