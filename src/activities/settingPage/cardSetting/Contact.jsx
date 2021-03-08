@@ -5,6 +5,7 @@ import Typography from "@material-ui/core/Typography";
 import TextFieldS from "../../../components/Element/TextFieldCustom";
 import { makeStyles } from "@material-ui/core/styles";
 import InputPhone from "../../../components/Element/InputPhone";
+import { Grid } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -42,27 +43,33 @@ export default (props) => {
   return (
     <Cards title="ข้อมูลติดต่อร้านค้า" icon={<ContactsIcon />}>
       <div style={{ textAlign: "center" }}>
-        <InputPhone
-          type="home"
-          classes={classes.textField}
-          label="เบอร์สำนักงาน"
-          id="homePhone"
-          tag="tel"
-          value={data.tel}
-          oldValue={props.oldData.tel}
-          onChange={handleOnChange}
-          onBlur={handleOnBlur}
-        />
-        <InputPhone
-          classes={classes.textField}
-          label="เบอร์มือถือ"
-          id="telephone"
-          tag="phone"
-          value={data.phone}
-          oldValue={props.oldData.phone}
-          onChange={handleOnChange}
-          onBlur={handleOnBlur}
-        />
+        <Grid container spacing={3}>
+          <Grid item xs={12} md={6}>
+            <InputPhone
+              type="home"
+              classes={classes.textField}
+              label="เบอร์สำนักงาน"
+              id="homePhone"
+              tag="tel"
+              value={data.tel}
+              oldValue={props.oldData.tel}
+              onChange={handleOnChange}
+              onBlur={handleOnBlur}
+            />
+          </Grid>
+          <Grid item xs={12} md={6}>
+            <InputPhone
+              classes={classes.textField}
+              label="เบอร์มือถือ"
+              id="telephone"
+              tag="phone"
+              value={data.phone}
+              oldValue={props.oldData.phone}
+              onChange={handleOnChange}
+              onBlur={handleOnBlur}
+            />
+          </Grid>
+        </Grid>
         <TextFieldS
           className={classes.textField}
           label="อีเมล์"

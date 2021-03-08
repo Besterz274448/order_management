@@ -20,6 +20,8 @@ import UpPackage from "../../components/DialogUpPackage";
 import Contact from "./cardSetting/Contact";
 import AlertDialog from "../../components/AlertDialog";
 import UsageAmount from "./cardSetting/UsageAmount";
+import Size from "../../utilities/SizeWindow";
+import DropImg from "../../components/dragDropImg";
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
   return (
@@ -252,7 +254,7 @@ export default function SimpleTabs() {
   }, []);
   return (
     <>
-      <UpPackage open={open} setOpen={setOpen} />
+      <UpPackage open={open} setOpen={setOpen} size={Size} />
       <AlertDialog
         config={config}
         save={() => {
@@ -308,14 +310,6 @@ export default function SimpleTabs() {
             <Grid item xs={12} md={4}>
               <Grid container spacing={3}>
                 <Grid item xs={12}>
-                  <Package
-                    onClick={handleClickOpen}
-                    current={account.general.package}
-                    old={oldAccount.general.package}
-                    setChange={setChange}
-                  />
-                </Grid>
-                <Grid item xs={12}>
                   <General
                     handleData={handleData}
                     data={account.general}
@@ -361,11 +355,33 @@ export default function SimpleTabs() {
           </Box>
         </TabPanel>
         <TabPanel value={config.value} index={3}>
-          <Box marginTop="1%">Item 4</Box>
+          <Box marginTop="1%">
+            <DropImg />
+          </Box>
         </TabPanel>
         <TabPanel value={config.value} index={4}>
           <Box marginTop="1%">
-            <UsageAmount />
+            <Grid container spacing={3}>
+              <Grid item xs={12} md={6}>
+                <Grid container spacing={3}>
+                  <Grid item xs={12}>
+                    <Package
+                      onClick={handleClickOpen}
+                      current={account.general.package}
+                      old={oldAccount.general.package}
+                      setChange={setChange}
+                    />
+                  </Grid>
+                </Grid>
+              </Grid>
+              <Grid item xs={12} md={6}>
+                <Grid container spacing={3}>
+                  <Grid item xs={12}>
+                    <UsageAmount />
+                  </Grid>
+                </Grid>
+              </Grid>
+            </Grid>
           </Box>
         </TabPanel>
       </div>

@@ -5,10 +5,7 @@ import LinearLabel from "../../../components/Element/LinearLabel";
 
 const useStyles = makeStyles({
   root: {
-    width: "50%",
-  },
-  box: {
-    width: "50%",
+    width: "100%",
   },
 });
 export default function LinearDeterminate() {

@@ -5,7 +5,7 @@ import { Typography, Button } from "@material-ui/core";
 import BTCustom from "../../../components/Element/BTCustom";
 
 export default (props) => {
-  const { old, current, onClick: handleClickOpen } = props;
+  const { old, current, onClick: handleClickOpen, size } = props;
   const packages = [
     "หมดอายุการใช้งาน",
     "ทดลองใช้งาน",

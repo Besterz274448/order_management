@@ -66,6 +66,7 @@ export default function InputPhone(props) {
     id,
     classes,
     type,
+    error,
     onChange: handleOnChange,
     onBlur: handleOnBlur,
     ...other
@@ -75,7 +76,11 @@ export default function InputPhone(props) {
       variant="outlined"
       className={classes}
       style={{ marginTop: "16px", marginBottom: "8px" }}
-      error={value.replace(/-/g, "") !== oldValue.replace(/-/g, "")}
+      error={
+        error !== null
+          ? error
+          : value.replace(/-/g, "") !== oldValue.replace(/-/g, "")
+      }
     >
       <InputLabel htmlFor={id} margin="dense">
         {label}
