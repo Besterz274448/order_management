@@ -95,12 +95,15 @@ export default function DialogUpPackage(props) {
   const classes = useStyles();
   const [activeStep, setActiveStep] = React.useState(0);
   const steps = getSteps();
-  const [packages, setPackages] = React.useState(0);
-  const [bank, setBank] = React.useState(0);
-  const [date, setDate] = React.useState("");
   const [upgrade, setUpgrade] = React.useState({
+    service: "",
+    price: "",
+    paymentBank: 0,
+    paymentSlip: 0,
+    status: "",
+    time: "",
+
     bank: 0,
-    date: 0,
     packages: 0,
     amount: "",
     tel: "",
@@ -116,9 +119,8 @@ export default function DialogUpPackage(props) {
   };
   const handleNext = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
-    console.log(activeStep);
     if (activeStep === 1) {
-      setDate(Date.now());
+      changeUpgrade(Date.now(), "date");
     }
   };
 
@@ -126,7 +128,7 @@ export default function DialogUpPackage(props) {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
   const handleDateChange = (date) => {
-    setDate(date);
+    changeUpgrade(date, "date");
   };
   const getStepContent = (stepIndex) => {
     switch (stepIndex) {
@@ -265,9 +267,9 @@ export default function DialogUpPackage(props) {
                     <Select
                       labelId="demo-simple-select-outlined-label"
                       id="demo-simple-select-outlined"
-                      value={upgrade.bank}
+                      value={upgrade.paymentBank}
                       onChange={(e) => {
-                        changeUpgrade(e.target.value, "bank");
+                        changeUpgrade(e.target.value, "paymentBank");
                       }}
                       label="บัญชีธนาคาร"
                     >
@@ -299,7 +301,7 @@ export default function DialogUpPackage(props) {
                       margin="normal"
                       id="date-picker-inline"
                       label="วันที่ชำระ"
-                      value={date}
+                      value={upgrade.time}
                       onChange={handleDateChange}
                       KeyboardButtonProps={{
                         "aria-label": "change date",
@@ -312,7 +314,7 @@ export default function DialogUpPackage(props) {
                       margin="normal"
                       id="time-picker"
                       label="เวลา"
-                      value={date}
+                      value={upgrade.time}
                       onChange={handleDateChange}
                       KeyboardButtonProps={{
                         "aria-label": "change time",
@@ -336,7 +338,7 @@ export default function DialogUpPackage(props) {
               </Grid>
             </Grid>
             <Grid item xs={12} md={6}>
-              <DragDrop></DragDrop>
+              <DragDrop />
             </Grid>
           </Grid>
         );
@@ -346,6 +348,10 @@ export default function DialogUpPackage(props) {
         return "Unknown stepIndex";
     }
   };
+  // React.useEffect(()=>
+  // {
+  //   setUpgrade(props.upgrade)
+  // },[])
   return (
     <Dialog
       fullWidth={true}

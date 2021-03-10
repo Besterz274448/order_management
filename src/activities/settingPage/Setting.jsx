@@ -241,7 +241,10 @@ export default function SimpleTabs() {
     newConfig.alert = alert;
     setConfig(newConfig);
   };
-
+  const append = (value) => {
+    let update = { ...account };
+    update["general"]["package"]["history"].append(value);
+  };
   const [change, setChange] = React.useState(false);
   const [open, setOpen] = React.useState(false);
   const handleClickOpen = () => {
@@ -254,7 +257,13 @@ export default function SimpleTabs() {
   }, []);
   return (
     <>
-      <UpPackage open={open} setOpen={setOpen} size={Size} />
+      <UpPackage
+        open={open}
+        setOpen={setOpen}
+        append
+        imgWidth={200}
+        imgHeight={300}
+      />
       <AlertDialog
         config={config}
         save={() => {

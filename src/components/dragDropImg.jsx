@@ -17,11 +17,12 @@ import BTCustom from "./Element/BTCustom";
 const baseStyle = {
   flex: 1,
   display: "flex",
+  position: "relative",
   flexDirection: "column",
   alignItems: "center",
   borderWidth: 3,
   borderRadius: 2,
-  borderColor: "#eeeeee",
+  borderColor: "#D3D3D3",
   borderStyle: "dashed",
   backgroundColor: "#fdfdfd",
   color: "#bababa",
@@ -74,9 +75,17 @@ const img = {
 };
 
 export default (props) => {
-  const { len, width = 150, height = 300, title } = props;
+  const {
+    limit,
+    width = 150,
+    height = 300,
+    title,
+    partName,
+    action,
+    actionIcon,
+    actionDo,
+  } = props;
   const [files, setFiles] = useState([]);
-  const img = new Image();
   const {
     getRootProps,
     getInputProps,
@@ -89,6 +98,7 @@ export default (props) => {
     accept: "image/*",
     noClick: true,
     noKeyboard: true,
+
     onDrop: (acceptedFiles) => {
       setFiles(
         acceptedFiles.map((file) =>
@@ -97,6 +107,7 @@ export default (props) => {
           })
         )
       );
+      document.getElementById("test").style.display = "none";
     },
   });
 
@@ -111,31 +122,33 @@ export default (props) => {
   );
 
   const thumbs = files.map((item, index) => {
-    {
-      img.src = item.preview;
-    }
     return (
       <ListItem key={shortid.generate()}>
         <ListItemAvatar>
           <img
             src={item.preview}
             alt="upload"
-            width={img.width}
-            height={img.height}
+            width={width}
+            height={height}
           ></img>
         </ListItemAvatar>
-        <Tooltip title={item.path} aria-label="add">
-          <ListItemText
-            primary={
-              item.path.slice(0, 30) + (item.path.length > 30 ? "..." : "")
-            }
-          />
-        </Tooltip>
-        <ListItemSecondaryAction>
-          <IconButton edge="end" aria-label="delete">
-            <DeleteIcon />
-          </IconButton>
-        </ListItemSecondaryAction>
+        {partName === true ? (
+          <Tooltip title={item.path} aria-label="add">
+            <ListItemText
+              primary={
+                item.path.slice(0, 30) + (item.path.length > 30 ? "..." : "")
+              }
+            />
+          </Tooltip>
+        ) : null}
+
+        {action === true ? (
+          <ListItemSecondaryAction>
+            <IconButton edge="end" aria-label="delete" onClick={actionDo}>
+              {actionIcon}
+            </IconButton>
+          </ListItemSecondaryAction>
+        ) : null}
       </ListItem>
     );
   });
@@ -149,8 +162,13 @@ export default (props) => {
   );
 
   return (
-    <div {...getRootProps({ style })}>
-      <input {...getInputProps()} />
+    <div
+      {...getRootProps({ style })}
+      onDragOver={() => {
+        document.getElementById("test").style.display = "";
+        console.log(document.getElementById("test").style.display);
+      }}
+    >
       {thumbs.length !== 0 ? (
         <List
           style={{
@@ -158,7 +176,7 @@ export default (props) => {
             overflowX: "auto",
             height: "85%",
             width: "90%",
-            marginTop: "1%",
+            marginTop: "5%",
             textAlign: "center",
           }}
         >
@@ -169,20 +187,42 @@ export default (props) => {
           <CloudUploadIcon
             style={{ fontSize: "50px", color: "#25ACA3", marginTop: "10%" }}
           />
-          <div style={{ paddingBottom: "4%" }}>รูปใบเสร็จการชำระเงิน</div>
+          <div style={{ paddingBottom: "4%" }}>{title}</div>
         </>
       )}
 
       <BTCustom
         component="label"
         htmlFor="contained-button-file"
-        style={{ width: "60%" }}
+        style={{ width: "60%", marginBottom: "5%" }}
         variant="contained"
         color="primary"
         onClick={open}
       >
         UPLOAD
       </BTCustom>
+      <div
+        style={{
+          display: "none",
+          position: "absolute",
+          backgroundColor: "#ddd",
+          left: "0%",
+          top: "0%",
+          paddingLeft: "46%",
+          paddingRight: "45%",
+          paddingBottom: "12%",
+          paddingTop: "12%",
+          opacity: "0.4",
+        }}
+        id="test"
+        onDragLeave={() => {
+          document.getElementById("test").style.display = "none";
+          console.log(document.getElementById("test").style.display);
+        }}
+      >
+        <input {...getInputProps()} />
+        <p style={{ color: "#000" }}>วางไฟล์เพื่ออัพโหลด</p>
+      </div>
     </div>
   );
 };
