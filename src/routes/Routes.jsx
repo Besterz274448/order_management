@@ -5,7 +5,6 @@ import ProductAdd from "../activities/product/AddProduct"
 import ProductEdit from "../activities/product/EditProduct"
 import Order from "../activities/order/Order";
 // import LiveStream from "../../Feature/LiveStreamComponents/LiveStream";
-// import Order from "../../Feature/OrderComponents/Order";
 import Dashboard from "../activities/dashboard/Dashboard";
 import Campaign from "../activities/campaign/Campaign";
 import Contract from "../activities/contract/Contract";
@@ -37,7 +36,6 @@ export default function MainComponents() {
           <Route path="/contract" exact component={Contract} />
           <Route path="/setting" exact component={Setting} />
           <Route path="/livestream" exact component={ComingSoon} />
-
         </Switch>
       ) : (
         "hello"
