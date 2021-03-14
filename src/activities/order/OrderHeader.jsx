@@ -16,7 +16,7 @@ import Tooltip from "@material-ui/core/Tooltip";
 import ListItem from "@material-ui/core/ListItem";
 import { NavLink } from "react-router-dom";
 import { MuiPickersUtilsProvider, KeyboardDatePicker } from "@material-ui/pickers";
-import DateFnsUtils from '@date-io/date-fns';
+import DateFnsUtils from "@date-io/date-fns";
 import "date-fns";
 
 const useStyle = makeStyles({
@@ -42,16 +42,28 @@ const useStyle = makeStyles({
   },
 });
 
-
 const filterLabel = [
-  { id: 'order_id',label: 'เลขคำสั่งซื้อ' },
-  { id: 'fullname',label: 'ชื่อลูกค้า' },
+  { id: "order_id", label: "เลขคำสั่งซื้อ" },
+  { id: "fullname", label: "ชื่อลูกค้า" },
 ];
+
+function formattedDate(d) {
+  let month = String(d.getMonth() + 1);
+  let day = String(d.getDate());
+  const year = String(d.getFullYear());
+
+  if (month.length < 2) month = "0" + month;
+  if (day.length < 2) day = "0" + day;
+
+  return `${day}/${month}/${year}`;
+}
 
 export default function OrderHeader(props) {
   const classes = useStyle();
-  const [selectedDate, setSelectedDate] = React.useState(new Date("2014-08-18T21:11:54"));
+  const [selectedDate, setSelectedDate] = React.useState(new Date(Date.now()));
   const handleDateChange = (date) => {
+    props.handleChangeFilter("order_date");
+    props.handleSearchData(formattedDate(date));
     setSelectedDate(date);
   };
 
@@ -127,7 +139,7 @@ export default function OrderHeader(props) {
             />
           </div>
           <div className={classes.search_field}>
-              <p>เลือกวันที่</p>
+            <p>เลือกวันที่</p>
             <MuiPickersUtilsProvider utils={DateFnsUtils}>
               <KeyboardDatePicker
                 id="date-picker-dialog"

@@ -16,6 +16,7 @@ import Setting from "../activities/settingPage/Setting.jsx";
 // import Setting from "../../Feature/SettingComponents/Setting";
 import ComingSoon from "../activities/comingSoon/ComingSoon";
 import { Switch, Route } from "react-router-dom";
+import EditorTest from "../test/CKEditor.jsx"
 
 
 export default function MainComponents() {
@@ -36,6 +37,7 @@ export default function MainComponents() {
           <Route path="/contract" exact component={Contract} />
           <Route path="/setting" exact component={Setting} />
           <Route path="/livestream" exact component={ComingSoon} />
+          <Route path="/test" exact component={EditorTest} />
         </Switch>
       ) : (
         "hello"

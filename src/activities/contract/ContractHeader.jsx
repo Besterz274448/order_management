@@ -3,6 +3,7 @@ import BreadCrumbs from "../../components/BreadCrumbs";
 import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import SearchIcon from "@material-ui/icons/Search";
+import Typography from "@material-ui/core/Typography";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import FilterBox from "../../components/FilterBox";
 import Tooltip from "@material-ui/core/Tooltip";
@@ -16,6 +17,10 @@ import { NavLink } from "react-router-dom";
 const useStyles = makeStyles({
   textTab: {
     fontWeight: "bold",
+  },
+  flexContainer: {
+    display: "flex",
+    justifyContent: "space-between",
   },
   search_container: {
     width: "100%",
@@ -31,6 +36,9 @@ const useStyles = makeStyles({
     [`& p`]: {
       paddingBottom: "4px",
     },
+  },
+  buttonSpace: {
+    marginLeft: "9px",
   },
 });
 
@@ -101,8 +109,74 @@ export default function ProductHeader(props) {
         </ListItem>
       </div>
       <Collapse in={expanded} timeout="auto" unmountOnExit>
-        <Paper>
-              hello world
+        <Paper style={{ padding: "1% 1.5%" }}>
+          <div className={classes.flexContainer} style={{ width: "100%" }}>
+            <Typography>เพิ่มรายชื่อผู้ติดต่อ</Typography>
+            <div>
+              <Button className={classes.buttonSpace} variant="contained" color="secondary">
+                ยกเลิก
+              </Button>
+              <Button className={classes.buttonSpace} variant="contained" color="primary">
+                บันทึก
+              </Button>
+            </div>
+          </div>
+          <div className={classes.flexContainer} style={{ marginTop: "9px" }}>
+            <div style={{ width: "55%" }}>
+              <TextField
+                fullWidth
+                variant="outlined"
+                InputLabelProps={{
+                  shrink: true,
+                }}
+                label="facebook url"
+                size="small"></TextField>
+              <div className={classes.flexContainer} style={{marginTop:"12px"}}>
+                <div style={{ width: "54%" }}>
+                  <TextField
+                    fullWidth
+                    variant="outlined"
+                    InputLabelProps={{
+                      shrink: true,
+                    }}
+                    label="ชื่อ-นามสกุล"
+                    size="small"></TextField>
+                </div>
+                <div style={{ width: "25%" }}>
+                  <TextField
+                    fullWidth
+                    variant="outlined"
+                    InputLabelProps={{
+                      shrink: true,
+                    }}
+                    label="เบอร์โทรศัพท์"
+                    size="small"></TextField>
+                </div>
+                <div style={{ width: "19%" }}>
+                  <TextField
+                    fullWidth
+                    variant="outlined"
+                    InputLabelProps={{
+                      shrink: true,
+                    }}
+                    label="รหัสไปรษณีย์"
+                    size="small"></TextField>
+                </div>
+              </div>
+            </div>
+            <div style={{ width: "44%" }}>
+              <TextField
+                multiline
+                rows={4}
+                fullWidth
+                variant="outlined"
+                InputLabelProps={{
+                  shrink: true,
+                }}
+                label="ที่อยู่"
+                size="small"></TextField>
+            </div>
+          </div>
         </Paper>
       </Collapse>
     </div>

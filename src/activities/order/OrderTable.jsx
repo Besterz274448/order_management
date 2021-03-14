@@ -11,6 +11,9 @@ import TableRow from "@material-ui/core/TableRow";
 import TableSortLabel from "@material-ui/core/TableSortLabel";
 import Paper from "@material-ui/core/Paper";
 import Chip from "@material-ui/core/Chip";
+import AssignmentTurnedInIcon from "@material-ui/icons/AssignmentTurnedIn";
+import DeleteIcon from "@material-ui/icons/Delete";
+import IconButton from "@material-ui/core/IconButton";
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -43,7 +46,7 @@ const headCells = [
   { id: "order_date", numeric: false, disablePadding: false, label: "วันที่สั่งซื้อ" },
   { id: "price", numeric: false, disablePadding: false, label: "รวมสุทธิ" },
   { id: "status", numeric: true, disablePadding: false, label: "สถานะ" },
-  { id: "manage", numeric: false, disablePadding: false, label: "จัดการ" },
+  { id: "manage", numeric: true, disablePadding: false, label: "จัดการ" },
 ];
 
 function EnhancedTableHead(props) {
@@ -79,9 +82,7 @@ function EnhancedTableHead(props) {
 
 EnhancedTableHead.propTypes = {
   classes: PropTypes.object.isRequired,
-  numSelected: PropTypes.number.isRequired,
   onRequestSort: PropTypes.func.isRequired,
-  onSelectAllClick: PropTypes.func.isRequired,
   order: PropTypes.oneOf(["asc", "desc"]).isRequired,
   orderBy: PropTypes.string.isRequired,
   rowCount: PropTypes.number.isRequired,
@@ -178,7 +179,16 @@ export default function EnhancedTable(props) {
                       <TableCell align="center">
                         <Chip color="primary" label={getNameStatus(row.status)} />
                       </TableCell>
-                      <TableCell>management</TableCell>
+                      <TableCell>
+                        <IconButton onClick={()=>{
+                          props.toggleDrawer(true,row.order_id);
+                        }}>
+                          <AssignmentTurnedInIcon />
+                        </IconButton>
+                        <IconButton>
+                          <DeleteIcon />
+                        </IconButton>
+                      </TableCell>
                     </TableRow>
                   );
                 })}
